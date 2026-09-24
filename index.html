@@ -155,7 +155,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.12.0';
+const VERSION='0.12.1';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -199,6 +199,7 @@ const LEGS={
   shorts:[["..PP....PP..",".SS......SS.",".KK......KK."],["...PP..PP...","...SS..SS...","...KK..KK..."],["....PPPP....","....SSSS....","....KKKK...."],["...PP..PP...","...SS..SS...","...KK..KK..."]],
   robe:[["..CCCCCCCC..",".CCCCCCCCCC.",".CC.CCCC.CC."],["..CCCCCCCC..","..CCCCCCCC..","..C.CCCC.C.."],["..CCCCCCCC..","...CCCCCC...","...C.CC.C..."],["..CCCCCCCC..","..CCCCCCCC..","..C.CCCC.C.."]],
   boots:[["..PP....PP..",".KK......KK.",".KK......KK."],["...PP..PP...","...KK..KK...","...KK..KK..."],["....PPPP....","....KKKK....","....KKKK...."],["...PP..PP...","...KK..KK...","...KK..KK..."]],
+  mechA:[["..MM....MM..","..MD....DM..",".OKK....KKO."],["...MM..MM...","...MD..DM...","..OKK..KKO.."],["....MMMM....","....MDDM....","...OKKKKO..."],["...MM..MM...","...MD..DM...","..OKK..KKO.."]],
   mech:[[".MMMM..MMMM.","MMMM....MMMM","DDDD....DDDD"],["..MMM..MMM..","..MMM..MMM..","..DDD..DDD.."],["...MMMMMM...","...MMMMMM...","...DDDDDD..."],["..MMM..MMM..","..MMM..MMM..","..DDD..DDD.."]],
 };
 const SINK=[0,0,1,0];
@@ -225,14 +226,14 @@ const OUTFITS={
     hat:[[1,"...C....C..."],[2,"..CC....CC.."],[3,"..CCCCCCCC.."],[4,"..OC....CB.."],[5,"..C......C.."],[6,"..C......C.."],[7,"..C......C.."],[8,"..CC....CC.."]],hideHair:true,tail:'#f4a261',aura:'#f4a261'},
   dog:    {name:'柴犬連身裝',tier:'epic',price:2600,desc:'身邊跟著一隻小柴犬，會咬靠近的殭屍，也會把金幣叼回來。',bonus:{pet:true},pal:{C:'#e0a458',W:'#fff8e7',P:'#e0a458',K:'#8a5a2b'},torso:["..CCWWWWCC..","..CCWWWWCC..","..CCWWWWCC..","...CWWWWC..."],legs:'std',
     hat:[[1,"...C....C..."],[2,"..CCC..CCC.."],[3,"..CCCCCCCC.."],[4,".CC......CC."],[5,".C........C."],[6,"..C......C.."],[7,"..C......C.."],[8,"..CC....CC.."]],hideHair:true,tail:'#e0a458',aura:'#e0a458'},
-  gold:   {name:'董事長金西裝',tier:'legend',price:6000,desc:'血量 +40、移速 +10%、傷害 +15%、金幣 +50%。',bonus:{hp:40,spd:0.1,dmg:0.15,coin:0.5},pal:{Y:'#ffd23f',R:'#9d0208',L:'#111111',C:'#d4a017',W:'#fff8dc',P:'#8a6a12',K:'#ffd23f'},
-    torso:["RRCCWYYWCCRR","R.CCWYYWCC.R","R.CCCYYCCC.R","R..CCYYCC..R"],pants:"R..PPPPPP..R",legs:'std',hat:[[1,"..Y.Y..Y.Y.."],[2,"..YYYYYYYY.."],[3,"..YRYYYYRY.."]],hideHair:true,face:SUNGLASS,aura:'#ffd23f'},
+  gold:   {name:'董事長金西裝',tier:'legend',price:6000,desc:'血量 +40、移速 +10%、傷害 +15%、金幣 +50%。',bonus:{hp:40,spd:0.1,dmg:0.15,coin:0.5},pal:{Y:'#ffd23f',j:'#fff3b0',R:'#b3121f',y:'#ffd23f',L:'#111111',g:'#9aa3b5',C:'#d4a017',c:'#a87c0c',W:'#fff8dc',T:'#7b0000',P:'#6b4f10',K:'#1a1d27'},
+    torso:["RRCjWTTWjCRR","RyCCWTTWCCyR","RyCcCTTCcCyR","Ry.CCYYCC.yR"],pants:"R..PPPPPP..R",legs:'std',hat:[[1,"..Y.Y..Y.Y.."],[2,"..YYYYYYYY.."],[3,"..YRYjjYRY.."]],hideHair:true,face:[[5,"...LLgLLL..."]],aura:'#ffd23f'},
   mib:    {name:'黑衣人西裝',tier:'legend',price:6500,desc:'每 15 秒閃光一次，畫面內殭屍發呆 2 秒，魔王改為減速。',bonus:{flash:true},pal:{C:'#0f1015',W:'#f4f4f4',T:'#1a1d27',P:'#0f1015',K:'#0f1015',L:'#111111',G:'#ffffff'},torso:["..CCWTTWCC..","..CCWTTWCC..","..CCCTTCCC..","...CCTTCC..."],legs:'std',
     face:[[5,"...LLGLLL..."]],rim:'#4a5060',aura:'#e0e6ee'},
   reaper: {name:'死線死神',tier:'legend',price:7000,desc:'每局一次，死亡時原地復活並回 50% 血，同時震開周圍殭屍。',bonus:{revive:true},pal:{C:'#111218',D:'#1e2029',R:'#ff2e2e',Y:'#ffd23f',P:'#111218',K:'#111218'},torso:["..CCCCCCCC..","..CCCCCCCC..","..CCCCYCCC..","..CCCCCCCC.."],pants:"..CCCCCCCC..",legs:'robe',
     hat:[[1,".....CC....."],[2,"....CCCC...."],[3,"...CCCCCC..."],[4,"..CC....CC.."],[5,"..C......C.."],[6,"..C......C.."],[7,"..C......C.."],[8,"..CC....CC.."]],hideHair:true,face:[[4,"...DDDDDD..."],[5,"...DRDDRD..."],[6,"...DDDDDD..."],[7,"...DDDDDD..."],[8,"....DDDD...."]],rim:'#4a5060',aura:'#ff2e2e'},
-  mech:   {name:'加班機甲',tier:'legend',price:8000,desc:'體型變大、最大血量 +100，殭屍碰到你也會受傷。',bonus:{hp:100,mech:true},pal:{M:'#6c757d',D:'#343a40',L:'#4cc9f0',Y:'#ffd23f',G:'#343a40'},scale:3.6,legs:'mech',
-    full:["....YYYY....","...YYYYYY...","..MMMMMMMM..","..MLLLLLLM..","..MMMMMMMM..","...MMMMMM...","MMMMMMMMMMMM","MDMMMYYMMMDM","MMMMMYYMMMMM",".MMMMMMMMMM.",".MMDDDDDDMM.","..MMMMMMMM..","..MMMMMMMM..","..MMMMMMMM.."],aura:'#4cc9f0'},
+  mech:   {name:'加班機甲',tier:'legend',price:8000,desc:'體型變大、最大血量 +100，殭屍碰到你也會受傷。',bonus:{hp:100,mech:true},pal:{M:'#3d4452',l:'#6b7688',D:'#1f232b',O:'#f77f00',o:'#b35900',V:'#4cc9f0',W:'#e6f7ff',Y:'#ffd23f',K:'#12151b',G:'#f77f00'},scale:3.6,legs:'mechA',
+    full:[".....OO.....","....lMMl....","...lMMMMl...","...MVVVVM...","...MDDDDM...",".lll.MM.lll.","lMMOlMMlOMMl","MMYOMWWMOYMM","MMM.MVVM.MMM",".DM.MMMM.MD.",".DD.DMMD.DD.",".oO.DMMD.Oo.","....MDDM....","...lMMMMl..."],aura:'#4cc9f0'},
 };
 
 /* ================= 捏角色 ================= */
