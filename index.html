@@ -144,7 +144,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.9.2';
+const VERSION='0.9.3';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -591,7 +591,7 @@ function startRun(lv,loadout){
      corpses:[],intro:null,kills:0,spawned:0,spawnAcc:0,phase:def.survival?'survival':def.endless?'endless':'wave',survT:def.survival||0,boss:null,bosses:[],zones:[],bossT:60,bossKills:0,coins:0,time:0,shake:0,skills:{},ended:false,winT:0,dead:false,deadT:0,vacuum:0,flashFx:0,
      pet:b.pet?{x:p.x-40,y:p.y+20,cd:0,face:1,anim:0}:null,nearCrate:null,cam:{x:0,y:0},
      banner:{text:def.floor+' '+def.name,sub:def.survival?'午休保衛戰：撐過 '+def.survival+' 秒，殭屍會源源不絕':def.endless?'加班沒有盡頭。每 60 秒有一位主管來巡視，看你能撐多久':def.dark?'停電了，只看得到身邊一圈。擊倒 '+def.quota+' 隻殭屍，魔王就會現身':def.rooftop?'擊倒 '+def.quota+' 隻殭屍，董事會三位董事會一起出現':'擊倒 '+def.quota+' 隻殭屍同事，這層的魔王就會現身',t:3}};
-  hideScreen();mode='play';controlsUI(true);updateActBtn();MUSIC.duck=1;musicGain();setMusic(musicForRun());
+  FF.key='';hideScreen();mode='play';controlsUI(true);updateActBtn();MUSIC.duck=1;musicGain();setMusic(musicForRun());
 }
 function toast(text,t=2.2){G.toasts.push({text,t,max:t});if(G.toasts.length>4)G.toasts.shift();}
 function floatText(x,y,text,color,size=13){if(G.floats.length>90)G.floats.shift();G.floats.push({x,y,text,color,size,life:.8});}
@@ -748,6 +748,22 @@ function bossAI(b,dt){
 }
 
 /* ---------- 主更新 ---------- */
+/* ---------- 尋路（流場） ---------- */
+const FF={cs:30,w:0,h:0,block:null,dist:null,key:'',t:0,q:null};
+function ffBuild(){const g=G;FF.w=Math.ceil(WORLD.w/FF.cs);FF.h=Math.ceil(WORLD.h/FF.cs);const n=FF.w*FF.h;FF.block=new Uint8Array(n);FF.dist=new Int16Array(n);FF.q=new Int32Array(n);
+  for(let cy=0;cy<FF.h;cy++)for(let cx=0;cx<FF.w;cx++){const x=cx*FF.cs+FF.cs/2,y=cy*FF.cs+FF.cs/2;if(x<30||y<30||x>WORLD.w-30||y>WORLD.h-30||inDesk(x,y,11,g.desks)||inDesk(x,y,11,g.walls))FF.block[cy*FF.w+cx]=1;}}
+function ffUpdate(dt){const g=G,key=g.desks.length+'_'+g.walls.length;if(key!==FF.key||!FF.block){FF.key=key;ffBuild();FF.t=0;}
+  FF.t-=dt;if(FF.t>0)return;FF.t=.25;const W=FF.w,H=FF.h,D=FF.dist,B=FF.block,Q=FF.q;D.fill(-1);
+  let sx=clamp(Math.floor(g.player.x/FF.cs),0,W-1),sy=clamp(Math.floor(g.player.y/FF.cs),0,H-1);
+  if(B[sy*W+sx]){let best=-1,bd=1e9;for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){const x=sx+dx,y=sy+dy;if(x<0||y<0||x>=W||y>=H||B[y*W+x])continue;const dd=dx*dx+dy*dy;if(dd<bd){bd=dd;best=y*W+x;}}if(best<0)return;sx=best%W;sy=(best/W)|0;}
+  let h=0,t=0;Q[t++]=sy*W+sx;D[sy*W+sx]=0;
+  while(h<t){const c=Q[h++],cx=c%W,cy=(c/W)|0,dc=D[c]+1;
+    for(let k=0;k<4;k++){const nx=cx+(k===0?1:k===1?-1:0),ny=cy+(k===2?1:k===3?-1:0);if(nx<0||ny<0||nx>=W||ny>=H)continue;const ni=ny*W+nx;if(B[ni]||D[ni]>=0)continue;D[ni]=dc;Q[t++]=ni;}}}
+function ffAngle(x,y){if(!FF.dist)return null;const W=FF.w,H=FF.h,cx=clamp(Math.floor(x/FF.cs),0,W-1),cy=clamp(Math.floor(y/FF.cs),0,H-1),D=FF.dist;
+  let here=D[cy*W+cx];let best=null,bd=here<0?32767:here;
+  for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const nx=cx+dx,ny=cy+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;const v=D[ny*W+nx];if(v<0)continue;
+    if(dx&&dy&&(D[cy*W+nx]<0||D[ny*W+cx]<0))continue;const vv=v+(dx&&dy?.4:0);if(vv<bd){bd=vv;best=[nx,ny];}}
+  if(!best)return null;return Math.atan2(best[1]*FF.cs+FF.cs/2-y,best[0]*FF.cs+FF.cs/2-x);}
 function tutorial(g,dt){
   if(g.lv!==0||save.tut)return;g.tut=g.tut||{t:0,done:{}};const T=g.tut;T.t+=dt;
   const tip=(k,text)=>{if(T.done[k])return;T.done[k]=true;g.toasts.push({text,t:4,max:4});sfx('ui');};
@@ -796,10 +812,10 @@ function update(dt){
   }
   // 生怪
   const alive=g.enemies.filter(e=>!e.boss&&!e.dead).length,def=g.def;g.maxAlive=Math.max(g.maxAlive||0,alive);const mxM=save.settings.easy?.8:1;
-  tutorial(g,dt);
+  tutorial(g,dt);ffUpdate(dt);
   if(g.phase==='wave'){
     if(g.spawned<def.quota){g.spawnAcc=Math.min(4,g.spawnAcc+dt*def.rate*(1+g.time/80));while(g.spawnAcc>=1&&alive<def.max*mxM&&g.spawned<def.quota){g.spawnAcc-=1;spawnEnemy(pickType(def.mix));g.spawned++;}}
-    if(g.kills>=def.quota)startBoss();
+    if(g.kills>=def.quota||(g.spawned>=def.quota&&!g.enemies.some(e=>!e.dead&&!e.boss&&!e.minion))){g.kills=def.quota;startBoss();}
   }else if(g.phase==='survival'){
     g.survT-=dt;g.spawnAcc=Math.min(5,g.spawnAcc+dt*def.rate*(1+(def.survival-g.survT)/60));
     while(g.spawnAcc>=1&&alive<def.max*mxM){g.spawnAcc-=1;spawnEnemy(pickType(def.mix));}
@@ -818,22 +834,16 @@ function update(dt){
     if(e.boss){bossAI(e,dt);}
     else{
       const dx=p.x-e.x,dy=p.y-e.y,d=ex||1;
-      let a=Math.atan2(dy,dx)+Math.sin(g.time*2+e.seed)*.35,sp=e.speed;
-      e.chk=(e.chk||0)+dt;if(e.chk>=.5){e.chk=0;const moved=Math.hypot(e.x-(e.lx??e.x),e.y-(e.ly??e.y));
-        if(moved<6&&d>e.r+p.r+12&&e.wallT<=0){e.wallN=(e.wallN||0)+1;e.wallT=1.2;
-          if(e.wallN>=5&&d>500){const np=spawnPos();e.x=np.x;e.y=np.y;e.wallN=0;e.wallT=0;}
-          else if(e.wallN>=3){let nd=null,nb=1e9;for(const q of g.desks){const cx=clamp(e.x,q.x,q.x+q.w),cy=clamp(e.y,q.y,q.y+q.h),dd=(e.x-cx)**2+(e.y-cy)**2;if(dd<nb){nb=dd;nd=q;}}
-            e.wallA=nd?Math.atan2(e.y-(nd.y+nd.h/2),e.x-(nd.x+nd.w/2)):Math.atan2(dy,dx)+Math.PI;e.wallN=0;}
-          else e.wallA=Math.atan2(dy,dx)+(e.seed>5?1:-1)*Math.PI/2*(e.wallN%2?1:-1);}
-        else if(moved>=6)e.wallN=0;e.lx=e.x;e.ly=e.y;}
-      e.wallT=(e.wallT||0)-dt;if(e.wallT>0)a=e.wallA;
+      const direct=Math.atan2(dy,dx),kiter=e.type==='thrower'||e.type==='healer',fa=(d>90&&!(kiter&&d<300))?ffAngle(e.x,e.y):null;
+      let a=(fa===null?direct:fa)+Math.sin(g.time*2+e.seed)*(fa===null?.35:.15),sp=e.speed;
+      e.chk=(e.chk||0)+dt;if(e.chk>=2){e.chk=0;const moved=Math.hypot(e.x-(e.lx??e.x),e.y-(e.ly??e.y));if(moved<8&&d>520){const np=spawnPos();e.x=np.x;e.y=np.y;}e.lx=e.x;e.ly=e.y;}
       if(e.slow>0)sp*=.6;if(p.stealth)sp*=.6;
       for(const q of g.puddles){if((q.x-e.x)**2+(q.y-e.y)**2<(q.r+6)**2){sp*=.55;break;}}
       if(e.type==='thrower'){if(d<200)a+=Math.PI*.75*(e.seed>5?1:-1);else if(d<280){a+=Math.PI/2*(e.seed>5?1:-1);sp*=.6;}
         e.atk-=dt;if(e.atk<=0&&d<540&&!g.dead){eshoot(e,Math.atan2(dy,dx),240,{dmg:10*dmgMul(),label:Math.random()<.5?pick(['文件','報告','急件','會議']):null});e.atk=rand(2,2.8);}}
       else if(e.type==='healer'){if(d<150)a+=Math.PI*.75*(e.seed>5?1:-1);else if(d<230){a+=Math.PI/2*(e.seed>5?1:-1);sp*=.6;}
         e.healCd-=dt;if(e.healCd<=0){e.healCd=3;let n=0;for(const o of g.enemies){if(o.dead||o===e||o.boss)continue;if((o.x-e.x)**2+(o.y-e.y)**2<120*120&&o.hp<o.maxHp){o.hp=Math.min(o.maxHp,o.hp+o.maxHp*.12);n++;}}if(n){e.pulse=.5;burst(e.x,e.y,'#8fd14f',8,120,3);}}e.pulse=(e.pulse||0)-dt;}
-      else if(e.type==='bomber'){sp*=1.05;if(d<80&&!e.warn){e.warn=true;sfx('beep');}if(d<44&&!e.exploded&&!g.dead){e.exploded=true;e.dead=true;enemyExplode(e,80,e.dmg);burst(e.x,e.y,'#8fd14f',6);continue;}}
+      else if(e.type==='bomber'){sp*=1.05;if(d<80&&!e.warn){e.warn=true;sfx('beep');}if(d<44&&!e.exploded&&!g.dead){e.exploded=true;e.dead=true;if(g.phase==='wave'&&!e.minion)g.kills++;enemyExplode(e,80,e.dmg);burst(e.x,e.y,'#8fd14f',6);continue;}}
       e.x+=Math.cos(a)*sp*dt;e.y+=Math.sin(a)*sp*dt;e.x=clamp(e.x,30,WORLD.w-30);e.y=clamp(e.y,30,WORLD.h-30);pushOut(e,e.r*.8,g.desks);pushOut(e,e.r*.8,g.walls);
     }
     e.face=p.x>=e.x?1:-1;
