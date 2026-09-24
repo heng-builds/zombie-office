@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>殭屍辦公室：活著下班</title>
+<meta name="description" content="像素風辦公室殭屍生存射擊遊戲。帶著文具槍從 1F 殺上 25F，把主管和老闆都打下班。">
+<meta property="og:title" content="殭屍辦公室：活著下班">
+<meta property="og:description" content="像素風辦公室殭屍生存射擊遊戲，六層樓、六位魔王、七把文具槍。">
+<meta name="theme-color" content="#1b1f2b">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@500;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --carpet:#1b1f2b; --ink:#1a1d27; --paper:#eef0e8; --postit:#ffd23f;
+  --zombie:#8fd14f; --alarm:#e2443b; --steel:#8e98a8; --muted:#4a5160;
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --carpet:#1b1f2b; } }
+:root[data-theme="dark"]{ --carpet:#1b1f2b; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--carpet);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;color:var(--paper)}
+.pix{font-family:"DotGothic16","Noto Sans TC",monospace}
+#game{position:fixed;inset:0;display:block;image-rendering:pixelated;cursor:default}
+#probe{position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+
+#screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:auto;
+  padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(18px + env(safe-area-inset-bottom,0px))}
+#screen.hidden{display:none}
+
+/* 便利貼：主選單、暫停、結算 */
+.memo{background:var(--postit);color:var(--ink);width:min(420px,100%);padding:30px 26px 24px;position:relative;
+  box-shadow:7px 7px 0 rgba(0,0,0,.5);transform:rotate(-1.2deg);margin:auto}
+.memo::before{content:"";position:absolute;top:-13px;left:50%;width:120px;height:26px;background:rgba(255,255,255,.5);transform:translateX(-50%) rotate(2.5deg)}
+.memo h1{font-weight:900;font-size:clamp(36px,9vw,50px);line-height:1.02;margin:0 0 6px}
+.memo h2{font-weight:900;font-size:30px;line-height:1.1;margin:0 0 10px}
+.memo p{margin:0 0 12px;font-size:15px;line-height:1.55}
+.memo .hint{margin:18px 0 0;font-size:13px;color:#4d4424}
+.wallet{display:inline-flex;align-items:center;gap:8px;font-family:"DotGothic16",monospace;font-size:20px;margin:4px 0 6px}
+.coin{display:inline-block;width:14px;height:14px;background:var(--postit);box-shadow:inset -3px -3px 0 #c99a12,0 0 0 2px var(--ink)}
+.memo .coin{background:#fff3b0}
+
+.btn{display:block;width:100%;font:inherit;font-weight:900;font-size:18px;padding:12px 16px;margin:10px 0 0;background:var(--ink);color:var(--postit);
+  border:0;box-shadow:4px 4px 0 rgba(0,0,0,.35);cursor:pointer;text-align:left}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 rgba(0,0,0,.35)}
+.btn:focus-visible,.item:focus-visible,.floor:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 3px var(--ink)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.row{display:flex;gap:10px;margin-top:14px}
+.row .btn{margin:0}
+
+/* 公文夾：武器庫、更衣室、選槍 */
+.sheet{background:var(--paper);color:var(--ink);width:min(680px,100%);padding:22px 20px 20px;box-shadow:7px 7px 0 rgba(0,0,0,.5);margin:auto;
+  border-top:14px solid #6b7688}
+.sheet header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.sheet h2{margin:0;font-weight:900;font-size:26px}
+.sheet .lead{margin:4px 0 14px;font-size:14px;color:var(--muted)}
+.list{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;padding:10px 12px;background:#fff;border:2px solid var(--ink);
+  font:inherit;color:inherit;text-align:left;width:100%}
+button.item{cursor:pointer}
+.item img{height:auto;image-rendering:pixelated;display:block;margin:0 auto;max-width:72px}
+.item{position:relative}
+.tier{display:inline-block;font-size:11px;font-weight:900;padding:1px 6px;margin-left:6px;vertical-align:2px;color:#fff;background:var(--tc)}
+.t-rare{box-shadow:inset 0 0 0 3px #3a86ff}
+.t-epic{box-shadow:inset 0 0 0 3px #9d4edd,0 0 14px rgba(157,78,221,.45);background:linear-gradient(135deg,#fff,#f3e8ff)}
+.t-legend{box-shadow:inset 0 0 0 3px #ffb703,0 0 20px rgba(255,183,3,.6);background:linear-gradient(120deg,#fff8dc 0%,#fff 35%,#ffe8a3 50%,#fff 65%,#fff8dc 100%);background-size:250% 100%;animation:shine 3s linear infinite}
+.t-legend img{filter:drop-shadow(0 0 6px rgba(255,46,99,.6))}
+@keyframes shine{from{background-position:100% 0}to{background-position:-150% 0}}
+@media (prefers-reduced-motion: reduce){.t-legend{animation:none}}
+.item h3{margin:0;font-size:17px;font-weight:900}
+.item p{margin:3px 0 0;font-size:13px;line-height:1.45;color:var(--muted)}
+.item .stats{font-family:"DotGothic16",monospace;color:var(--ink)}
+.item .btn{margin:0;width:auto;font-size:15px;padding:8px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.item .tag{font-size:14px;font-weight:900;white-space:nowrap}
+.item.sel{outline:4px solid var(--postit);outline-offset:-1px}
+.slotno{width:34px;height:34px;display:grid;place-items:center;font-family:"DotGothic16",monospace;font-size:20px;border:2px solid var(--ink);background:#fff}
+.item.sel .slotno{background:var(--ink);color:var(--postit)}
+
+/* 電梯面板：選關 */
+.elevator{background:linear-gradient(#a3acba,#7f8a9b);color:var(--ink);width:min(340px,100%);padding:20px 22px 22px;margin:auto;border-radius:8px;
+  box-shadow:inset 0 0 0 3px #5c6677,7px 7px 0 rgba(0,0,0,.5)}
+.elevator .display{background:#0d0f14;color:#ff6a3d;font-family:"DotGothic16",monospace;font-size:24px;text-align:center;padding:10px 8px;margin-bottom:6px;min-height:52px;
+  box-shadow:inset 0 0 0 3px #3a414f;text-shadow:0 0 8px rgba(255,106,61,.7)}
+.elevator .boss{font-size:13px;text-align:center;margin:0 0 16px;min-height:20px;font-weight:900}
+.floors{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+.floor{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;font:inherit;color:var(--ink);cursor:pointer;padding:0}
+.floor .dot{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font-family:"DotGothic16",monospace;font-size:22px;
+  background:radial-gradient(circle at 35% 30%,#f4f6fa,#bcc4d0);box-shadow:inset 0 0 0 4px #5c6677,0 3px 0 #4a5362}
+.floor small{font-size:12px;font-weight:900;line-height:1.2;text-align:center}
+.floor.cur .dot{background:radial-gradient(circle at 35% 30%,#fff8d8,#ffd23f);box-shadow:inset 0 0 0 4px #b58a00,0 0 16px rgba(255,210,63,.9)}
+.floor.done .dot{color:#2d6a1f}
+.floor[disabled]{opacity:.45;cursor:not-allowed}
+
+/* 觸控 */
+#touch{position:fixed;inset:0;z-index:2;touch-action:none}
+#touch.hidden,#pauseBtn.hidden{display:none}
+.tbtn{position:fixed;font:inherit;font-weight:900;color:var(--ink);background:var(--postit);border:0;box-shadow:4px 4px 0 rgba(0,0,0,.45)}
+#swapBtn{right:calc(22px + env(safe-area-inset-right,0px));bottom:calc(92px + env(safe-area-inset-bottom,0px));width:78px;height:78px;border-radius:50%;font-size:17px}
+#pauseBtn{z-index:3;right:calc(14px + env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));width:44px;height:44px;font-size:15px;cursor:pointer}
+@media (prefers-reduced-motion: reduce){ .memo{transform:none} }
+</style>
+</head>
+<body>
+<canvas id="game" aria-label="遊戲畫面"></canvas>
+<div id="probe"></div>
+<div id="touch" class="hidden"><button id="swapBtn" class="tbtn" aria-label="切換槍枝">換槍</button></div>
+<button id="pauseBtn" class="tbtn hidden" aria-label="暫停">❚❚</button>
+<div id="screen" class="hidden"></div>
+
+<script>
+'use strict';
+/* ================= 工具 ================= */
+const $=s=>document.querySelector(s);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const rand=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ================= 資料 ================= */
+const WORLD={w:1800,h:1300};
+
+const GUNS={
+  stapler: {name:'釘書機手槍',price:0,   dmg:14,rate:0.26, speed:640, spread:0.04,pellets:1,pierce:0, life:0.9, size:4,color:'#cfd6df',desc:'每個社畜的第一把槍，穩定好用。',pal:{G:'#2b2d42',M:'#e2443b',H:'#8d99ae'}},
+  rubber:  {name:'橡皮筋霰彈槍',price:0,  dmg:10,rate:0.75, speed:560, spread:0.06,pellets:5,fan:0.13,pierce:0,life:0.45,size:3,color:'#e76f51',desc:'近距離一次彈飛一整排。',pal:{G:'#c68b59',M:'#e76f51',H:'#6b4226'}},
+  coffee:  {name:'咖啡衝鋒槍',price:400,  dmg:8, rate:0.085,speed:700, spread:0.13,pellets:1,pierce:0, life:0.8, size:4,color:'#8b5a2b',desc:'高射速，靠咖啡因撐完整天。',pal:{G:'#6f4e37',M:'#f4e3c1',H:'#3b2a20'}},
+  clip:    {name:'迴紋針狙擊槍',price:800,dmg:55,rate:0.85, speed:1100,spread:0,   pellets:1,pierce:5, life:1.0, size:3,color:'#e0e6ee',kind:'needle',desc:'一發貫穿五隻，專打排隊的殭屍。',pal:{G:'#b8c0cc',M:'#ffffff',H:'#5c677d'}},
+  shredder:{name:'碎紙機加特林',price:1500,dmg:7,rate:0.05, speed:720, spread:0.2, pellets:1,pierce:0, life:0.75,size:3,color:'#f8f9fa',desc:'把所有東西都變成碎紙。',pal:{G:'#495057',M:'#ffd23f',H:'#212529'}},
+  printer: {name:'印表機火箭筒',price:2200,dmg:45,rate:1.1, speed:440, spread:0.02,pellets:1,pierce:0, life:1.3, size:7,color:'#ffffff',explode:95,desc:'卡紙了就用炸的，範圍傷害。',pal:{G:'#dee2e6',M:'#e2443b',H:'#6c757d'}},
+  laser:   {name:'簡報雷射筆',price:3200,dmg:4, rate:0.035,speed:1500,spread:0.01,pellets:1,pierce:99,life:0.45,size:3,color:'#ff2e63',kind:'laser',desc:'開會時最強的武器，無限穿透。',pal:{G:'#1a1d27',M:'#ff2e63',H:'#4a4e69'}},
+};
+
+const OUTFITS={
+  shirt: {name:'白襯衫',price:0,   desc:'標準社畜制服，沒有加成。',bonus:{},                                   pal:{C:'#e9ecef',T:'#c0392b',P:'#2d3142'}},
+  hoodie:{name:'工程師帽T',price:300, desc:'移動速度 +10%',bonus:{spd:0.10},                              pal:{C:'#4a6fa5',T:'#3d5d8c',P:'#33363f'}},
+  hawaii:{name:'週五夏威夷衫',price:600,desc:'金幣 +50%，吸取範圍 +50%',bonus:{coin:0.5,magnet:0.5},         pal:{C:'#2a9d8f',T:'#f4a261',P:'#c2a878'}},
+  suit:  {name:'業務西裝',price:900, desc:'最大血量 +40',bonus:{hp:40},                                   pal:{C:'#2b2d42',T:'#e63946',P:'#2b2d42'}},
+  sports:{name:'下班運動服',price:1200,desc:'移動速度 +22%',bonus:{spd:0.22},                             pal:{C:'#e76f51',T:'#ffffff',P:'#264653'}},
+  pajama:{name:'居家睡衣',price:1600,desc:'每秒回復 1.5 血',bonus:{regen:1.5},                            pal:{C:'#a8dadc',T:'#f1faee',P:'#a8dadc'}},
+  armor: {name:'防彈背心',price:2400,desc:'受到傷害 -30%，最大血量 +20',bonus:{armor:0.3,hp:20},            pal:{C:'#556b2f',T:'#333333',P:'#3b3b3b'}},
+  gold:  {name:'董事長金西裝',price:6000,desc:'血量 +40、移速 +10%、傷害 +15%、金幣 +50%',bonus:{hp:40,spd:0.1,dmg:0.15,coin:0.5},pal:{C:'#d4a017',T:'#8b0000',P:'#8a6a12'}},
+};
+
+const ETYPES={
+  walker: {name:'殭屍社畜',  hp:30, speed:62, dmg:10,r:14,scale:3,  coin:1},
+  runner: {name:'實習生殭屍',hp:18, speed:128,dmg:7, r:12,scale:2.6,coin:1},
+  tank:   {name:'過勞殭屍',  hp:140,speed:42, dmg:20,r:20,scale:4.2,coin:4},
+  thrower:{name:'開會殭屍',  hp:34, speed:56, dmg:8, r:14,scale:3,  coin:2},
+};
+
+const BOSSES={
+  leader:  {name:'碎念組長',   hp:700, speed:72,scale:5,  patterns:['burst','chase','burst','spread'],        words:['改一下','再改','急件'],     line:'「這個再改一下，下班前給我。」'},
+  kpi:     {name:'KPI 經理',   hp:1300,speed:64,scale:5.2,patterns:['spread','summon','burst'],               words:['KPI','OKR','150%'],        line:'「這季的 KPI 你要扛 150%。」'},
+  blame:   {name:'甩鍋副理',   hp:2000,speed:78,scale:5.2,patterns:['dash','burst','dash','spread'],          words:['你的鍋','不是我'],         line:'「這件事是你負責的吧？」'},
+  hr:      {name:'HR 裁員專員',hp:2800,speed:66,scale:5.4,patterns:['homing','spread','summon','burst'],      words:['資遣','優化','調職'],      line:'「公司正在進行組織優化。」'},
+  boss:    {name:'大老闆',     hp:3800,speed:70,scale:6,  patterns:['spiral','summon','dash','burst'],        words:['加班','共體時艱','吃苦'],  line:'「年輕人要多吃苦。」'},
+  chairman:{name:'董事長',     hp:5500,speed:74,scale:6.5,patterns:['spiral','homing','dash','summon','burst','spread'],words:['狼性','責任制','一家人'],line:'「我們是一家人，所以加班不用錢。」'},
+};
+
+const LEVELS=[
+  {floor:'1F', name:'大廳櫃台',   quota:40, rate:1.1,max:24,mix:{walker:1},                                  boss:'leader',  fa:'#3a3f4c',fb:'#353a46'},
+  {floor:'3F', name:'業務部',     quota:60, rate:1.5,max:34,mix:{walker:.7,runner:.3},                        boss:'kpi',     fa:'#2c3a55',fb:'#283450'},
+  {floor:'7F', name:'工程部',     quota:80, rate:1.9,max:44,mix:{walker:.5,runner:.3,thrower:.2},             boss:'blame',   fa:'#2f4440',fb:'#2a3d39'},
+  {floor:'12F',name:'會議室樓層', quota:100,rate:2.3,max:54,mix:{walker:.4,runner:.3,thrower:.15,tank:.15},   boss:'hr',      fa:'#4a2f38',fb:'#442a33'},
+  {floor:'18F',name:'高層辦公室', quota:130,rate:2.8,max:64,mix:{walker:.35,runner:.3,thrower:.15,tank:.2},   boss:'boss',    fa:'#4a3a2c',fb:'#433428'},
+  {floor:'25F',name:'董事長室',   quota:160,rate:3.3,max:78,mix:{walker:.3,runner:.3,thrower:.2,tank:.2},     boss:'chairman',fa:'#5a2226',fb:'#511e22'},
+];
+
+const SKILLS={
+  dmg:   {name:'咖啡因爆發',icon:'☕',desc:'傷害 +20%',    apply:p=>{p.st.dmg*=1.2}},
+  rate:  {name:'手速提升',  icon:'⌨️',desc:'射速 +18%',    apply:p=>{p.st.rate*=1.18}},
+  speed: {name:'摸魚步法',  icon:'👟',desc:'移速 +12%',    apply:p=>{p.st.spd*=1.12}},
+  hp:    {name:'年終獎金',  icon:'💰',desc:'最大血量 +25，並回血',apply:p=>{p.maxHp+=25;p.hp=Math.min(p.maxHp,p.hp+40)}},
+  multi: {name:'多重影印',  icon:'📠',desc:'每次多射 1 發',apply:p=>{p.st.multi=Math.min(4,p.st.multi+1)}},
+  pierce:{name:'會議穿透',  icon:'📎',desc:'子彈穿透 +1',  apply:p=>{p.st.pierce+=1}},
+  magnet:{name:'薪水磁鐵',  icon:'🧲',desc:'吸取範圍 +50%',apply:p=>{p.st.magnet*=1.5}},
+  shield:{name:'特休護盾',  icon:'🛡️',desc:'抵擋 2 次傷害',apply:p=>{p.shield=Math.min(5,p.shield+2)}},
+};
+
+/* ================= 像素圖 ================= */
+/* ---------- 等級 ---------- */
+const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
+const GUN_ART={
+  stapler:{tier:'common',pal:{G:'#e2443b',M:'#b0b8c4',D:'#2b2d42',L:'#cfd6df',H:'#2b2d42'},rows:[
+"GGGGGGGGGG..",
+"GMMMMMMMMGG.",
+"DDDDDDDDDDDL",
+"..HH........",
+"..HH........"]},
+  rubber:{tier:'common',pal:{G:'#c68b59',M:'#e76f51',D:'#8a5a2b',H:'#6b4226'},rows:[
+"..............",
+"GGGGGGGGGGGGMM",
+"GMGGMGGMGGGGGG",
+"DDDDDDDDDDDDDD",
+"HHHH..........",
+"HHH..........."]},
+  coffee:{tier:'rare',pal:{G:'#3b3f47',D:'#1f2228',M:'#6f4e37',H:'#2b2d42',W:'#f4efe6',L:'#c8c8c8'},rows:[
+".....L.L....",
+"......L.....",
+"..GGGGGGGGGM",
+"..GDDDDDDDG.",
+"..HH.WWW....",
+"..HH.WMW....",
+".....WWW...."]},
+  clip:{tier:'rare',pal:{G:'#b8c0cc',D:'#5c677d',M:'#e0e6ee',L:'#8ecae6',H:'#3d4455'},rows:[
+"......DDDDD.......",
+".......L.L........",
+"MMMGGGGGGGGGGGGGGG",
+"M.MDDDDDDDDD......",
+"MMM..HH...........",
+".....HH..........."]},
+  shredder:{tier:'epic',glow:'#ffd23f',pal:{G:'#495057',D:'#212529',M:'#ffd23f',L:'#adb5bd',W:'#ffffff',Y:'#ffd23f',H:'#212529'},rows:[
+"....MMMMMMMMMMMM",
+"DDDDGGGGGGGGGGGG",
+"DGGDLLLLLLLLLLLL",
+"DGGDGGGGGGGGGGGG",
+"DDDDLLLLLLLLLLLL",
+".WW.HH.YY.YY....",
+".W.WHH.........."]},
+  printer:{tier:'epic',glow:'#ff6b6b',pal:{G:'#e9ecef',D:'#6c757d',M:'#e2443b',L:'#343a40',W:'#ffffff',T:'#1a1d27',H:'#495057'},rows:[
+"......WWWW........",
+"......WTTW........",
+"DDDGGGGGGGGGGGGGDD",
+"DMMGLLLLLLLLLLLGMD",
+"DDDGGGGGGGGGGGGGDD",
+"......HH..MM......",
+"......HH.........."]},
+  laser:{tier:'legend',glow:'#ff2e63',pal:{D:'#1a1d27',G:'#2b2d42',L:'#ff2e63',M:'#7bdff2',X:'#c77dff',H:'#4a4e69'},rows:[
+"...X.........X....",
+"..XDDDDDDDDDDX....",
+"DDDGLGLGLGLGGGMMXX",
+"..XDDDDDDDDDDX....",
+"...X.HH......X....",
+".....HH..........."]},
+};
+const STD_LEGS=[["...PP..PP...","...PP..PP...","...KK..KK..."],["...PP..PP...","..PP....PP..","..KK....KK.."]];
+const SHORTS=[["...PP..PP...","...SS..SS...","...KK..KK..."],["...PP..PP...","..SS....SS..","..KK....KK.."]];
+const OUTFIT_ART={
+  shirt:{tier:'common',pal:{C:'#e9ecef',T:'#c0392b',P:'#2d3142'},legs:STD_LEGS,rows:[
+"....HHHH....",
+"...HHHHHH...",
+"...HSSSSH...",
+"...SESSES...",
+"...SSSMSS...",
+"....SSSS....",
+"..CCCTTCCC..",
+".SCCCTTCCCS.",
+".SCCCTTCCCS.",
+".S.CCTTCC.S.",
+"...PPPPPP..."]},
+  hoodie:{tier:'common',pal:{C:'#4a6fa5',D:'#3a5a88',W:'#e9ecef',L:'#9bd1ff',P:'#33363f'},legs:STD_LEGS,rows:[
+"...CCCCCC...",
+"..CCHHHHCC..",
+"..CHSSSSHC..",
+"..CSLSSLSC..",
+"..CSSSMSSC..",
+"...CSSSSC...",
+"..CCCWCWCC..",
+".SCCCWCWCCS.",
+".SCCDDDDCCS.",
+".S.CDDDDC.S.",
+"...PPPPPP..."]},
+  hawaii:{tier:'common',pal:{C:'#2a9d8f',F:'#ff5d8f',L:'#111111',P:'#e9c46a',K:'#8a5a2b'},legs:SHORTS,rows:[
+"....HHHH....",
+"...HHHHHH...",
+"...HSSSSH...",
+"...LLLLLL...",
+"...SSSMSS...",
+"....SSSS....",
+"..CFCCCFCC..",
+".SCCCFCCFCS.",
+".SCFCCCFCCS.",
+".S.CCFCCF.S.",
+"...PPPPPP..."]},
+  suit:{tier:'rare',pal:{C:'#2b2d42',W:'#ffffff',T:'#e63946',Y:'#ffd23f',P:'#2b2d42',H:'#141414'},legs:STD_LEGS,rows:[
+"....HHHH....",
+"...HHHHHHH..",
+"...HSSSSH...",
+"...SESSES...",
+"...SSSMSS...",
+"....SSSS....",
+"..CCWTTWCC..",
+".CCCWTTWCCC.",
+".CYCCTTCCCC.",
+".S.CCTTCC.S.",
+"...PPPPPP..."]},
+  sports:{tier:'rare',pal:{C:'#e76f51',W:'#ffffff',T:'#ffd23f',P:'#264653',K:'#ff006e'},legs:SHORTS,rows:[
+"....HHHH....",
+"...HHHHHH...",
+"...TTTTTT...",
+"...SESSES...",
+"...SSSMSS...",
+"....SSSS....",
+"..CWCCCCWC..",
+".SCWCCCCWCS.",
+".SCWCTTCWCS.",
+".S.CWCCWC.S.",
+"...PPPPPP..."]},
+  pajama:{tier:'epic',aura:'#a8dadc',pal:{C:'#a8dadc',W:'#ffffff',D:'#1a1d27',K:'#ffafcc'},
+    legs:[["...CC..CC...","...CC..CC...","..KKK..KKK.."],["...CC..CC...","..CC....CC..",".KKK....KKK."]],rows:[
+"......W.....",
+".....CC.....",
+"....CCCC....",
+"...CCCCCC...",
+"...HSSSSH...",
+"...SDSSDS...",
+"...SSSMSS...",
+"....SSSS....",
+"..CCWCCWCC..",
+".SCCCCWCCCS.",
+".SCWCCCCWCS.",
+".S.CCWCCC.S.",
+"...CCCCCC..."]},
+  armor:{tier:'epic',aura:'#4cc9f0',pal:{D:'#3b4a2a',L:'#4cc9f0',T:'#6b7d4a',C:'#556b2f',Y:'#d4a017',P:'#3b3b3b',K:'#1a1a1a'},
+    legs:[["...PP..PP...","...KK..KK...","..KKK..KKK.."],["...PP..PP...","..KK....KK..",".KKK....KKK."]],rows:[
+"...DDDDDD...",
+"..DDDDDDDD..",
+"..DLLLLLLD..",
+"...SSSSSS...",
+"...SSSMSS...",
+"..TTSSSSTT..",
+".TCCCCCCCCT.",
+".SCDCDDCDCS.",
+".SCCCCCCCCS.",
+".SYYYYYYYYS.",
+"...PPPPPP..."]},
+  gold:{tier:'legend',aura:'#ffd23f',pal:{Y:'#ffd23f',R:'#9d0208',L:'#111111',C:'#d4a017',W:'#fff8dc',P:'#8a6a12',K:'#ffd23f'},legs:STD_LEGS,rows:[
+"..Y.Y..Y.Y..",
+"..YYYYYYYY..",
+"..YRYYYYRY..",
+"...HSSSSH...",
+"...LLLLLL...",
+"...SSSMSS...",
+"....SSSS....",
+"RRCCWYYWCCRR",
+"RSCCWYYWCCSR",
+"RSCCCYYCCCSR",
+"RS.CCYYCC.SR",
+"R..PPPPPP..R"]},
+};
+for(const id in GUN_ART) GUNS[id].tier=GUN_ART[id].tier;
+for(const id in OUTFIT_ART) OUTFITS[id].tier=OUTFIT_ART[id].tier;
+
+const BODY=[
+"....HHHH....",
+"...HHHHHH...",
+"...HSSSSH...",
+"...SESSES...",
+"...SSSMSS...",
+"....SSSS....",
+"..CCCTTCCC..",
+".SCCCTTCCCS.",
+".SCCCTTCCCS.",
+".S.CCTTCC.S.",
+"...PPPPPP...",
+];
+const ZBODY=[
+"....HHHH....",
+"...HHHHHH...",
+"...HSSSSH...",
+"...SESSES...",
+"...SSMMSS...",
+"....SSSS....",
+"..CCCCCCSSSS",
+"..CCCTCCSSSS",
+"..CCCCCC....",
+"..CC.CCC....",
+"...PPPPPP...",
+];
+const LEGS=[["...PP..PP...","...PP..PP...","...KK..KK..."],["...PP..PP...","..PP....PP..","..KK....KK.."]];
+const GUN_ROWS=[
+"............",
+"..GGGGGGGGGM",
+"..GGGGGGGGG.",
+"..GHH.......",
+"..HH........",
+".HH.........",
+];
+const PLAYER_BASE={H:'#3b2a20',S:'#f1c9a5',E:'#1a1d27',M:'#b5655a',K:'#1a1d27'};
+const PAL={
+  walker: {H:'#2e2a24',S:'#8fd14f',E:'#e2443b',M:'#5a1f1f',C:'#c9cfd6',T:'#7a2a2a',P:'#3d4455',K:'#222'},
+  runner: {H:'#6b3e26',S:'#a6e05f',E:'#e2443b',M:'#5a1f1f',C:'#e9d985',T:'#3f7cac',P:'#6b705c',K:'#222'},
+  tank:   {H:'#1f1f1f',S:'#6fae3f',E:'#ff6b35',M:'#4a1515',C:'#7b8794',T:'#555555',P:'#2f3542',K:'#111'},
+  thrower:{H:'#3a2d4a',S:'#9bd46a',E:'#e2443b',M:'#5a1f1f',C:'#b56576',T:'#eeeeee',P:'#355070',K:'#222'},
+  boss_leader:  {H:'#1a1a1a',S:'#79b84a',E:'#ff3b3b',M:'#4a1515',C:'#dfe6ee',T:'#2255aa',P:'#2b2d42',K:'#111'},
+  boss_kpi:     {H:'#4a3222',S:'#7fbf4d',E:'#ffd23f',M:'#4a1515',C:'#6c757d',T:'#f77f00',P:'#343a40',K:'#111'},
+  boss_blame:   {H:'#222222',S:'#86c34f',E:'#ff3b3b',M:'#4a1515',C:'#9d0208',T:'#ffba08',P:'#1b1b1b',K:'#111'},
+  boss_hr:      {H:'#5b2c6f',S:'#8cc85a',E:'#ff3b3b',M:'#4a1515',C:'#f1f1f1',T:'#6a4c93',P:'#6a4c93',K:'#111'},
+  boss_boss:    {H:'#6fae3f',S:'#6fae3f',E:'#ff3b3b',M:'#4a1515',C:'#1b1f3a',T:'#d00000',P:'#1b1f3a',K:'#111'},
+  boss_chairman:{H:'#c8c8c8',S:'#5e9c34',E:'#ffd23f',M:'#4a1515',C:'#c9a227',T:'#7b0000',P:'#2d1e0f',K:'#111'},
+};
+for(const id in OUTFIT_ART) PAL['p_'+id]={...PLAYER_BASE,...OUTFIT_ART[id].pal};
+
+const spriteCache=new Map();
+function sprite(key,rows,pal){
+  let s=spriteCache.get(key); if(s) return s;
+  const h=rows.length,w=rows[0].length;
+  const a=document.createElement('canvas'),b=document.createElement('canvas');
+  a.width=b.width=w;a.height=b.height=h;
+  const x=a.getContext('2d'),y=b.getContext('2d'); y.fillStyle='#ffffff';
+  for(let r=0;r<h;r++)for(let c=0;c<w;c++){const ch=rows[r][c];if(ch!=='.'&&pal[ch]){x.fillStyle=pal[ch];x.fillRect(c,r,1,1);y.fillRect(c,r,1,1);}}
+  s={img:a,white:b}; spriteCache.set(key,s); return s;
+}
+const charSprite=(palKey,frame,zombie)=>{
+  if(!zombie&&palKey.startsWith('p_')){const a=OUTFIT_ART[palKey.slice(2)];return sprite(palKey+'_'+frame,a.rows.concat(a.legs[frame]),PAL[palKey]);}
+  return sprite(palKey+'_'+frame+(zombie?'z':''),(zombie?ZBODY:BODY).concat(LEGS[frame]),PAL[palKey]);};
+const gunSprite=id=>sprite('g_'+id,GUN_ART[id].rows,GUN_ART[id].pal);
+const iconCache={};
+function toIcon(key,img,scale){
+  if(iconCache[key]) return iconCache[key];
+  const c=document.createElement('canvas');c.width=img.width*scale;c.height=img.height*scale;
+  const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(img,0,0,c.width,c.height);
+  return iconCache[key]=c.toDataURL();
+}
+const gunIcon=id=>toIcon('g'+id,gunSprite(id).img,8);
+const outfitIcon=id=>toIcon('o'+id,charSprite('p_'+id,0,false).img,6);
+
+/* ================= 存檔 ================= */
+const SAVE_KEY='zombie-office-save-v1';
+const DEFAULT_SAVE={coins:0,guns:['stapler','rubber'],outfits:['shirt'],outfit:'shirt',unlocked:0,cleared:[],loadout:['stapler','rubber'],settings:{autoFire:false,sound:true}};
+function loadSave(){
+  const d=JSON.parse(JSON.stringify(DEFAULT_SAVE));
+  let s=null; try{s=JSON.parse(localStorage.getItem(SAVE_KEY));}catch(e){}
+  if(!s||typeof s!=='object') return d;
+  const out={...d,...s,settings:{...d.settings,...(s.settings||{})}};
+  out.coins=Math.max(0,Math.floor(+out.coins||0));
+  out.guns=Array.from(new Set(['stapler','rubber',...(Array.isArray(out.guns)?out.guns:[])])).filter(id=>GUNS[id]);
+  out.outfits=Array.from(new Set(['shirt',...(Array.isArray(out.outfits)?out.outfits:[])])).filter(id=>OUTFITS[id]);
+  if(!out.outfits.includes(out.outfit)) out.outfit='shirt';
+  out.unlocked=clamp(Math.floor(+out.unlocked||0),0,LEVELS.length-1);
+  out.cleared=Array.isArray(out.cleared)?out.cleared.filter(n=>n>=0&&n<LEVELS.length):[];
+  out.loadout=Array.isArray(out.loadout)?out.loadout.filter(id=>out.guns.includes(id)).slice(0,2):['stapler','rubber'];
+  return out;
+}
+function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch(e){}}
+let save=loadSave();
+
+/* ================= 音效 ================= */
+let AC=null;const sfxLast={};
+const SFX={shoot:[520,.05,'square',.02,45],hit:[190,.05,'square',.025,40],coin:[980,.07,'triangle',.035,45],hurt:[140,.2,'sawtooth',.06,120],
+  boom:[80,.3,'sawtooth',.07,80],power:[620,.25,'triangle',.05,90],alarm:[300,.55,'square',.045,300],ui:[440,.06,'triangle',.035,30],kill:[250,.07,'square',.025,35]};
+function sfx(n){
+  if(!save.settings.sound) return;
+  const c=SFX[n],now=performance.now(); if(!c||now-(sfxLast[n]||0)<c[4]) return; sfxLast[n]=now;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume();
+    const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;
+    o.type=c[2];o.frequency.setValueAtTime(c[0],t);
+    if(n==='coin'||n==='power') o.frequency.exponentialRampToValueAtTime(c[0]*1.7,t+c[1]);
+    if(n==='boom'||n==='hurt'||n==='alarm') o.frequency.exponentialRampToValueAtTime(c[0]*.5,t+c[1]);
+    g.gain.setValueAtTime(c[3],t);g.gain.exponentialRampToValueAtTime(.0001,t+c[1]);
+    o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+c[1]+.02);
+  }catch(e){}
+}
+
+/* ================= 畫面 ================= */
+const cv=$('#game'),ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1,ZOOM=1;const insets={t:0,r:0,b:0,l:0};
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);W=window.innerWidth;H=window.innerHeight;
+  cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);cv.style.width=W+'px';cv.style.height=H+'px';
+  ZOOM=clamp(Math.min(W,H)/720,.9,1.15);
+  const cs=getComputedStyle($('#probe'));
+  insets.t=parseFloat(cs.paddingTop)||0;insets.r=parseFloat(cs.paddingRight)||0;insets.b=parseFloat(cs.paddingBottom)||0;insets.l=parseFloat(cs.paddingLeft)||0;
+}
+window.addEventListener('resize',resize);resize();
+
+let isTouch=window.matchMedia('(pointer: coarse)').matches;
+
+/* ================= 場景 ================= */
+function genDesks(seed){
+  const r=seeded(seed*977+13),d=[];
+  for(let gx=0;gx<5;gx++)for(let gy=0;gy<4;gy++){
+    const x=220+gx*300+Math.floor(r()*40-20),y=190+gy*270+Math.floor(r()*30-15);
+    if(Math.abs(x+65-WORLD.w/2)<220&&Math.abs(y+26-WORLD.h/2)<170) continue;
+    if(r()<.22) continue;
+    d.push({x,y,w:130,h:52});
+  }
+  return d;
+}
+function inDesk(x,y,m,desks){for(const d of desks) if(x>d.x-m&&x<d.x+d.w+m&&y>d.y-m&&y<d.y+d.h+m) return true;return false;}
+function pushOut(o,rad,desks){
+  for(const d of desks){
+    const cx=clamp(o.x,d.x,d.x+d.w),cy=clamp(o.y,d.y,d.y+d.h);
+    let dx=o.x-cx,dy=o.y-cy;const d2=dx*dx+dy*dy;
+    if(d2>=rad*rad) continue;
+    if(d2===0){
+      const l=o.x-d.x,rr=d.x+d.w-o.x,t=o.y-d.y,b=d.y+d.h-o.y,m=Math.min(l,rr,t,b);
+      if(m===l)o.x=d.x-rad;else if(m===rr)o.x=d.x+d.w+rad;else if(m===t)o.y=d.y-rad;else o.y=d.y+d.h+rad;
+    }else{const dist=Math.sqrt(d2),push=rad-dist;o.x+=dx/dist*push;o.y+=dy/dist*push;}
+  }
+}
+const camFit=(v,world,view)=>view>=world?(world-view)/2:clamp(v,0,world-view);
+
+/* ================= 輸入 ================= */
+const keys={};const mouse={x:0,y:0,down:false};const joy={active:false,id:null,ox:0,oy:0,x:0,y:0};
+let wheelT=0;
+window.addEventListener('keydown',e=>{
+  keys[e.code]=true;
+  if(mode==='play'){
+    if(e.code==='KeyQ'||e.code==='KeyE') switchGun();
+    else if(e.code==='Digit1') setSlot(0);
+    else if(e.code==='Digit2') setSlot(1);
+    else if(e.code==='Escape'||e.code==='KeyP') pauseGame();
+    if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
+  }else if(mode==='paused'&&(e.code==='Escape'||e.code==='KeyP')) resumeGame();
+});
+window.addEventListener('keyup',e=>{keys[e.code]=false;});
+window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false;mouse.down=false;});
+window.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){mouse.x=e.clientX;mouse.y=e.clientY;}});
+cv.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'){isTouch=false;mouse.x=e.clientX;mouse.y=e.clientY;if(e.button===2&&mode==='play')switchGun();}
+});
+window.addEventListener('pointerup',e=>{if(e.pointerType==='mouse'&&e.button===0)mouse.down=false;});
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+cv.addEventListener('wheel',e=>{if(mode!=='play')return;const n=performance.now();if(n-wheelT>180){wheelT=n;switchGun();}},{passive:true});
+
+const touchEl=$('#touch');
+touchEl.addEventListener('pointerdown',e=>{
+  if(e.target.closest('button')) return;
+  isTouch=true;
+  if(!joy.active){joy.active=true;joy.id=e.pointerId;joy.ox=joy.x=e.clientX;joy.oy=joy.y=e.clientY;try{touchEl.setPointerCapture(e.pointerId);}catch(_){}}
+});
+touchEl.addEventListener('pointermove',e=>{if(joy.active&&e.pointerId===joy.id){joy.x=e.clientX;joy.y=e.clientY;}});
+const endJoy=e=>{if(e.pointerId===joy.id){joy.active=false;joy.id=null;}};
+touchEl.addEventListener('pointerup',endJoy);touchEl.addEventListener('pointercancel',endJoy);
+$('#swapBtn').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();switchGun();});
+$('#pauseBtn').addEventListener('click',()=>{if(mode==='play')pauseGame();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='play')pauseGame();});
+
+function controlsUI(on){
+  touchEl.classList.toggle('hidden',!(on&&isTouch));
+  $('#pauseBtn').classList.toggle('hidden',!on);
+  joy.active=false;mouse.down=false;
+}
+
+/* ================= 遊戲狀態 ================= */
+let mode='menu';let G=null;
+
+function startRun(lv,loadout){
+  const def=LEVELS[lv],o=OUTFITS[save.outfit].bonus;
+  const st={dmg:1+(o.dmg||0),rate:1,spd:1+(o.spd||0),multi:0,pierce:0,magnet:1+(o.magnet||0),regen:o.regen||0,armor:o.armor||0,coin:1+(o.coin||0)};
+  const maxHp=100+(o.hp||0);
+  const p={x:WORLD.w/2,y:WORLD.h/2,r:14,hp:maxHp,maxHp,st,slots:loadout.map(id=>({id,lv:1})),active:0,cd:0,swapCd:0,invuln:1.2,shield:0,aim:0,face:1,moving:false,anim:0};
+  G={lv,def,player:p,enemies:[],bullets:[],ebullets:[],pickups:[],parts:[],floats:[],toasts:[],desks:genDesks(lv+1),
+     kills:0,spawned:0,spawnAcc:0,phase:'wave',boss:null,coins:0,time:0,shake:0,skills:{},ended:false,winT:0,dead:false,deadT:0,vacuum:false,
+     cam:{x:0,y:0},banner:{text:def.floor+' '+def.name,sub:'擊倒 '+def.quota+' 隻殭屍同事，這層的魔王就會現身',t:2.8}};
+  hideScreen();mode='play';controlsUI(true);
+}
+
+function toast(text,t=2.2){G.toasts.push({text,t,max:t});if(G.toasts.length>4)G.toasts.shift();}
+function floatText(x,y,text,color,size=13){if(G.floats.length>90)G.floats.shift();G.floats.push({x,y,text,color,size,life:.8});}
+function burst(x,y,color,n,sp=160,size=3){for(let i=0;i<n;i++){if(G.parts.length>450)G.parts.shift();const a=Math.random()*Math.PI*2,s=rand(sp*.3,sp);G.parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:rand(.3,.7),max:.7,color,size});}}
+
+function switchGun(){
+  if(!G||G.dead||mode!=='play') return;const p=G.player;
+  if(p.slots.length<2||p.swapCd>0) return;
+  p.active=1-p.active;p.swapCd=.15;p.cd=Math.min(p.cd,.12);sfx('ui');
+  toast('切換：'+GUNS[p.slots[p.active].id].name,.9);
+}
+function setSlot(i){if(G&&i<G.player.slots.length&&i!==G.player.active)switchGun();}
+
+function spawnPos(){
+  const p=G.player,vw=W/ZOOM,vh=H/ZOOM,R=Math.hypot(vw,vh)/2+40;
+  for(let k=0;k<10;k++){
+    const a=Math.random()*Math.PI*2;
+    const x=clamp(p.x+Math.cos(a)*R,40,WORLD.w-40),y=clamp(p.y+Math.sin(a)*R,40,WORLD.h-40);
+    if(Math.hypot(x-p.x,y-p.y)<260) continue;
+    if(!inDesk(x,y,20,G.desks)) return {x,y};
+  }
+  return {x:rand(40,WORLD.w-40),y:p.y<WORLD.h/2?WORLD.h-40:40};
+}
+function pickType(mix){let r=Math.random(),acc=0;for(const [k,v] of Object.entries(mix)){acc+=v;if(r<=acc)return k;}return 'walker';}
+function spawnEnemy(type,at,minion){
+  const T=ETYPES[type],lv=G.lv,pos=at||spawnPos();
+  const e={type,x:pos.x,y:pos.y,r:T.r,hp:T.hp*(1+lv*.35),speed:T.speed*(1+lv*.05)*rand(.9,1.1),dmg:T.dmg*(1+lv*.12),coin:T.coin,
+    scale:T.scale,pal:type,flash:0,atk:rand(1,2.5),seed:Math.random()*10,anim:Math.random(),face:1,minion:!!minion};
+  e.maxHp=e.hp;G.enemies.push(e);return e;
+}
+function startBoss(){
+  const B=BOSSES[G.def.boss],p=G.player;G.phase='boss';
+  const a=Math.random()*Math.PI*2;
+  const b={type:'boss',boss:true,name:B.name,x:clamp(p.x+Math.cos(a)*430,90,WORLD.w-90),y:clamp(p.y+Math.sin(a)*430,90,WORLD.h-90),
+    r:B.scale*12*.42,hp:B.hp,maxHp:B.hp,speed:B.speed,dmg:25,coin:0,scale:B.scale,pal:'boss_'+G.def.boss,flash:0,
+    patterns:B.patterns,pi:0,pcd:2.2,words:B.words,spiral:0,spAcc:0,spAng:0,dash:null,boost:0,anim:0,face:1,seed:0};
+  G.enemies.push(b);G.boss=b;G.banner={text:'⚠ '+B.name+' 出現了',sub:B.line,t:2.8};G.shake=12;sfx('alarm');
+  burst(b.x,b.y,'#e2443b',40,300,4);
+}
+
+/* ---------- 射擊 ---------- */
+function fire(){
+  const p=G.player,s=p.slots[p.active],g=GUNS[s.id],st=p.st;
+  const lvMul=1+.25*(s.lv-1),n=g.pellets+st.multi,fan=g.fan||.12;
+  const reach=gunSprite(s.id).img.width*2.2+4,ox=p.x+Math.cos(p.aim)*reach,oy=p.y+2+Math.sin(p.aim)*reach;p.flashT=.05;
+  for(let i=0;i<n;i++){
+    const a=p.aim+(n>1?(i-(n-1)/2)*fan:0)+rand(-g.spread,g.spread);
+    G.bullets.push({x:ox,y:oy,vx:Math.cos(a)*g.speed,vy:Math.sin(a)*g.speed,dmg:g.dmg*lvMul*st.dmg,pierce:g.pierce+st.pierce,
+      life:g.life,size:g.size,color:g.color,explode:g.explode||0,kind:g.kind||'',glow:GUN_ART[s.id].glow||null,confetti:s.id==='shredder',hit:new Set()});
+  }
+  p.cd=g.rate/st.rate;sfx('shoot');
+}
+function hurt(e,dmg){
+  if(e.dead) return;e.hp-=dmg;e.flash=.07;
+  if(dmg>=12||Math.random()<.3) floatText(e.x+rand(-8,8),e.y-e.r-8,Math.round(dmg),e.boss?'#ffd23f':'#ffffff',e.boss?15:12);
+  if(e.hp<=0){e.dead=true;onKill(e);}else sfx('hit');
+}
+function explode(x,y,rad,dmg){
+  for(const e of G.enemies){const d=Math.hypot(e.x-x,e.y-y);if(d<rad+e.r)hurt(e,dmg*(1-.4*Math.min(1,d/rad)));}
+  burst(x,y,'#ffffff',18,260,4);burst(x,y,'#ffb703',16,220,4);G.shake=Math.max(G.shake,7);sfx('boom');
+}
+function dropCoins(x,y,count,value){for(let i=0;i<count;i++)G.pickups.push({type:'coin',x:x+rand(-10,10),y:y+rand(-10,10),vx:rand(-90,90),vy:rand(-90,90),value,life:25});}
+function onKill(e){
+  sfx('kill');
+  if(e.boss){
+    burst(e.x,e.y,'#8fd14f',70,380,5);burst(e.x,e.y,'#ffd23f',50,320,4);G.shake=16;
+    dropCoins(e.x,e.y,36,3);G.phase='done';G.winT=2.6;G.vacuum=true;
+    for(const o of G.enemies) if(!o.dead&&!o.boss){o.dead=true;burst(o.x,o.y,'#8fd14f',8);}
+    G.ebullets.length=0;
+    G.banner={text:e.name+' 被打下班了',sub:'撿金幣中…',t:2.4};sfx('power');
+    return;
+  }
+  burst(e.x,e.y,'#8fd14f',10,170,3);
+  dropCoins(e.x,e.y,e.coin,1);
+  const r=Math.random();
+  if(!e.minion){
+    if(r<.035)G.pickups.push({type:'skill',x:e.x,y:e.y,id:pick(Object.keys(SKILLS)),life:20});
+    else if(r<.05)G.pickups.push({type:'gun',x:e.x,y:e.y,life:20});
+    else if(r<.08)G.pickups.push({type:'heal',x:e.x,y:e.y,life:20});
+  }
+  if(G.phase==='wave') G.kills++;
+}
+function eshoot(src,a,speed,opt={}){
+  if(G.ebullets.length>260) return;
+  G.ebullets.push({x:src.x+Math.cos(a)*src.r*.6,y:src.y+Math.sin(a)*src.r*.6,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,
+    dmg:opt.dmg||12,life:opt.life||4,r:opt.r||7,homing:!!opt.homing,label:opt.label||null});
+}
+function damagePlayer(d){
+  const p=G.player;if(p.invuln>0||G.dead||G.phase==='done') return;
+  if(p.shield>0){p.shield--;p.invuln=.8;floatText(p.x,p.y-30,'特休擋下！','#7bdff2',14);sfx('power');return;}
+  d*=1-p.st.armor;p.hp-=d;p.invuln=.55;G.shake=Math.max(G.shake,6);sfx('hurt');burst(p.x,p.y,'#e2443b',8,150,3);
+  if(p.hp<=0){p.hp=0;G.dead=true;G.deadT=1.4;burst(p.x,p.y,'#e2443b',40,260,4);G.banner={text:'你被加班吞噬了',sub:'',t:1.6};}
+}
+
+/* ---------- 魔王 ---------- */
+function bossAI(b,dt){
+  const p=G.player,dx=p.x-b.x,dy=p.y-b.y,d=Math.hypot(dx,dy)||1,angry=b.hp<b.maxHp*.5;
+  if(b.dash){
+    if(b.dash.wind>0)b.dash.wind-=dt;
+    else{b.x+=b.dash.vx*dt;b.y+=b.dash.vy*dt;b.dash.t-=dt;if(b.dash.t<=0)b.dash=null;}
+  }else{
+    const sp=b.speed*(angry?1.25:1)*(b.boost>0?1.9:1);b.boost-=dt;
+    if(d>b.r+p.r){b.x+=dx/d*sp*dt;b.y+=dy/d*sp*dt;}
+  }
+  b.x=clamp(b.x,b.r,WORLD.w-b.r);b.y=clamp(b.y,b.r,WORLD.h-b.r);
+  if(b.spiral>0){
+    b.spiral-=dt;b.spAcc+=dt;
+    while(b.spAcc>.075){b.spAcc-=.075;b.spAng+=.38;eshoot(b,b.spAng,190,{label:Math.random()<.15?pick(b.words):null});eshoot(b,b.spAng+Math.PI,190);}
+  }
+  b.pcd-=dt;
+  if(b.pcd<=0&&!b.dash){
+    const pat=b.patterns[b.pi++%b.patterns.length],base=Math.atan2(dy,dx);
+    if(pat==='burst'){const n=angry?20:14;for(let i=0;i<n;i++)eshoot(b,i/n*Math.PI*2+b.pi*.2,210,{label:i%4===0?pick(b.words):null});}
+    else if(pat==='spread'){const n=angry?9:7;for(let i=0;i<n;i++)eshoot(b,base+(i-(n-1)/2)*.15,290,{label:i===(n-1)/2?pick(b.words):null});}
+    else if(pat==='dash'){b.dash={wind:.65,t:.55,vx:dx/d*580,vy:dy/d*580};}
+    else if(pat==='homing'){for(const o of [-.7,0,.7])eshoot(b,base+o,175,{homing:true,life:4.5,r:9,dmg:14,label:pick(b.words)});}
+    else if(pat==='spiral'){b.spiral=1.7;}
+    else if(pat==='summon'){const n=angry?6:4;for(let i=0;i<n;i++){const a=i/n*Math.PI*2;spawnEnemy(Math.random()<.5?'runner':'walker',{x:clamp(b.x+Math.cos(a)*80,40,WORLD.w-40),y:clamp(b.y+Math.sin(a)*80,40,WORLD.h-40)},true);}burst(b.x,b.y,'#8fd14f',24,260,4);}
+    else if(pat==='chase'){b.boost=1.4;}
+    b.pcd=angry?1.5:2.3;
+  }
+}
+
+/* ---------- 主更新 ---------- */
+function update(dt){
+  const g=G,p=g.player;g.time+=dt;
+  // 玩家移動
+  let mx=0,my=0;
+  if(!g.dead){
+    if(keys.KeyW||keys.ArrowUp)my-=1;if(keys.KeyS||keys.ArrowDown)my+=1;if(keys.KeyA||keys.ArrowLeft)mx-=1;if(keys.KeyD||keys.ArrowRight)mx+=1;
+    if(joy.active){const jx=(joy.x-joy.ox)/55,jy=(joy.y-joy.oy)/55;if(Math.hypot(jx,jy)>.15){mx=jx;my=jy;}}
+    const len=Math.hypot(mx,my);if(len>1){mx/=len;my/=len;}
+    const sp=210*p.st.spd;p.x+=mx*sp*dt;p.y+=my*sp*dt;
+    p.x=clamp(p.x,p.r+24,WORLD.w-p.r-24);p.y=clamp(p.y,p.r+24,WORLD.h-p.r-24);pushOut(p,p.r,g.desks);
+    p.moving=len>.1;if(p.moving)p.anim+=dt;
+    if(p.st.regen>0&&p.hp<p.maxHp)p.hp=Math.min(p.maxHp,p.hp+p.st.regen*dt);
+  }
+  p.invuln-=dt;p.swapCd-=dt;p.cd-=dt;p.flashT=(p.flashT||0)-dt;
+  const oaT=OUTFIT_ART[save.outfit].tier;
+  if(oaT==='legend'&&!g.dead&&Math.random()<dt*14&&g.parts.length<440)g.parts.push({x:p.x+rand(-18,18),y:p.y+rand(-30,14),vx:rand(-10,10),vy:rand(-50,-20),life:.6,max:.6,color:Math.random()<.5?'#ffd23f':'#fff8dc',size:3});
+  if(GUN_ART[p.slots[p.active].id].tier==='legend'&&!g.dead&&Math.random()<dt*8&&g.parts.length<440){const r=gunSprite(p.slots[p.active].id).img.width*2.2*Math.random();g.parts.push({x:p.x+Math.cos(p.aim)*r,y:p.y+2+Math.sin(p.aim)*r,vx:rand(-20,20),vy:rand(-20,20),life:.4,max:.4,color:'#ff2e63',size:2});}
+  // 瞄準與射擊
+  if(!g.dead&&g.phase!=='done'){
+    // 全自動：瞄準最近的敵人，範圍內有敵人就開火（Boss 在範圍內時優先）
+    let firing=false,best=null,bd=640*640;
+    for(const e of g.enemies){if(e.dead)continue;const d2=(e.x-p.x)**2+(e.y-p.y)**2;if(d2<bd){bd=d2;best=e;}}
+    if(g.boss&&!g.boss.dead&&(g.boss.x-p.x)**2+(g.boss.y-p.y)**2<360*360&&(!best||bd>90*90))best=g.boss;
+    if(best){p.aim=Math.atan2(best.y-p.y,best.x-p.x);firing=true;}
+    else if(p.moving)p.aim=Math.atan2(my,mx);
+    p.face=Math.cos(p.aim)>=0?1:-1;
+    if(firing&&p.cd<=0)fire();
+  }
+  // 生怪
+  const alive=g.enemies.filter(e=>!e.boss&&!e.dead).length,def=g.def;
+  if(g.phase==='wave'){
+    if(g.spawned<def.quota){
+      g.spawnAcc=Math.min(4,g.spawnAcc+dt*def.rate*(1+g.time/80));
+      while(g.spawnAcc>=1&&alive+0<def.max&&g.spawned<def.quota){g.spawnAcc-=1;spawnEnemy(pickType(def.mix));g.spawned++;}
+    }
+    if(g.kills>=def.quota)startBoss();
+  }else if(g.phase==='boss'){
+    g.spawnAcc=Math.min(3,g.spawnAcc+dt*def.rate*.3);
+    while(g.spawnAcc>=1&&alive<def.max*.45){g.spawnAcc-=1;spawnEnemy(pickType(def.mix));}
+  }
+  // 敵人
+  for(const e of g.enemies){
+    if(e.dead)continue;e.flash-=dt;e.anim+=dt;
+    if(e.boss){bossAI(e,dt);}
+    else{
+      const dx=p.x-e.x,dy=p.y-e.y,d=Math.hypot(dx,dy)||1;
+      let a=Math.atan2(dy,dx)+Math.sin(g.time*2+e.seed)*.35,sp=e.speed;
+      if(e.type==='thrower'){
+        if(d<200)a+=Math.PI;else if(d<280){a+=Math.PI/2;sp*=.6;}
+        e.atk-=dt;if(e.atk<=0&&d<540&&!g.dead){eshoot(e,Math.atan2(dy,dx),240,{dmg:10*(1+g.lv*.12),label:Math.random()<.5?pick(['文件','報告','急件','會議']):null});e.atk=rand(2,2.8);}
+      }
+      e.x+=Math.cos(a)*sp*dt;e.y+=Math.sin(a)*sp*dt;
+      e.x=clamp(e.x,30,WORLD.w-30);e.y=clamp(e.y,30,WORLD.h-30);pushOut(e,e.r*.8,g.desks);
+    }
+    e.face=p.x>=e.x?1:-1;
+    const cd=Math.hypot(p.x-e.x,p.y-e.y);
+    if(cd<e.r+p.r-4){damagePlayer(e.dmg);if(!e.boss){const k=(e.r+p.r-cd)+6;e.x-=(p.x-e.x)/(cd||1)*k;e.y-=(p.y-e.y)/(cd||1)*k;}}
+  }
+  // 互相推開
+  const es=g.enemies;
+  for(let i=0;i<es.length;i++){const a=es[i];if(a.dead)continue;
+    for(let j=i+1;j<es.length;j++){const b=es[j];if(b.dead)continue;
+      const dx=b.x-a.x,dy=b.y-a.y,rr=(a.r+b.r)*.8,d2=dx*dx+dy*dy;
+      if(d2<rr*rr&&d2>0){const d=Math.sqrt(d2),o=(rr-d);const ux=dx/d,uy=dy/d;
+        if(a.boss){b.x+=ux*o;b.y+=uy*o;}else if(b.boss){a.x-=ux*o;a.y-=uy*o;}
+        else{a.x-=ux*o/2;a.y-=uy*o/2;b.x+=ux*o/2;b.y+=uy*o/2;}}
+    }}
+  // 子彈
+  for(const b of g.bullets){
+    b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;
+    if(b.x<0||b.y<0||b.x>WORLD.w||b.y>WORLD.h){b.life=0;continue;}
+    for(const e of g.enemies){
+      if(e.dead||b.hit.has(e)||b.life<=0)continue;
+      const rr=e.r+b.size;if((e.x-b.x)**2+(e.y-b.y)**2>rr*rr)continue;
+      if(b.explode){explode(b.x,b.y,b.explode,b.dmg);b.life=0;break;}
+      hurt(e,b.dmg);b.hit.add(e);
+      if(!e.boss){e.x+=b.vx*.012;e.y+=b.vy*.012;}
+      if(b.pierce--<=0){b.life=0;break;}
+    }
+  }
+  g.bullets=g.bullets.filter(b=>b.life>0);
+  // 敵方子彈
+  for(const b of g.ebullets){
+    if(b.homing&&!g.dead){const want=Math.atan2(p.y-b.y,p.x-b.x),cur=Math.atan2(b.vy,b.vx);let df=want-cur;
+      while(df>Math.PI)df-=Math.PI*2;while(df<-Math.PI)df+=Math.PI*2;
+      const na=cur+clamp(df,-1.9*dt,1.9*dt),s=Math.hypot(b.vx,b.vy);b.vx=Math.cos(na)*s;b.vy=Math.sin(na)*s;}
+    b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;
+    if(b.x<-20||b.y<-20||b.x>WORLD.w+20||b.y>WORLD.h+20)b.life=0;
+    const rr=b.r+p.r*.7;if(b.life>0&&(b.x-p.x)**2+(b.y-p.y)**2<rr*rr){damagePlayer(b.dmg);b.life=0;}
+  }
+  g.ebullets=g.ebullets.filter(b=>b.life>0);
+  g.enemies=g.enemies.filter(e=>!e.dead);
+  if(g.boss&&g.boss.dead)g.boss=null;
+  // 撿東西
+  const mag=g.vacuum?4000:70*p.st.magnet;
+  for(const it of g.pickups){
+    it.life-=dt;
+    if(it.vx){it.x+=it.vx*dt;it.y+=it.vy*dt;it.vx*=.9;it.vy*=.9;if(Math.abs(it.vx)<2)it.vx=0;}
+    const dx=p.x-it.x,dy=p.y-it.y,d=Math.hypot(dx,dy)||1;
+    const r=it.type==='coin'?mag:Math.max(46,mag*.5);
+    if(d<r&&!g.dead){const s=g.vacuum?700:420;it.x+=dx/d*s*dt;it.y+=dy/d*s*dt;}
+    if(d<p.r+10&&!g.dead){it.life=0;collect(it);}
+  }
+  g.pickups=g.pickups.filter(i=>i.life>0);
+  // 特效
+  for(const q of g.parts){q.x+=q.vx*dt;q.y+=q.vy*dt;q.vx*=.9;q.vy*=.9;q.life-=dt;}
+  g.parts=g.parts.filter(q=>q.life>0);
+  for(const f of g.floats){f.y-=40*dt;f.life-=dt;}
+  g.floats=g.floats.filter(f=>f.life>0);
+  for(const t of g.toasts)t.t-=dt;g.toasts=g.toasts.filter(t=>t.t>0);
+  if(g.banner)g.banner.t-=dt;
+  g.shake=Math.max(0,g.shake-dt*30);
+  // 結束
+  if(g.winT>0){g.winT-=dt;if(g.winT<=0)endRun(true);}
+  if(g.dead){g.deadT-=dt;if(g.deadT<=0)endRun(false);}
+}
+function collect(it){
+  const g=G,p=g.player;
+  if(it.type==='coin'){g.coins+=it.value*p.st.coin;sfx('coin');}
+  else if(it.type==='heal'){p.hp=Math.min(p.maxHp,p.hp+30);floatText(p.x,p.y-30,'+30 便當','#8fd14f',14);sfx('power');}
+  else if(it.type==='skill'){const s=SKILLS[it.id];s.apply(p);g.skills[it.id]=(g.skills[it.id]||0)+1;toast(s.icon+' '+s.name+'：'+s.desc);sfx('power');}
+  else if(it.type==='gun'){
+    const id=pick(save.guns),idx=p.slots.findIndex(s=>s.id===id);
+    if(idx>=0){const s=p.slots[idx];if(s.lv<5){s.lv++;toast(GUNS[id].name+' 升級到 Lv'+s.lv);}else{g.coins+=20;toast(GUNS[id].name+' 已滿級，換成 20 金幣');}}
+    else{const old=p.slots[p.active];p.slots[p.active]={id,lv:1};toast('撿到 '+GUNS[id].name+'（換掉 '+GUNS[old.id].name+'）');}
+    sfx('power');
+  }
+}
+
+/* ---------- 選單背景 ---------- */
+const demo={desks:genDesks(7),zs:[],t:0,cam:{x:0,y:0}};
+for(let i=0;i<16;i++)demo.zs.push({x:rand(80,WORLD.w-80),y:rand(80,WORLD.h-80),type:pick(['walker','walker','runner','tank','thrower']),dir:rand(0,6.28),face:1,anim:Math.random()});
+function updateDemo(dt){
+  demo.t+=dt;
+  for(const z of demo.zs){z.dir+=rand(-1.2,1.2)*dt;z.x+=Math.cos(z.dir)*28*dt;z.y+=Math.sin(z.dir)*28*dt;z.anim+=dt;
+    if(z.x<50||z.x>WORLD.w-50)z.dir=Math.PI-z.dir;if(z.y<50||z.y>WORLD.h-50)z.dir=-z.dir;
+    z.x=clamp(z.x,50,WORLD.w-50);z.y=clamp(z.y,50,WORLD.h-50);pushOut(z,12,demo.desks);z.face=Math.cos(z.dir)>=0?1:-1;}
+}
+
+/* ================= 繪圖 ================= */
+function drawFloor(cam,vw,vh,fa,fb){
+  const T=40,x0=Math.max(0,Math.floor(cam.x/T)*T),y0=Math.max(0,Math.floor(cam.y/T)*T);
+  const x1=Math.min(WORLD.w,cam.x+vw+T),y1=Math.min(WORLD.h,cam.y+vh+T);
+  ctx.fillStyle=fa;ctx.fillRect(0,0,WORLD.w,WORLD.h);ctx.fillStyle=fb;
+  for(let x=x0;x<x1;x+=T)for(let y=y0;y<y1;y+=T)if(((x+y)/T)%2===0)ctx.fillRect(x,y,T,T);
+  ctx.fillStyle='#4b5366';ctx.fillRect(0,0,WORLD.w,24);ctx.fillRect(0,WORLD.h-24,WORLD.w,24);ctx.fillRect(0,0,24,WORLD.h);ctx.fillRect(WORLD.w-24,0,24,WORLD.h);
+  ctx.fillStyle='#6a7488';ctx.fillRect(24,20,WORLD.w-48,4);
+  ctx.fillStyle='#8ecae6';for(let x=80;x<WORLD.w-80;x+=160)ctx.fillRect(x,4,90,12);
+}
+function drawDesks(desks){
+  for(const d of desks){
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(d.x+5,d.y+8,d.w,d.h);
+    ctx.fillStyle='#6e5236';ctx.fillRect(d.x,d.y+d.h-10,d.w,10);
+    ctx.fillStyle='#9c7a52';ctx.fillRect(d.x,d.y,d.w,d.h-10);
+    ctx.fillStyle='#1a1d27';ctx.fillRect(d.x+d.w/2-20,d.y+4,40,24);
+    ctx.fillStyle='#3d7ea6';ctx.fillRect(d.x+d.w/2-17,d.y+7,34,17);
+    ctx.fillStyle='#f4f4f0';ctx.fillRect(d.x+10,d.y+10,18,22);ctx.fillRect(d.x+12,d.y+8,18,22);
+    ctx.fillStyle='#e2443b';ctx.fillRect(d.x+d.w-22,d.y+14,10,12);
+    ctx.fillStyle='#ffd23f';ctx.fillRect(d.x+d.w/2+22,d.y+6,8,8);
+  }
+}
+function drawChar(spr,x,y,scale,face,flash,alpha){
+  const img=flash?spr.white:spr.img,w=img.width*scale,h=img.height*scale;
+  const bottom=14*scale*.38;
+  ctx.fillStyle='rgba(0,0,0,.3)';ctx.beginPath();ctx.ellipse(x,y+bottom-2,w*.32,w*.1,0,0,Math.PI*2);ctx.fill();
+  ctx.save();if(alpha<1)ctx.globalAlpha=alpha;ctx.translate(Math.round(x),Math.round(y));ctx.scale(face,1);
+  ctx.drawImage(img,-w/2,bottom-h,w,h);ctx.restore();
+}
+function drawEnemy(e){
+  const fr=Math.floor(e.anim*7)%2,spr=charSprite(e.pal,fr,true);
+  drawChar(spr,e.x,e.y+Math.sin(e.anim*9)*1.5,e.scale,e.face,e.flash>0,1);
+  if(e.boss){
+    ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.textAlign='center';ctx.fillStyle='#ffd23f';
+    ctx.fillText(e.name,e.x,e.y-e.scale*14*.62-8);
+  }else if(e.hp<e.maxHp){
+    const w=e.r*2;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(e.x-w/2,e.y-e.scale*14*.62-6,w,3);
+    ctx.fillStyle='#e2443b';ctx.fillRect(e.x-w/2,e.y-e.scale*14*.62-6,w*Math.max(0,e.hp/e.maxHp),3);
+  }
+}
+function drawPlayer(p){
+  if(G.dead) return;
+  const alpha=p.invuln>0&&Math.floor(G.time*20)%2?.45:1;
+  const fr=p.moving?Math.floor(p.anim*8)%2:0;
+  const oa=OUTFIT_ART[save.outfit];
+  if(oa.aura){const pulse=.5+.5*Math.sin(G.time*4),gr=ctx.createRadialGradient(p.x,p.y,4,p.x,p.y,oa.tier==='legend'?46:36);
+    gr.addColorStop(0,oa.aura+(oa.tier==='legend'?'aa':'66'));gr.addColorStop(1,oa.aura+'00');ctx.globalAlpha=.6+.4*pulse;ctx.fillStyle=gr;
+    ctx.beginPath();ctx.arc(p.x,p.y,oa.tier==='legend'?46:36,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
+  drawChar(charSprite('p_'+save.outfit,fr,false),p.x,p.y+(p.moving?Math.sin(p.anim*16)*1.5:0),3,p.face,false,alpha);
+  const gid=p.slots[p.active].id,ga=GUN_ART[gid],gs=gunSprite(gid),gw=gs.img.width*2.2,gh=gs.img.height*2.2;
+  ctx.save();ctx.translate(p.x,p.y+2);ctx.rotate(p.aim);if(Math.cos(p.aim)<0)ctx.scale(1,-1);
+  if(ga.glow){ctx.shadowColor=ga.glow;ctx.shadowBlur=ga.tier==='legend'?14+6*Math.sin(G.time*10):9;}
+  ctx.drawImage(gs.img,2,-gh/2,gw,gh);ctx.shadowBlur=0;
+  if(p.flashT>0){ctx.fillStyle=ga.glow||'#fff3b0';ctx.globalAlpha=.9;ctx.fillRect(2+gw,-4,8,8);ctx.fillStyle='#ffffff';ctx.fillRect(4+gw,-2,4,4);ctx.globalAlpha=1;}
+  ctx.restore();
+  if(p.shield>0){ctx.strokeStyle='rgba(123,223,242,.8)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y-4,p.r+12,0,Math.PI*2);ctx.stroke();}
+}
+function drawPickup(it){
+  if(it.life<4&&Math.floor(it.life*8)%2) return;
+  const bob=Math.sin((G.time+it.x)*5)*2;
+  if(it.type==='coin'){ctx.fillStyle='#1a1d27';ctx.fillRect(it.x-5,it.y-5+bob,10,10);ctx.fillStyle='#ffd23f';ctx.fillRect(it.x-4,it.y-4+bob,8,8);ctx.fillStyle='#c99a12';ctx.fillRect(it.x,it.y+bob,4,4);return;}
+  ctx.fillStyle='rgba(255,210,63,.18)';ctx.beginPath();ctx.arc(it.x,it.y,20+Math.sin(G.time*6)*3,0,Math.PI*2);ctx.fill();
+  if(it.type==='heal'){ctx.fillStyle='#f4f4f0';ctx.fillRect(it.x-10,it.y-6+bob,20,14);ctx.fillStyle='#e2443b';ctx.fillRect(it.x-10,it.y-9+bob,20,5);ctx.fillStyle='#8fd14f';ctx.fillRect(it.x-4,it.y-2+bob,8,5);}
+  else if(it.type==='skill'){ctx.fillStyle='#ff8fab';ctx.fillRect(it.x-12,it.y-12+bob,24,24);ctx.font='15px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(SKILLS[it.id].icon,it.x,it.y+bob+1);ctx.textBaseline='alphabetic';}
+  else if(it.type==='gun'){ctx.fillStyle='#8a5a2b';ctx.fillRect(it.x-13,it.y-10+bob,26,20);ctx.fillStyle='#b07a42';ctx.fillRect(it.x-13,it.y-10+bob,26,6);ctx.fillStyle='#1a1d27';ctx.font='900 12px "Noto Sans TC",sans-serif';ctx.textAlign='center';ctx.fillText('槍',it.x,it.y+8+bob);}
+}
+function drawGame(){
+  const g=G;
+  for(const it of g.pickups)drawPickup(it);
+  if(g.boss&&g.boss.dash&&g.boss.dash.wind>0){const b=g.boss,a=Math.atan2(b.dash.vy,b.dash.vx);
+    ctx.save();ctx.translate(b.x,b.y);ctx.rotate(a);ctx.fillStyle='rgba(226,68,59,'+(.15+.2*Math.sin(g.time*30))+')';ctx.fillRect(0,-b.r,580*.55,b.r*2);ctx.restore();}
+  const list=g.enemies.slice();list.push(g.player);list.sort((a,b)=>a.y-b.y);
+  for(const e of list){if(e===g.player)drawPlayer(e);else drawEnemy(e);}
+  for(const b of g.bullets){
+    if(b.glow){ctx.shadowColor=b.glow;ctx.shadowBlur=10;}
+    if(b.confetti){ctx.fillStyle=((b.x+b.y)|0)%3===0?'#ffd23f':'#ffffff';ctx.save();ctx.translate(b.x,b.y);ctx.rotate(G.time*20+b.x);ctx.fillRect(-4,-1.5,8,3);ctx.restore();}
+    else if(b.kind==='laser'||b.kind==='needle'){ctx.strokeStyle=b.color;ctx.lineWidth=b.kind==='laser'?3:2;ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(b.x-b.vx*.018,b.y-b.vy*.018);ctx.stroke();if(b.kind==='laser'){ctx.strokeStyle='#ffffff';ctx.lineWidth=1;ctx.stroke();}}
+    else{ctx.fillStyle=b.color;ctx.fillRect(b.x-b.size/2,b.y-b.size/2,b.size,b.size);if(b.explode){ctx.strokeStyle='#bbb';ctx.lineWidth=1;ctx.strokeRect(b.x-b.size/2,b.y-b.size/2,b.size,b.size);}}
+    ctx.shadowBlur=0;
+  }
+  ctx.textAlign='center';ctx.font='900 11px "Noto Sans TC",sans-serif';
+  for(const b of g.ebullets){
+    if(b.label){const w=ctx.measureText(b.label).width+8;ctx.fillStyle=b.homing?'#ffd6e0':'#ffffff';ctx.fillRect(b.x-w/2,b.y-8,w,16);ctx.fillStyle='#c1121f';ctx.fillText(b.label,b.x,b.y+4);}
+    else{ctx.fillStyle='#ffffff';ctx.fillRect(b.x-6,b.y-5,12,10);ctx.fillStyle='#9aa3b5';ctx.fillRect(b.x-4,b.y-2,8,1);ctx.fillRect(b.x-4,b.y+1,6,1);}
+  }
+  for(const q of g.parts){ctx.globalAlpha=Math.max(0,q.life/q.max);ctx.fillStyle=q.color;ctx.fillRect(q.x-q.size/2,q.y-q.size/2,q.size,q.size);}
+  ctx.globalAlpha=1;
+  for(const f of g.floats){ctx.globalAlpha=Math.min(1,f.life*2);ctx.font='700 '+f.size+'px "DotGothic16",monospace';ctx.fillStyle='#000';ctx.fillText(f.text,f.x+1,f.y+1);ctx.fillStyle=f.color;ctx.fillText(f.text,f.x,f.y);}
+  ctx.globalAlpha=1;
+}
+function bar(x,y,w,h,v,fg,bg){ctx.fillStyle='#0d0f14';ctx.fillRect(x-2,y-2,w+4,h+4);ctx.fillStyle=bg;ctx.fillRect(x,y,w,h);ctx.fillStyle=fg;ctx.fillRect(x,y,w*clamp(v,0,1),h);}
+function drawHUD(){
+  const g=G,p=g.player;ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(p.hp<p.maxHp*.3&&!g.dead){const gr=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.3,W/2,H/2,Math.max(W,H)*.7);gr.addColorStop(0,'rgba(226,68,59,0)');gr.addColorStop(1,'rgba(226,68,59,'+(.25+.1*Math.sin(g.time*6))+')');ctx.fillStyle=gr;ctx.fillRect(0,0,W,H);}
+  const L=insets.l+14,T=insets.t+14,small=W<560;
+  // 血量
+  const hw=small?140:200;bar(L,T,hw,14,p.hp/p.maxHp,'#e2443b','#3a1d22');
+  ctx.font='700 12px "DotGothic16",monospace';ctx.textAlign='left';ctx.fillStyle='#fff';ctx.fillText('HP '+Math.ceil(p.hp)+'/'+p.maxHp,L+4,T+12);
+  for(let i=0;i<p.shield;i++){ctx.fillStyle='#7bdff2';ctx.fillRect(L+hw+10+i*12,T+2,9,10);}
+  // 金幣
+  ctx.fillStyle='#1a1d27';ctx.fillRect(L,T+24,14,14);ctx.fillStyle='#ffd23f';ctx.fillRect(L+2,T+26,10,10);
+  ctx.font='16px "DotGothic16",monospace';ctx.fillStyle='#ffd23f';ctx.fillText(String(Math.floor(g.coins)),L+22,T+37);
+  // 技能
+  let sx=L;ctx.font='13px sans-serif';
+  for(const [id,n] of Object.entries(g.skills)){const t=SKILLS[id].icon+(n>1?'×'+n:'');ctx.fillStyle='rgba(13,15,20,.7)';const w=ctx.measureText(t).width+10;ctx.fillRect(sx,T+46,w,20);ctx.fillStyle='#fff';ctx.fillText(t,sx+5,T+61);sx+=w+4;}
+  // 進度 / 魔王血條
+  const cw=Math.min(small?W-L*2-120:380,W-40),cx=small?L:W/2-cw/2,cy=small?T+74:T;
+  ctx.textAlign=small?'left':'center';const tx=small?cx:W/2;
+  if(g.boss){
+    ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#ffd23f';ctx.fillText(g.boss.name,tx,cy+12);
+    bar(cx,cy+20,cw,12,g.boss.hp/g.boss.maxHp,'#e2443b','#3a1d22');
+  }else{
+    ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#eef0e8';
+    ctx.fillText(g.def.floor+' '+g.def.name+(g.phase==='wave'?'　殭屍 '+Math.min(g.kills,g.def.quota)+' / '+g.def.quota:''),tx,cy+12);
+    bar(cx,cy+20,cw,8,g.phase==='wave'?g.kills/g.def.quota:1,'#8fd14f','#23331f');
+  }
+  // 通知
+  ctx.textAlign='center';ctx.font='900 15px "Noto Sans TC",sans-serif';
+  g.toasts.forEach((t,i)=>{ctx.globalAlpha=Math.min(1,t.t*2);const y=cy+64+i*26,w=ctx.measureText(t.text).width+20;ctx.fillStyle='rgba(13,15,20,.75)';ctx.fillRect(W/2-w/2,y-17,w,24);ctx.fillStyle='#ffd23f';ctx.fillText(t.text,W/2,y);});
+  ctx.globalAlpha=1;
+  // 槍枝欄位
+  const bw=small?112:150,bh=44,gap=10,by=H-insets.b-16-bh,bx0=W/2-(p.slots.length*bw+(p.slots.length-1)*gap)/2;
+  p.slots.forEach((s,i)=>{const x=bx0+i*(bw+gap),on=i===p.active;
+    ctx.fillStyle=on?'#ffd23f':'rgba(13,15,20,.75)';ctx.fillRect(x,by,bw,bh);
+    if(!on){ctx.strokeStyle='#4b5366';ctx.lineWidth=2;ctx.strokeRect(x+1,by+1,bw-2,bh-2);}
+    ctx.imageSmoothingEnabled=false;{const im=gunSprite(s.id).img,k=Math.min(36/im.width,24/im.height);ctx.drawImage(im,x+6+(36-im.width*k)/2,by+bh/2-im.height*k/2,im.width*k,im.height*k);}
+    ctx.textAlign='left';ctx.fillStyle=on?'#1a1d27':'#eef0e8';ctx.font='900 '+(small?11:13)+'px "Noto Sans TC",sans-serif';
+    ctx.fillText(GUNS[s.id].name,x+46,by+19);ctx.font='12px "DotGothic16",monospace';ctx.fillText((i+1)+'號　Lv'+s.lv,x+46,by+36);});
+  if(!isTouch){ctx.textAlign='center';ctx.font='12px "Noto Sans TC",sans-serif';ctx.fillStyle='rgba(238,240,232,.6)';ctx.fillText('Q／滾輪／右鍵 換槍',W/2,by-8);}
+  // 搖桿
+  if(joy.active){ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(joy.ox,joy.oy,55,0,Math.PI*2);ctx.stroke();
+    const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy),k=d>55?55/d:1;ctx.fillStyle='rgba(255,210,63,.7)';ctx.beginPath();ctx.arc(joy.ox+dx*k,joy.oy+dy*k,24,0,Math.PI*2);ctx.fill();}
+  // 大標
+  if(g.banner&&g.banner.t>0){const a=Math.min(1,g.banner.t*1.5);ctx.globalAlpha=a;ctx.fillStyle='rgba(13,15,20,.8)';ctx.fillRect(0,H/2-54,W,g.banner.sub?100:74);
+    ctx.textAlign='center';ctx.fillStyle='#ffd23f';ctx.font='900 '+(small?26:36)+'px "Noto Sans TC",sans-serif';ctx.fillText(g.banner.text,W/2,H/2-6);
+    if(g.banner.sub){ctx.fillStyle='#eef0e8';ctx.font='500 '+(small?13:16)+'px "Noto Sans TC",sans-serif';ctx.fillText(g.banner.sub,W/2,H/2+28);}ctx.globalAlpha=1;}
+}
+function render(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);ctx.imageSmoothingEnabled=false;ctx.fillStyle='#12151d';ctx.fillRect(0,0,W,H);
+  const vw=W/ZOOM,vh=H/ZOOM;let cam,desks,fa,fb;
+  if(G){const p=G.player;cam={x:camFit(p.x-vw/2,WORLD.w,vw),y:camFit(p.y-vh/2,WORLD.h,vh)};G.cam=cam;desks=G.desks;fa=G.def.fa;fb=G.def.fb;}
+  else{cam={x:camFit(WORLD.w/2-vw/2+Math.sin(demo.t*.12)*260,WORLD.w,vw),y:camFit(WORLD.h/2-vh/2+Math.cos(demo.t*.09)*180,WORLD.h,vh)};desks=demo.desks;fa='#2c3a55';fb='#283450';}
+  const sh=G?G.shake:0,sx=rand(-sh,sh),sy=rand(-sh,sh);
+  ctx.setTransform(DPR*ZOOM,0,0,DPR*ZOOM,(-cam.x+sx)*DPR*ZOOM,(-cam.y+sy)*DPR*ZOOM);ctx.imageSmoothingEnabled=false;
+  drawFloor(cam,vw,vh,fa,fb);drawDesks(desks);
+  if(G)drawGame();
+  else{const zs=demo.zs.slice().sort((a,b)=>a.y-b.y);for(const z of zs)drawChar(charSprite(z.type,Math.floor(z.anim*6)%2,true),z.x,z.y,ETYPES[z.type].scale,z.face,false,1);}
+  if(G)drawHUD();
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  if(mode!=='play'){ctx.fillStyle='rgba(10,12,18,.55)';ctx.fillRect(0,0,W,H);}
+}
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(mode==='play'&&G)update(dt);else if(!G)updateDemo(dt);
+  render();requestAnimationFrame(loop);
+}
+
+/* ================= 選單 ================= */
+const scr=$('#screen');let pendingLv=0,pickSel=[],resetArm=false;
+function show(html,focusSel){
+  scr.innerHTML=html;scr.classList.remove('hidden');scr.scrollTop=0;
+  if(isTouch) return;
+  const f=(focusSel&&scr.querySelector(focusSel))||scr.querySelector('button:not([disabled])');if(f)f.focus({preventScroll:true});
+}
+function hideScreen(){scr.classList.add('hidden');scr.innerHTML='';}
+const tierTag=t=>'<span class="tier" style="--tc:'+TIERS[t].color+'">'+TIERS[t].name+'</span>';
+const coinTag=n=>'<span class="wallet"><i class="coin"></i>'+n+'</span>';
+const gunStats=g=>'傷害 '+g.dmg+(g.pellets>1?'×'+g.pellets:'')+'　射速 '+(1/g.rate).toFixed(1)+'/秒'+(g.pierce?'　穿透 '+(g.pierce>50?'無限':g.pierce):'')+(g.explode?'　爆炸':'');
+
+function renderMenu(){
+  mode='menu';G=null;controlsUI(false);resetArm=false;
+  const o=OUTFITS[save.outfit];
+  show('<div class="memo" role="dialog" aria-label="主選單"><h1>殭屍辦公室</h1><p>整棟公司的人都變成殭屍了。帶著文具槍一路殺上頂樓，把主管和老闆都打下班。</p>'+
+    coinTag(save.coins)+
+    '<button class="btn" data-act="levels">開始上班</button>'+
+    '<button class="btn" data-act="shop">武器庫（'+save.guns.length+'/'+Object.keys(GUNS).length+'）</button>'+
+    '<button class="btn" data-act="wardrobe">更衣室：'+esc(o.name)+'</button>'+
+    '<button class="btn ghost" data-act="settings">設定</button>'+
+    '<p class="hint">'+(isTouch?'左手拖曳移動，會自動瞄準射擊，右下按鈕換槍。':'WASD 移動，會自動瞄準射擊，Q／滾輪／右鍵換槍，Esc 暫停。')+'</p></div>');
+}
+function renderLevels(){
+  const cur=save.unlocked;
+  const btns=LEVELS.map((L,i)=>({L,i})).reverse().map(({L,i})=>{
+    const locked=i>save.unlocked,done=save.cleared.includes(i);
+    return '<button class="floor'+(i===cur?' cur':'')+(done?' done':'')+'" data-act="pickLevel" data-arg="'+i+'"'+(locked?' disabled':'')+' aria-label="'+L.floor+' '+L.name+(locked?'，尚未解鎖':'')+'">'+
+      '<span class="dot">'+L.floor+'</span><small>'+(locked?'🔒 未解鎖':esc(L.name)+(done?' ✓':''))+'</small></button>';
+  }).join('');
+  show('<div class="elevator" role="dialog" aria-label="選擇樓層"><div class="display" id="edisp">'+LEVELS[cur].floor+' '+esc(LEVELS[cur].name)+'</div>'+
+    '<p class="boss" id="eboss">魔王：'+esc(BOSSES[LEVELS[cur].boss].name)+'</p><div class="floors">'+btns+'</div>'+
+    '<button class="btn ghost" data-act="menu">返回</button></div>','.floor.cur');
+  scr.querySelectorAll('.floor:not([disabled])').forEach(b=>{
+    const upd=()=>{const L=LEVELS[+b.dataset.arg];$('#edisp').textContent=L.floor+' '+L.name;$('#eboss').textContent='魔王：'+BOSSES[L.boss].name;};
+    b.addEventListener('pointerenter',upd);b.addEventListener('focus',upd);
+  });
+}
+function renderLoadout(focusId){
+  const L=LEVELS[pendingLv];
+  const items=save.guns.map(id=>{const g=GUNS[id],k=pickSel.indexOf(id);
+    return '<button class="item t-'+g.tier+(k>=0?' sel':'')+'" data-act="toggleGun" data-arg="'+id+'" aria-pressed="'+(k>=0)+'"><img src="'+gunIcon(id)+'" alt="" style="width:'+Math.min(72,GUN_ART[id].rows[0].length*4)+'px"><div><h3>'+esc(g.name)+tierTag(g.tier)+'</h3><p class="stats">'+gunStats(g)+'</p></div><span class="slotno">'+(k>=0?k+1:'')+'</span></button>';}).join('');
+  show('<div class="sheet" role="dialog" aria-label="選擇槍枝"><header><h2>'+L.floor+' '+esc(L.name)+'</h2><span>魔王：'+esc(BOSSES[L.boss].name)+'</span></header>'+
+    '<p class="lead">挑兩把槍帶去上班，先選的是 1 號槍。關卡裡撿到槍箱，可能會升級手上的槍，或換成武器庫裡的另一把。</p><div class="list">'+items+'</div>'+
+    '<div class="row"><button class="btn ghost" data-act="levels">返回</button><button class="btn" data-act="start"'+(pickSel.length<2?' disabled':'')+'>打卡上班（已選 '+pickSel.length+'/2）</button></div></div>',
+    focusId?'[data-arg="'+focusId+'"]':null);
+}
+function renderShop(focusId){
+  const items=Object.entries(GUNS).map(([id,g])=>{const own=save.guns.includes(id);
+    return '<div class="item t-'+g.tier+'"><img src="'+gunIcon(id)+'" alt="" style="width:'+Math.min(72,GUN_ART[id].rows[0].length*4)+'px"><div><h3>'+esc(g.name)+tierTag(g.tier)+'</h3><p>'+esc(g.desc)+'</p><p class="stats">'+gunStats(g)+'</p></div>'+
+      (own?'<span class="tag">已擁有</span>':'<button class="btn" data-act="buyGun" data-arg="'+id+'"'+(save.coins<g.price?' disabled':'')+'><i class="coin"></i>'+g.price+'</button>')+'</div>';}).join('');
+  show('<div class="sheet" role="dialog" aria-label="武器庫"><header><h2>武器庫</h2>'+coinTag(save.coins)+'</header><p class="lead">買下的槍會永久保存，出發前從這裡挑兩把。</p><div class="list">'+items+'</div>'+
+    '<div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>',focusId?'[data-arg="'+focusId+'"]':null);
+}
+function renderWardrobe(focusId){
+  const items=Object.entries(OUTFITS).map(([id,o])=>{const own=save.outfits.includes(id),on=save.outfit===id;
+    return '<div class="item t-'+o.tier+(on?' sel':'')+'"><img src="'+outfitIcon(id)+'" alt="" style="width:56px"><div><h3>'+esc(o.name)+tierTag(o.tier)+'</h3><p>'+esc(o.desc)+'</p></div>'+
+      (on?'<span class="tag">穿著中</span>':own?'<button class="btn" data-act="wear" data-arg="'+id+'">換上</button>':'<button class="btn" data-act="buyOutfit" data-arg="'+id+'"'+(save.coins<o.price?' disabled':'')+'><i class="coin"></i>'+o.price+'</button>')+'</div>';}).join('');
+  show('<div class="sheet" role="dialog" aria-label="更衣室"><header><h2>更衣室</h2>'+coinTag(save.coins)+'</header><p class="lead">服裝會改變外觀，也帶有能力加成。一次只能穿一套。</p><div class="list">'+items+'</div>'+
+    '<div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>',focusId?'[data-arg="'+focusId+'"]':null);
+}
+function renderSettings(){
+  show('<div class="memo" role="dialog" aria-label="設定"><h2>設定</h2>'+
+    '<button class="btn" data-act="toggleSound">音效：'+(save.settings.sound?'開':'關')+'</button>'+
+    '<button class="btn ghost" data-act="reset">'+(resetArm?'再按一次，清除所有金幣與解鎖':'清除存檔')+'</button>'+
+    '<button class="btn ghost" data-act="menu">返回</button></div>');
+}
+function pauseGame(){
+  if(mode!=='play') return;mode='paused';controlsUI(false);
+  show('<div class="memo" role="dialog" aria-label="暫停"><h2>暫停</h2><p>這局已經賺到 '+Math.floor(G.coins)+' 金幣，現在離開也會帶走。</p>'+
+    '<button class="btn" data-act="resume">繼續上班</button><button class="btn ghost" data-act="quit">早退，回主選單</button></div>');
+}
+function resumeGame(){hideScreen();mode='play';controlsUI(true);last=performance.now();}
+function endRun(win,quit){
+  if(!G||G.ended) return;G.ended=true;
+  const lv=G.lv,bonus=win?100*(lv+1):0,earned=Math.floor(G.coins)+bonus;
+  save.coins+=earned;
+  if(win){if(!save.cleared.includes(lv))save.cleared.push(lv);save.unlocked=Math.max(save.unlocked,Math.min(lv+1,LEVELS.length-1));}
+  persist();mode='result';controlsUI(false);
+  const L=LEVELS[lv],hasNext=win&&lv+1<LEVELS.length,final=win&&lv===LEVELS.length-1;
+  const title=quit?'提早下班':win?(final?'全公司都下班了':'成功下班！'):'被加班吞噬了';
+  const msg=final?'董事長也被你打下班了。整棟樓終於安靜下來。':win?'這層清乾淨了，'+LEVELS[lv+1].floor+' 已經解鎖。':quit?'今天的進度重置，賺到的金幣已經收進口袋。':'關卡會重置，但買過的槍和衣服都還在。';
+  show('<div class="memo" role="dialog" aria-label="結算"><h1>'+title+'</h1><p>'+L.floor+' '+esc(L.name)+'　擊倒 '+G.kills+' 隻</p><p>'+msg+'</p>'+
+    '<p class="pix" style="font-size:18px;margin:0">本局金幣 +'+earned+(bonus?'（含通關獎金 '+bonus+'）':'')+'</p>'+coinTag(save.coins)+
+    (hasNext?'<button class="btn" data-act="pickLevel" data-arg="'+(lv+1)+'">前往 '+LEVELS[lv+1].floor+' '+esc(LEVELS[lv+1].name)+'</button>':'')+
+    '<button class="btn'+(hasNext?' ghost':'')+'" data-act="retry">再打一次 '+L.floor+'</button>'+
+    '<button class="btn ghost" data-act="shop">去武器庫</button>'+
+    '<button class="btn ghost" data-act="menu">回主選單</button></div>');
+}
+const ACTIONS={
+  menu:renderMenu,levels:()=>{G=null;renderLevels();},
+  shop:()=>{G=null;mode='menu';renderShop();},wardrobe:()=>renderWardrobe(),settings:()=>{resetArm=false;renderSettings();},
+  pickLevel:a=>{G=null;mode='menu';pendingLv=+a;pickSel=save.loadout.filter(id=>save.guns.includes(id)).slice(0,2);
+    for(const id of save.guns){if(pickSel.length>=2)break;if(!pickSel.includes(id))pickSel.push(id);}renderLoadout();},
+  toggleGun:a=>{const k=pickSel.indexOf(a);if(k>=0)pickSel.splice(k,1);else if(pickSel.length<2)pickSel.push(a);else pickSel[1]=a;renderLoadout(a);},
+  start:()=>{if(pickSel.length<2)return;save.loadout=pickSel.slice();persist();startRun(pendingLv,pickSel.slice());},
+  buyGun:a=>{const g=GUNS[a];if(!g||save.guns.includes(a)||save.coins<g.price)return;save.coins-=g.price;save.guns.push(a);persist();sfx('power');renderShop(a);},
+  buyOutfit:a=>{const o=OUTFITS[a];if(!o||save.outfits.includes(a)||save.coins<o.price)return;save.coins-=o.price;save.outfits.push(a);save.outfit=a;persist();sfx('power');renderWardrobe(a);},
+  wear:a=>{if(!save.outfits.includes(a))return;save.outfit=a;persist();renderWardrobe(a);},
+    toggleSound:()=>{save.settings.sound=!save.settings.sound;persist();renderSettings();},
+  reset:()=>{if(!resetArm){resetArm=true;renderSettings();scr.querySelector('[data-act="reset"]').focus();return;}
+    try{localStorage.removeItem(SAVE_KEY);}catch(e){}save=loadSave();resetArm=false;renderMenu();},
+  resume:resumeGame,quit:()=>endRun(false,true),
+  retry:()=>{const lv=G?G.lv:pendingLv;const lo=save.loadout.length===2?save.loadout.slice():pickSel.slice();G=null;
+    if(lo.length<2){ACTIONS.pickLevel(lv);return;}startRun(lv,lo);},
+};
+scr.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;sfx('ui');ACTIONS[b.dataset.act]&&ACTIONS[b.dataset.act](b.dataset.arg);});
+
+renderMenu();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
