@@ -144,7 +144,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.9.1';
+const VERSION='0.9.2';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -1301,7 +1301,7 @@ function drawPreview(){
 function renderSettings(){
   const s=save.settings,V=['','小','中','大'];
   const row=(label,on,tAct,vAct,vol)=>'<div class="row" style="margin-top:10px"><button class="btn" data-act="'+tAct+'" style="flex:2">'+label+'：'+(on?'開':'關')+'</button><button class="btn ghost" data-act="'+vAct+'" style="flex:1" '+(on?'':'disabled')+'>音量 '+V[vol]+'</button></div>';
-  show('<div class="memo" role="dialog" aria-label="設定"><h2>設定</h2>'+row('配樂',s.music,'toggleMusic','musicVol',s.musicVol)+row('槍聲',s.gun,'toggleGun','gunVol',s.gunVol)+row('其他音效',s.sound,'toggleSound','sfxVol',s.sfxVol)+
+  show('<div class="memo" role="dialog" aria-label="設定"><h2>設定</h2>'+row('配樂',s.music,'toggleMusic','musicVol',s.musicVol)+row('槍聲',s.gun,'toggleGunSfx','gunVol',s.gunVol)+row('其他音效',s.sound,'toggleSound','sfxVol',s.sfxVol)+
     '<p class="hint" style="margin-top:14px">音量按一下會在小、中、大之間循環。</p>'+
     '<button class="btn'+(s.easy?'':' ghost')+'" data-act="toggleEasy">輕鬆模式：'+(s.easy?'開':'關')+'</button><p class="hint" style="margin:6px 0 0">殭屍傷害減 30%、同時在場數量減 20%。不影響金幣和解鎖。</p>'+
     '<button class="btn ghost" data-act="reset">'+(resetArm?'再按一次，清除所有金幣與解鎖':'清除存檔')+'</button><button class="btn ghost" data-act="menu">返回</button></div>');
@@ -1351,7 +1351,7 @@ const ACTIONS={
   toggleSound:()=>{save.settings.sound=!save.settings.sound;persist();renderSettings();},
   toggleMusic:()=>{save.settings.music=!save.settings.music;persist();musicGain();renderSettings();},
   musicVol:()=>{save.settings.musicVol=save.settings.musicVol%3+1;persist();musicGain();renderSettings();},
-  toggleGun:()=>{save.settings.gun=!save.settings.gun;persist();renderSettings();if(save.settings.gun)gunSfx('stapler');},
+  toggleGunSfx:()=>{save.settings.gun=!save.settings.gun;persist();renderSettings();if(save.settings.gun)gunSfx('stapler');},
   gunVol:()=>{save.settings.gunVol=save.settings.gunVol%3+1;persist();renderSettings();gunSfxLast.stapler=0;gunSfx('stapler');},
   sfxVol:()=>{save.settings.sfxVol=save.settings.sfxVol%3+1;persist();renderSettings();sfxLast.power=0;sfx('power');},
   reset:()=>{if(!resetArm){resetArm=true;renderSettings();scr.querySelector('[data-act="reset"]').focus();return;}try{localStorage.removeItem(SAVE_KEY);}catch(e){}save=loadSave();resetArm=false;renderMenu();},
