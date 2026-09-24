@@ -120,6 +120,14 @@ button.item{cursor:pointer}
 .pvm .box p{margin:0 0 10px;font-size:13px;color:var(--muted)}
 .pvm canvas{width:100%;height:auto;image-rendering:pixelated;border:3px solid var(--ink);display:block;background:#2c3a55}
 .item .btnrow{display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.lbtab{display:flex;gap:6px;margin:0 0 12px}
+.lbt{width:100%;border-collapse:collapse;font-size:14px}
+.lbt th{text-align:left;font-size:12px;color:var(--muted);padding:4px 6px;border-bottom:2px solid var(--ink)}
+.lbt td{padding:7px 6px;border-bottom:1px solid #d5d8cc}
+.lbt td.n{font-family:"DotGothic16",monospace;text-align:right}
+.lbt tr.mine td{background:#fff6c9;font-weight:900}
+.lbt .rk{font-family:"DotGothic16",monospace;width:36px}
+.lbnote{font-size:13px;color:var(--muted);margin:10px 0 0}
 .item .feel{font-size:12px;color:#2d6a1f;font-weight:900}
 .floor .best{font-family:"DotGothic16",monospace;font-size:10px;color:#2d6a1f}
 .pxlock{display:inline-block;width:12px;height:12px;vertical-align:-1px;background:linear-gradient(#5c6677 0 40%,transparent 40% 100%),#5c6677;box-shadow:inset 0 0 0 2px #5c6677;border-radius:4px 4px 1px 1px;background:#5c6677}
@@ -144,7 +152,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.9.3';
+const VERSION='0.10.0';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -391,7 +399,7 @@ const gunIcon=id=>toIcon('g'+id,gunSprite(id).img,8);
 
 /* ================= 存檔 ================= */
 const SAVE_KEY='zombie-office-save-v1';
-const DEFAULT_SAVE={v:3,bestEndless:0,best:{},seenBadge:false,tut:false,coins:0,guns:['stapler','rubber'],outfits:['shirt'],outfit:'shirt',unlocked:0,cleared:[],loadout:['stapler','rubber'],settings:{sound:true,sfxVol:2,gun:true,gunVol:2,music:true,musicVol:2,easy:false},char:{...DEFAULT_CHAR}};
+const DEFAULT_SAVE={v:3,bestEndless:0,bestEndlessT:0,bestEndlessK:0,lbConsent:null,device:'',best:{},seenBadge:false,tut:false,coins:0,guns:['stapler','rubber'],outfits:['shirt'],outfit:'shirt',unlocked:0,cleared:[],loadout:['stapler','rubber'],settings:{sound:true,sfxVol:2,gun:true,gunVol:2,music:true,musicVol:2,easy:false},char:{...DEFAULT_CHAR}};
 const LEVEL_MIGRATE=[0,1,3,5,6,8],LEVEL_MIGRATE3=[0,1,2,3,4,5,7,8,9];
 function loadSave(){
   const d=JSON.parse(JSON.stringify(DEFAULT_SAVE));let s=null;try{s=JSON.parse(localStorage.getItem(SAVE_KEY));}catch(e){}
@@ -400,7 +408,7 @@ function loadSave(){
   let v=+s.v||1;
   if(v<2){out.unlocked=LEVEL_MIGRATE[clamp(Math.floor(+s.unlocked||0),0,5)];out.cleared=(Array.isArray(s.cleared)?s.cleared:[]).map(i=>LEVEL_MIGRATE[i]).filter(i=>i!==undefined);v=2;}
   if(v<3){out.unlocked=LEVEL_MIGRATE3[clamp(Math.floor(+out.unlocked||0),0,8)];out.cleared=(Array.isArray(out.cleared)?out.cleared:[]).map(i=>LEVEL_MIGRATE3[i]).filter(i=>i!==undefined);v=3;}
-  out.best=(out.best&&typeof out.best==='object')?out.best:{};out.v=3;out.bestEndless=Math.max(0,Math.floor(+out.bestEndless||0));for(const k of ['musicVol','sfxVol','gunVol'])out.settings[k]=clamp(Math.floor(+out.settings[k]||2),1,3);
+  out.best=(out.best&&typeof out.best==='object')?out.best:{};if(!out.device||typeof out.device!=='string'||out.device.length<8){out.device='d'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);}out.v=3;out.bestEndless=Math.max(0,Math.floor(+out.bestEndless||0));for(const k of ['musicVol','sfxVol','gunVol'])out.settings[k]=clamp(Math.floor(+out.settings[k]||2),1,3);
   out.coins=Math.max(0,Math.floor(+out.coins||0));
   out.guns=Array.from(new Set(['stapler','rubber',...(Array.isArray(out.guns)?out.guns:[])])).filter(id=>GUNS[id]);
   out.outfits=Array.from(new Set(['shirt',...(Array.isArray(out.outfits)?out.outfits:[])])).filter(id=>OUTFITS[id]);
@@ -412,7 +420,7 @@ function loadSave(){
   return out;
 }
 function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch(e){}}
-let save=loadSave();
+let save=loadSave();if(!save.device||save.device.length<8){save.device='d'+Math.random().toString(36).slice(2,12)+Date.now().toString(36);persist();}
 
 /* ================= 音效 ================= */
 let AC=null;const sfxLast={};const VOLS=[0,.45,.75,1.1];
@@ -1229,12 +1237,43 @@ function gunStats(g){if(g.melee)return'傷害 '+g.dmg+'　範圍攻擊　每 '+g
 function outfitIcon(id,ch){const spr=charSprite(ch||save.char,id,1,true);return toIcon('o'+id+charKey(ch||save.char,id,1,true),spr.img,5);}
 function playerName(){return save.char.name||'社畜';}
 
+/* ================= 排行榜 ================= */
+const LB={url:'https://ngdzzokilfasdwawthpl.supabase.co',key:'sb_publishable_o4dmSvN0u1Ipu_r7B6SPYg_2DP-I8d6',tab:'seconds',cache:{}};
+function lbReq(path,body){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),6000);
+  return fetch(LB.url+path,{method:'POST',headers:{apikey:LB.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(body),signal:ctl.signal})
+    .then(r=>{clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():null;});}
+function lbName(){return (save.char.name||'社畜').replace(/[<>]/g,'').slice(0,12)||'社畜';}
+function lbSubmit(run){return lbReq('/rest/v1/endless_scores',{name:lbName(),seconds:run.t,kills:run.k,bosses:run.b,device:save.device,version:VERSION});}
+function lbFetch(metric){return lbReq('/rest/v1/rpc/endless_leaderboard',{metric,lim:20,my_device:save.device}).then(rows=>{LB.cache[metric]=rows||[];return LB.cache[metric];});}
+const fmtLong=s=>Math.floor(s/60)+' 分 '+String(s%60).padStart(2,'0')+' 秒';
+function renderBoard(metric){
+  G=null;mode='menu';LB.tab=metric||LB.tab;const m=LB.tab;
+  const tabs='<div class="lbtab"><button class="opt'+(m==='seconds'?' on':'')+'" data-act="lbTab" data-arg="seconds">撐最久</button><button class="opt'+(m==='kills'?' on':'')+'" data-act="lbTab" data-arg="kills">擊殺最多</button></div>';
+  const mine='你的最佳：撐 '+fmtLong(save.bestEndlessT||0)+'、擊倒 '+(save.bestEndlessK||0)+' 隻';
+  show('<div class="sheet" role="dialog" aria-label="排行榜"><header><h2>無限加班排行榜</h2></header><p class="lead">每位玩家只列出自己最好的一次。上傳時會顯示員工證上的名字。</p>'+tabs+'<div id="lbbody"><p class="lbnote">讀取中…</p></div><p class="lbnote">'+mine+'</p>'+
+    '<div class="row"><button class="btn ghost" data-act="menu">返回</button><button class="btn ghost" data-act="lbTab" data-arg="'+m+'">重新整理</button></div></div>','[data-arg="'+m+'"].opt');
+  lbFetch(m).then(rows=>{if(LB.tab!==m||!$('#lbbody'))return;
+    if(!rows.length){$('#lbbody').innerHTML='<p class="lbnote">目前還沒有人上榜，第一名等你來拿。</p>';return;}
+    $('#lbbody').innerHTML='<table class="lbt"><thead><tr><th>名次</th><th>名字</th><th style="text-align:right">'+(m==='kills'?'擊倒':'撐了')+'</th><th style="text-align:right">'+(m==='kills'?'撐了':'擊倒')+'</th></tr></thead><tbody>'+
+      rows.map(r=>'<tr'+(r.mine?' class="mine"':'')+'><td class="rk">'+r.rank+'</td><td>'+esc(r.name)+(r.mine?'（你）':'')+'</td><td class="n">'+(m==='kills'?r.kills+' 隻':fmtT(r.seconds))+'</td><td class="n">'+(m==='kills'?fmtT(r.seconds):r.kills+' 隻')+'</td></tr>').join('')+'</tbody></table>';})
+  .catch(()=>{if(!$('#lbbody'))return;$('#lbbody').innerHTML='<p class="lbnote">目前連不上排行榜，請確認網路後再試一次。</p>';});
+}
+function lbAfterRun(run){
+  const el=$('#lbstatus');if(!el)return;
+  if(run.t<30){el.textContent='撐不到 30 秒的紀錄不會上傳到排行榜。';return;}
+  if(save.lbConsent===null){el.innerHTML='要把這次成績上傳到排行榜嗎？會以「'+esc(lbName())+'」這個名字公開顯示。<div class="row" style="margin-top:8px"><button class="btn small" data-act="lbYes">上傳</button><button class="btn small ghost" data-act="lbRename">先改名</button><button class="btn small ghost" data-act="lbNo">不要上傳</button></div>';LB.pending=run;return;}
+  if(!save.lbConsent){el.textContent='排行榜上傳已關閉，可以在設定裡打開。';return;}
+  el.textContent='上傳中…';
+  lbSubmit(run).then(()=>lbFetch('seconds')).then(rows=>{const me=rows.find(r=>r.mine);if($('#lbstatus'))$('#lbstatus').textContent=me?'已上傳！你在「撐最久」排第 '+me.rank+' 名。':'已上傳！';})
+    .catch(()=>{if($('#lbstatus'))$('#lbstatus').textContent='這次沒能上傳（網路問題或送得太頻繁），成績已存在你自己的紀錄裡。';});
+}
 function renderMenu(){
   mode='menu';G=null;controlsUI(false);resetArm=false;const o=OUTFITS[save.outfit];MUSIC.duck=1;setMusic('menu');musicGain();
   show('<div class="memo" role="dialog" aria-label="主選單"><canvas class="title" id="titlecv" width="368" height="150" aria-hidden="true"></canvas><h1 class="sr" style="position:absolute;left:-9999px">殭屍辦公室</h1><p>整棟公司的人都變成殭屍了。帶著文具槍一路殺上頂樓，把主管和老闆都打下班。</p>'+coinTag(save.coins)+
     '<button class="btn" data-act="levels">開始上班</button>'+
     '<button class="btn" data-act="shop">武器庫（'+save.guns.length+'/'+Object.keys(GUNS).length+'）</button>'+
     '<button class="btn" data-act="wardrobe">更衣室：'+esc(o.name)+'</button>'+
+    '<button class="btn" data-act="board">排行榜</button>'+
     '<button class="btn" data-act="badge">員工證：'+esc(playerName())+'</button>'+
     '<button class="btn ghost" data-act="settings">設定</button>'+
     '<p class="hint">'+(isTouch?'左手拖曳移動，自動瞄準射擊。黃色按鈕切換手上的槍，藍色按鈕撿槍箱或衝刺。':'WASD 移動，自動瞄準射擊。Q／滾輪／右鍵換槍，F 換槍箱，空白鍵衝刺，Esc 暫停。')+'</p><span class="ver">v'+VERSION+'</span></div>');
@@ -1313,6 +1352,7 @@ function renderSettings(){
   const row=(label,on,tAct,vAct,vol)=>'<div class="row" style="margin-top:10px"><button class="btn" data-act="'+tAct+'" style="flex:2">'+label+'：'+(on?'開':'關')+'</button><button class="btn ghost" data-act="'+vAct+'" style="flex:1" '+(on?'':'disabled')+'>音量 '+V[vol]+'</button></div>';
   show('<div class="memo" role="dialog" aria-label="設定"><h2>設定</h2>'+row('配樂',s.music,'toggleMusic','musicVol',s.musicVol)+row('槍聲',s.gun,'toggleGunSfx','gunVol',s.gunVol)+row('其他音效',s.sound,'toggleSound','sfxVol',s.sfxVol)+
     '<p class="hint" style="margin-top:14px">音量按一下會在小、中、大之間循環。</p>'+
+    '<button class="btn'+(save.lbConsent?'':' ghost')+'" data-act="toggleLb">上傳成績到排行榜：'+(save.lbConsent?'開':'關')+'</button>'+
     '<button class="btn'+(s.easy?'':' ghost')+'" data-act="toggleEasy">輕鬆模式：'+(s.easy?'開':'關')+'</button><p class="hint" style="margin:6px 0 0">殭屍傷害減 30%、同時在場數量減 20%。不影響金幣和解鎖。</p>'+
     '<button class="btn ghost" data-act="reset">'+(resetArm?'再按一次，清除所有金幣與解鎖':'清除存檔')+'</button><button class="btn ghost" data-act="menu">返回</button></div>');
 }
@@ -1328,9 +1368,9 @@ function resultExtras(win,quit,tsec,newBest){
 }
 function endRun(win,quit){
   if(!G||G.ended)return;G.ended=true;const lv=G.lv,L=LEVELS[lv];
-  if(L.endless){MUSIC.duck=1;setMusic('menu');musicGain();const t=Math.floor(G.time),score=t*10+G.player.kills*5+G.bossKills*500,earned=Math.floor(G.coins)+G.bossKills*100;save.coins+=earned;const best=score>save.bestEndless;if(best)save.bestEndless=score;persist();mode='result';controlsUI(false);$('#actBtn').classList.add('hidden');
-    show('<div class="memo" role="dialog" aria-label="結算"><h1>加班結束</h1><p>'+esc(playerName())+'　撐了 '+Math.floor(t/60)+' 分 '+(t%60)+' 秒　擊倒 '+G.player.kills+' 隻，主管 '+G.bossKills+' 位</p><p class="pix" style="font-size:22px;margin:0 0 4px">分數 '+score+(best?'　新紀錄！':'')+'</p><p>最佳 '+save.bestEndless+'　本局金幣 +'+earned+(G.bossKills?'（含主管獎金 '+G.bossKills*100+'）':'')+'</p>'+coinTag(save.coins)+
-      '<button class="btn" data-act="retry">再加班一次</button><button class="btn ghost" data-act="shop">去武器庫</button><button class="btn ghost" data-act="menu">回主選單</button></div>');return;}
+  if(L.endless){MUSIC.duck=1;setMusic('menu');musicGain();const t=Math.floor(G.time),score=t*10+G.player.kills*5+G.bossKills*500,earned=Math.floor(G.coins)+G.bossKills*100;save.coins+=earned;const best=score>save.bestEndless;if(best)save.bestEndless=score;save.bestEndlessT=Math.max(save.bestEndlessT||0,t);save.bestEndlessK=Math.max(save.bestEndlessK||0,G.player.kills);persist();const run={t,k:G.player.kills,b:G.bossKills};mode='result';controlsUI(false);$('#actBtn').classList.add('hidden');
+    show('<div class="memo" role="dialog" aria-label="結算"><h1>加班結束</h1><p>'+esc(playerName())+'　撐了 '+Math.floor(t/60)+' 分 '+(t%60)+' 秒　擊倒 '+G.player.kills+' 隻，主管 '+G.bossKills+' 位</p><p class="pix" style="font-size:22px;margin:0 0 4px">分數 '+score+(best?'　新紀錄！':'')+'</p><p>最佳 '+save.bestEndless+'　本局金幣 +'+earned+(G.bossKills?'（含主管獎金 '+G.bossKills*100+'）':'')+'</p>'+coinTag(save.coins)+'<p id="lbstatus" style="font-size:13px;margin:8px 0 0"></p>'+
+      '<button class="btn" data-act="retry">再加班一次</button><button class="btn ghost" data-act="board">看排行榜</button><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(run);return;}
   MUSIC.duck=1;setMusic('menu');musicGain();
   const bonus=win?(L.survival?300:120*(lv+1)):0,earned=Math.floor(G.coins)+bonus;
   const tsec=Math.floor(G.time);let newBest=false;
@@ -1352,11 +1392,16 @@ const ACTIONS={
   buyGun:a=>{const g=GUNS[a];if(!g||save.guns.includes(a)||save.coins<g.price)return;save.coins-=g.price;save.guns.push(a);persist();sfx('power');renderShop(a);},
   buyOutfit:a=>{const o=OUTFITS[a];if(!o||save.outfits.includes(a)||save.coins<o.price)return;save.coins-=o.price;save.outfits.push(a);save.outfit=a;persist();sfx('power');renderWardrobe(a);},
   wear:a=>{if(!save.outfits.includes(a))return;save.outfit=a;persist();renderWardrobe(a);},
-  badgeDone:()=>{save.seenBadge=true;persist();renderMenu();},
+  badgeDone:()=>{save.seenBadge=true;persist();if(LB.pending&&save.lbConsent===null){const r=LB.pending;show('<div class="memo" role="dialog" aria-label="上傳成績"><h2>上傳成績</h2><p>撐了 '+fmtLong(r.t)+'，擊倒 '+r.k+' 隻。</p><p id="lbstatus" style="font-size:13px"></p><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(r);return;}renderMenu();},
   charSet:(a,b)=>{const k=b.dataset.key;if(k==='skin')save.char.skin=+a;else save.char[k]=a;persist();renderBadge();},
   charRandom:()=>{save.char.skin=Math.floor(Math.random()*SKINS.length);save.char.hair=pick(Object.keys(HAIRS));save.char.hairColor=pick(Object.keys(HAIR_COLORS));save.char.face=pick(Object.keys(FACES));persist();renderBadge();},
   preview:a=>{const g=GUNS[a];if(!g)return;const m=$('#pvm');m.classList.remove('hidden');$('#pvname').textContent=g.name;$('#pvfeel').textContent=(g.feel||'')+'　'+gunStats(g);$('#pvcanvas').dataset.gun=a;drawPreviews();},
   closePreview:()=>{$('#pvm').classList.add('hidden');},
+  lbRename:()=>renderBadge(false),
+  board:()=>renderBoard(),lbTab:a=>renderBoard(a),
+  lbYes:()=>{save.lbConsent=true;persist();if(LB.pending){const r=LB.pending;LB.pending=null;lbAfterRun(r);}},
+  lbNo:()=>{save.lbConsent=false;persist();LB.pending=null;const el=$('#lbstatus');if(el)el.textContent='好的，不會上傳。之後想上傳可以在設定裡打開。';},
+  toggleLb:()=>{save.lbConsent=!save.lbConsent;persist();renderSettings();},
   toggleEasy:()=>{save.settings.easy=!save.settings.easy;persist();renderSettings();},
   toggleSound:()=>{save.settings.sound=!save.settings.sound;persist();renderSettings();},
   toggleMusic:()=>{save.settings.music=!save.settings.music;persist();musicGain();renderSettings();},
