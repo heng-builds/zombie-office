@@ -127,6 +127,9 @@ button.item{cursor:pointer}
 .lbt td.n{font-family:"DotGothic16",monospace;text-align:right}
 .lbt tr.mine td{background:#fff6c9;font-weight:900}
 .lbt .rk{font-family:"DotGothic16",monospace;width:36px}
+.lbt td.av{width:46px;padding:4px 6px}
+.lbt td.av img{display:block;width:36px;height:36px;image-rendering:pixelated;border:2px solid var(--ink);background:#dfe6ee}
+.medal{display:inline-grid;place-items:center;width:24px;height:24px;border:2px solid var(--ink);font-weight:900;background:var(--mc)}
 .lbnote{font-size:13px;color:var(--muted);margin:10px 0 0}
 .item .feel{font-size:12px;color:#2d6a1f;font-weight:900}
 .floor .best{font-family:"DotGothic16",monospace;font-size:10px;color:#2d6a1f}
@@ -152,7 +155,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.10.0';
+const VERSION='0.12.0';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -233,28 +236,52 @@ const OUTFITS={
 };
 
 /* ================= 捏角色 ================= */
-const SKINS=['#ffe0c4','#f1c9a5','#e0ac7c','#c68642','#8d5524','#5c3a21'];
+const SKINS=['#ffe0c4','#f1c9a5','#e0ac7c','#c68642','#8d5524','#5c3a21','#fdeee4','#f6d5c8','#e8c39e','#b98b5e','#a0673e','#432818'];
+const SKIN_ORDER=[6,0,7,1,8,2,9,3,10,4,5,11];
 const HAIR_COLORS={black:'#1a1a1a',brown:'#4a2c17',lightbrown:'#8a5a2b',blond:'#e6c35c',red:'#b5432c',blue:'#3a5fbf',pink:'#ff8fab',grey:'#c8c8c8'};
 const HAIRS={
   short:{name:'短髮',rows:[[2,"....HHHH...."],[3,"...HHHHHH..."],[4,"...H....H..."]]},
   side:{name:'旁分',rows:[[2,"....HHHHH..."],[3,"...HHHHHHH.."],[4,"...HH....H.."]]},
   slick:{name:'油頭',rows:[[2,".....HHHHH.."],[3,"...HHHHHHHH."],[4,"...H........"]]},
-  pony:{name:'馬尾',rows:[[2,"....HHHH...."],[3,"...HHHHHH..."],[4,"..HH....H..."],[5,"..HH........"],[6,"...H........"]]},
-  bun:{name:'丸子頭',rows:[[0,".....HH....."],[1,"....HHHH...."],[2,"....HHHH...."],[3,"...HHHHHH..."],[4,"...H....H..."]]},
-  curly:{name:'捲髮',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HH....HH.."],[5,"..H......H.."]]},
+  mid:{name:'中分',rows:[[2,"....HHHH...."],[3,"...HH..HH..."],[4,"...H....H..."],[5,"...H....H..."]]},
+  spiky:{name:'刺蝟頭',rows:[[0,"....H.H....."],[1,"...HHHHHH..."],[2,"..HHHHHHHH.."],[3,"...HHHHHH..."],[4,"...H....H..."]]},
   buzz:{name:'平頭',rows:[[2,"....HHHH...."],[3,"...HHHHHH..."]]},
   bald:{name:'光頭',rows:[]},
+  curly:{name:'捲髮',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HH....HH.."],[5,"..H......H.."]]},
+  bob:{name:'鮑伯頭',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HHHHHHHH.."],[5,"..H......H.."],[6,"..H......H.."],[7,"..HH....HH.."]]},
+  long:{name:'長直髮',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HhH..HhH.."],[5,"..H......H.."],[6,"..H......H.."],[7,"..H......H.."],[8,"..Hh....hH.."]],over:[[9,"..H......H.."],[10,"..h......h.."],[11,"..H......H.."]]},
+  wavy:{name:'長捲髮',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,".HHH....HHH."],[5,".Hh......hH."],[6,"..H......H.."],[7,".Hh......hH."],[8,".HH......HH."]],over:[[9,"..H......H.."],[10,".h........h."],[11,"..H......H.."]]},
+  hime:{name:'公主切',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HHHHHHHH.."],[5,"..HH....HH.."],[6,"..HH....HH.."],[7,"..Hh....hH.."],[8,"..H......H.."]],over:[[9,"..H......H.."],[10,"..H......H.."],[11,"..h......h.."]]},
+  twin:{name:'雙馬尾',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,".hHHHHHHHHh."],[4,"HHH.H..H.HHH"],[5,"HH........HH"],[6,"Hh........hH"],[7,"H..........H"],[8,"h..........h"]],over:[[9,"H..........H"]]},
+  pony:{name:'高馬尾',rows:[[0,".hH........."],[1,".HHHHHHH...."],[2,"H.HHHHHHH..."],[3,"H..HHHHHH..."],[4,"H..H....H..."],[5,"h..........."],[6,"H..........."],[7,".h.........."]]},
+  braid:{name:'側邊麻花辮',rows:[[1,"....HHHH...."],[2,"...HHHHHH..."],[3,"..HHHHHHHH.."],[4,"..HH....HH.."],[5,"........HH.."],[6,"........Hh.."],[7,"........hH.."],[8,"........Hh.."]],over:[[9,"........hH.."],[10,"........Hh.."],[11,"........hH.."],[12,"........QQ.."]]},
+  bun:{name:'丸子頭',rows:[[0,".....HH....."],[1,"....HHHH...."],[2,"....HHHH...."],[3,"...HHHHHH..."],[4,"...H....H..."]]},
 };
-const FACES={
+const GLASSES={
   none:{name:'無',rows:[]},
-  thin:{name:'細框眼鏡',rows:[[5,"...GEGGEG..."]],pal:{G:'#9aa3b5'}},
-  black:{name:'黑框眼鏡',rows:[[4,"...GGGGGG..."],[5,"...GEGGEG..."],[6,"...GG..GG..."]],pal:{G:'#1a1d27'}},
-  tired:{name:'黑眼圈',rows:[[6,"....D..D...."]],pal:{D:'#7a6b8a'}},
-  beard:{name:'鬍子',rows:[[6,"....B..B...."],[7,"...BBmmBB..."],[8,"....BBBB...."]],beard:true},
+  thin:{name:'細框',rows:[[5,"..gLELLELg.."]],pal:{L:'#dbeafe',g:'#6b7280'}},
+  thick:{name:'粗框',rows:[[4,"...GGGGGG..."],[5,"..gLELLELg.."]],pal:{L:'#dbeafe',G:'#1a1d27',g:'#1a1d27'}},
+  round:{name:'圓框',rows:[[4,"....G..G...."],[5,"..gLELLELg.."],[6,"....G..G...."]],pal:{L:'#fff3c4',G:'#b58a00',g:'#b58a00'}},
+  color:{name:'彩色鏡片',rows:[[5,"..gLELLELg.."]],pal:{L:'#8ecae6',g:'#1a1d27'}},
+  shades:{name:'墨鏡',rows:[[5,"..gLLLWLLg.."]],eyesOff:true,pal:{L:'#111111',g:'#111111',W:'#9aa3b5'}},
 };
+const BEARDS={
+  none:{name:'無',rows:[]},
+  stache:{name:'八字鬍',rows:[[6,".....BB....."]]},
+  goatee:{name:'山羊鬍',rows:[[8,".....BB....."]]},
+  full:{name:'絡腮鬍',rows:[[7,"...B....B..."],[8,"....BBBB...."]]},
+  stubble:{name:'鬍渣',rows:[[7,"...b....b..."],[8,"....b.b....."]]},
+};
+const EXTRAS={
+  none:{name:'無',rows:[]},
+  tired:{name:'黑眼圈',rows:[[6,"....D..D...."]],pal:{D:'#7a6b8a'}},
+  blush:{name:'腮紅',rows:[[6,"...R....R..."]],pal:{R:'#f08c8c'}},
+  freckle:{name:'雀斑',rows:[[6,"...F.F.F...."]],pal:{F:'#b5764a'}},
+};
+const FACE_MIGRATE={none:['none','none','none'],thin:['thin','none','none'],black:['thick','none','none'],tired:['none','none','tired'],beard:['none','full','none']};
 const HEAD=[[3,"....SSSS...."],[4,"...SSSSSS..."],[5,"...SSSSSS..."],[6,"...SSSSSS..."],[7,"...SSSSSS..."],[8,"....SSSS...."]];
 const EYES=[[5,"....E..E...."],[7,".....mm....."]];
-const DEFAULT_CHAR={name:'',skin:1,hair:'short',hairColor:'black',face:'none'};
+const DEFAULT_CHAR={name:'',skin:1,hair:'short',hairColor:'black',glasses:'none',beard:'none',extra:'none'};
 
 /* ================= 敵人與魔王 ================= */
 const ZBODY=["....HHHH....","...HHHHHH...","...HSSSSH...","...SESSES...","...SSMMSS...","....SSSS....","..CCCCCCSSSS","..CCCTCCSSSS","..CCCCCC....","..CC.CCC....","...PPPPPP..."];
@@ -377,18 +404,21 @@ function finishSprite(key,a,rim){
 function sprite(key,rows,pal){const s=spriteCache.get(key);if(s)return s;const a=document.createElement('canvas');a.width=rows[0].length;a.height=rows.length;paintRows(a.getContext('2d'),rows,pal,0);return finishSprite(key,a,null);}
 function zombieSprite(palKey,frame){const key='z_'+palKey+'_'+frame;const c=spriteCache.get(key);if(c)return c;const a=document.createElement('canvas');a.width=12;a.height=14;paintRows(a.getContext('2d'),ZBODY.concat(ZLEGS[frame]),PAL[palKey],0);return finishSprite(key,a,null);}
 const gunSprite=id=>sprite('g_'+id,GUNS[id].rows,GUNS[id].pal);
-function charKey(ch,outfit,frame,arms){return 'c_'+outfit+'_'+ch.skin+'_'+ch.hair+'_'+ch.hairColor+'_'+ch.face+'_'+frame+(arms?'a':'');}
+function charKey(ch,outfit,frame,arms){return 'c_'+outfit+'_'+ch.skin+'_'+ch.hair+'_'+ch.hairColor+'_'+ch.glasses+'_'+ch.beard+'_'+ch.extra+'_'+frame+(arms?'a':'');}
+function shade(hex,k){const n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;const f=v=>Math.max(0,Math.min(255,Math.round(v*k))).toString(16).padStart(2,'0');return '#'+f(r)+f(g)+f(b);}
 function charSprite(ch,outfit,frame,arms){
   const key=charKey(ch,outfit,frame,arms);const s=spriteCache.get(key);if(s)return s;
   const o=OUTFITS[outfit],a=document.createElement('canvas');a.width=12;a.height=17;const x=a.getContext('2d');
   const skin=SKINS[ch.skin]||SKINS[1],hairC=HAIR_COLORS[ch.hairColor]||'#1a1a1a';
-  const pal={...o.pal,S:skin,H:hairC,E:'#1a1d27',m:'#b5655a'};
+  const pal={...o.pal,S:skin,H:hairC,h:shade(hairC,hairC==='#1a1a1a'?2.2:.72),E:(parseInt(skin.slice(1,3),16)<110?'#050505':'#1a1d27'),m:'#b5655a',Q:'#e2443b'};
   if(o.full){paintRows(x,o.full,pal,0);paintRows(x,LEGS[o.legs][frame],pal,14);return finishSprite(key,a,o.rim||null);}
   if(arms){const sl=o.sleeve==='skin'?skin:(o.pal.C||skin),hd=o.pal.G||skin;x.fillStyle=sl;x.fillRect(1,9,1,4);x.fillRect(10,9,1,4);x.fillStyle=hd;x.fillRect(1,13,1,1);x.fillRect(10,13,1,1);}
-  paintAt(x,HEAD,pal);paintAt(x,EYES,pal);
-  const f=FACES[ch.face]||FACES.none;paintAt(x,f.rows,{...pal,...(f.pal||{}),B:hairC});
-  if(!o.hideHair)paintAt(x,(HAIRS[ch.hair]||HAIRS.short).rows,pal);
-  paintRows(x,o.torso,pal,9);paintRows(x,[o.pants||"...PPPPPP..."],pal,13);paintRows(x,LEGS[o.legs][frame],pal,14);
+  const gl=GLASSES[ch.glasses]||GLASSES.none,bd=BEARDS[ch.beard]||BEARDS.none,ex=EXTRAS[ch.extra]||EXTRAS.none,hr=HAIRS[ch.hair]||HAIRS.short;
+  paintAt(x,HEAD,pal);paintAt(x,gl.eyesOff?[EYES[1]]:EYES,pal);
+  paintAt(x,ex.rows,{...pal,...(ex.pal||{})});paintAt(x,bd.rows,{...pal,B:hairC,b:shade(skin,.72)});
+  if(!o.hideHair)paintAt(x,hr.rows,pal);
+  if(!o.face)paintAt(x,gl.rows,{...pal,...(gl.pal||{})});
+  paintRows(x,o.torso,pal,9);if(!o.hideHair&&hr.over)paintAt(x,hr.over,pal);paintRows(x,[o.pants||"...PPPPPP..."],pal,13);paintRows(x,LEGS[o.legs][frame],pal,14);
   if(o.face)paintAt(x,o.face,pal);
   if(o.hat)paintAt(x,o.hat,pal);
   return finishSprite(key,a,o.rim||null);
@@ -416,7 +446,9 @@ function loadSave(){
   out.unlocked=clamp(Math.floor(+out.unlocked||0),0,LEVELS.length-1);
   out.cleared=Array.isArray(out.cleared)?out.cleared.filter(n=>n>=0&&n<LEVELS.length):[];
   out.loadout=Array.isArray(out.loadout)?out.loadout.filter(id=>out.guns.includes(id)).slice(0,2):['stapler','rubber'];
-  const c=out.char;c.skin=clamp(Math.floor(+c.skin||0),0,SKINS.length-1);if(!HAIRS[c.hair])c.hair='short';if(!HAIR_COLORS[c.hairColor])c.hairColor='black';if(!FACES[c.face])c.face='none';c.name=String(c.name||'').slice(0,12);
+  const c=out.char;c.skin=clamp(Math.floor(+c.skin||0),0,SKINS.length-1);if(!HAIRS[c.hair])c.hair='short';if(!HAIR_COLORS[c.hairColor])c.hairColor='black';
+  if(c.face!==undefined){const mg=FACE_MIGRATE[c.face]||FACE_MIGRATE.none;if(!c.glasses||c.glasses==='none')c.glasses=mg[0];if(!c.beard||c.beard==='none')c.beard=mg[1];if(!c.extra||c.extra==='none')c.extra=mg[2];delete c.face;}
+  if(!GLASSES[c.glasses])c.glasses='none';if(!BEARDS[c.beard])c.beard='none';if(!EXTRAS[c.extra])c.extra='none';c.name=String(c.name||'').slice(0,12);
   return out;
 }
 function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save));}catch(e){}}
@@ -1178,10 +1210,13 @@ function drawHUD(){
   sx=L;ctx.font='12px "DotGothic16",monospace';
   for(const [id,n] of Object.entries(g.skills)){const t=n>1?'×'+n:'';const w=24+(t?ctx.measureText(t).width+4:0);ctx.fillStyle='rgba(13,15,20,.7)';ctx.fillRect(sx,T+46,w,22);ctx.imageSmoothingEnabled=false;ctx.drawImage(skillIcon(id),sx+3,T+49,16,16);ctx.fillStyle='#fff';ctx.textAlign='left';if(t)ctx.fillText(t,sx+22,T+61);sx+=w+4;}
   const cw=Math.min(small?W-L*2-120:380,W-40),cx=small?L:W/2-cw/2,cy=small?T+74:T;ctx.textAlign=small?'left':'center';const tx=small?cx:W/2;
-  if(g.bosses.length){ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#ffd23f';
+  let by0=cy;
+  if(g.phase==='endless'){const t=Math.floor(g.time);ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#eef0e8';ctx.fillText('無限加班　'+Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+'　擊倒 '+p.kills+(g.bosses.length?'':'　下位主管 '+Math.ceil(g.bossT)+'s'),tx,cy+12);
+    if(!g.bosses.length)bar(cx,cy+20,cw,8,1-g.bossT/60,'#c77dff','#2a2035');else by0=cy+22;}
+  if(g.bosses.length){const cy=by0;ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#ffd23f';
     if(g.bosses.length===1){ctx.fillText(g.bosses[0].name,tx,cy+12);bar(cx,cy+20,cw,12,g.bosses[0].hp/g.bosses[0].maxHp,'#e2443b','#3a1d22');}
     else{ctx.fillText('董事會',tx,cy+12);const bw2=(cw-8*(g.bosses.length-1))/g.bosses.length;g.bosses.forEach((b,i)=>{bar(cx+i*(bw2+8),cy+20,bw2,10,b.hp/b.maxHp,'#e2443b','#3a1d22');ctx.font='900 10px "Noto Sans TC",sans-serif';ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(b.name,cx+i*(bw2+8)+bw2/2,cy+40);});ctx.textAlign=small?'left':'center';}}
-  else if(g.phase==='endless'){const t=Math.floor(g.time);ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#eef0e8';ctx.fillText('無限加班　'+Math.floor(t/60)+':'+String(t%60).padStart(2,'0')+'　擊倒 '+p.kills+'　下位主管 '+Math.ceil(g.bossT)+'s',tx,cy+12);bar(cx,cy+20,cw,8,1-g.bossT/60,'#c77dff','#2a2035');}
+  else if(g.phase==='endless'){}
   else if(g.phase==='survival'){ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#eef0e8';ctx.fillText(g.def.floor+' '+g.def.name+'　午休剩餘 '+Math.ceil(Math.max(0,g.survT))+' 秒',tx,cy+12);bar(cx,cy+20,cw,8,g.survT/g.def.survival,'#ffd23f','#3a3320');}
   else{ctx.font='900 14px "Noto Sans TC",sans-serif';ctx.fillStyle='#eef0e8';ctx.fillText(g.def.floor+' '+g.def.name+(g.phase==='wave'?'　殭屍 '+Math.min(g.kills,g.def.quota)+' / '+g.def.quota:''),tx,cy+12);bar(cx,cy+20,cw,8,g.phase==='wave'?g.kills/g.def.quota:1,'#8fd14f','#23331f');}
   ctx.textAlign='center';ctx.font='900 15px "Noto Sans TC",sans-serif';
@@ -1243,19 +1278,29 @@ function lbReq(path,body){const ctl=new AbortController();const to=setTimeout(()
   return fetch(LB.url+path,{method:'POST',headers:{apikey:LB.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(body),signal:ctl.signal})
     .then(r=>{clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():null;});}
 function lbName(){return (save.char.name||'社畜').replace(/[<>]/g,'').slice(0,12)||'社畜';}
-function lbSubmit(run){return lbReq('/rest/v1/endless_scores',{name:lbName(),seconds:run.t,kills:run.k,bosses:run.b,device:save.device,version:VERSION});}
-function lbFetch(metric){return lbReq('/rest/v1/rpc/endless_leaderboard',{metric,lim:20,my_device:save.device}).then(rows=>{LB.cache[metric]=rows||[];return LB.cache[metric];});}
+function lbLook(){const c=save.char;return [c.skin,c.hair,c.hairColor,c.glasses,c.beard,c.extra,save.outfit].join('|').toLowerCase().replace(/[^a-z0-9_|]/g,'').slice(0,80);}
+function lbSubmit(run){return lbReq('/rest/v1/endless_scores',{name:lbName(),seconds:run.t,kills:run.k,bosses:run.b,device:save.device,version:VERSION,look:lbLook()});}
+function lbFetch(metric){return lbReq('/rest/v1/rpc/endless_leaderboard',{metric,lim:25,my_device:save.device}).then(rows=>{LB.cache[metric]=rows||[];return LB.cache[metric];});}
+const avCache={};
+function lbAvatar(look){
+  const key=look||'none';if(avCache[key])return avCache[key];const c=document.createElement('canvas');c.width=36;c.height=36;const x=c.getContext('2d');x.imageSmoothingEnabled=false;x.fillStyle='#dfe6ee';x.fillRect(0,0,36,36);
+  const p=(look||'').split('|');
+  if(p.length>=7){const ch={name:'',skin:clamp(parseInt(p[0])||0,0,SKINS.length-1),hair:HAIRS[p[1]]?p[1]:'short',hairColor:HAIR_COLORS[p[2]]?p[2]:'black',glasses:GLASSES[p[3]]?p[3]:'none',beard:BEARDS[p[4]]?p[4]:'none',extra:EXTRAS[p[5]]?p[5]:'none'},of=OUTFITS[p[6]]?p[6]:'shirt';
+    x.drawImage(charSprite(ch,of,1,true).img,0,0,12,12,0,0,36,36);}
+  else{x.fillStyle='#9aa3b5';x.fillRect(12,6,12,12);x.fillRect(6,21,24,15);}
+  return avCache[key]=c.toDataURL();}
 const fmtLong=s=>Math.floor(s/60)+' 分 '+String(s%60).padStart(2,'0')+' 秒';
 function renderBoard(metric){
   G=null;mode='menu';LB.tab=metric||LB.tab;const m=LB.tab;
   const tabs='<div class="lbtab"><button class="opt'+(m==='seconds'?' on':'')+'" data-act="lbTab" data-arg="seconds">撐最久</button><button class="opt'+(m==='kills'?' on':'')+'" data-act="lbTab" data-arg="kills">擊殺最多</button></div>';
   const mine='你的最佳：撐 '+fmtLong(save.bestEndlessT||0)+'、擊倒 '+(save.bestEndlessK||0)+' 隻';
-  show('<div class="sheet" role="dialog" aria-label="排行榜"><header><h2>無限加班排行榜</h2></header><p class="lead">每位玩家只列出自己最好的一次。上傳時會顯示員工證上的名字。</p>'+tabs+'<div id="lbbody"><p class="lbnote">讀取中…</p></div><p class="lbnote">'+mine+'</p>'+
+  show('<div class="sheet" role="dialog" aria-label="排行榜"><header><h2>無限加班排行榜</h2></header><p class="lead">前 25 名，同一位玩家的每一次紀錄都會列出。上傳時會顯示員工證上的名字和當時的樣子。</p>'+tabs+'<div id="lbbody"><p class="lbnote">讀取中…</p></div><p class="lbnote">'+mine+'</p>'+
     '<div class="row"><button class="btn ghost" data-act="menu">返回</button><button class="btn ghost" data-act="lbTab" data-arg="'+m+'">重新整理</button></div></div>','[data-arg="'+m+'"].opt');
   lbFetch(m).then(rows=>{if(LB.tab!==m||!$('#lbbody'))return;
     if(!rows.length){$('#lbbody').innerHTML='<p class="lbnote">目前還沒有人上榜，第一名等你來拿。</p>';return;}
-    $('#lbbody').innerHTML='<table class="lbt"><thead><tr><th>名次</th><th>名字</th><th style="text-align:right">'+(m==='kills'?'擊倒':'撐了')+'</th><th style="text-align:right">'+(m==='kills'?'撐了':'擊倒')+'</th></tr></thead><tbody>'+
-      rows.map(r=>'<tr'+(r.mine?' class="mine"':'')+'><td class="rk">'+r.rank+'</td><td>'+esc(r.name)+(r.mine?'（你）':'')+'</td><td class="n">'+(m==='kills'?r.kills+' 隻':fmtT(r.seconds))+'</td><td class="n">'+(m==='kills'?fmtT(r.seconds):r.kills+' 隻')+'</td></tr>').join('')+'</tbody></table>';})
+    const medal=rk=>rk<=3?'<span class="medal" style="--mc:'+['#ffd23f','#c9d0db','#d08c4a'][rk-1]+'">'+rk+'</span>':rk;
+    $('#lbbody').innerHTML='<table class="lbt"><thead><tr><th>名次</th><th></th><th>名字</th><th style="text-align:right">'+(m==='kills'?'擊倒':'撐了')+'</th><th style="text-align:right">'+(m==='kills'?'撐了':'擊倒')+'</th></tr></thead><tbody>'+
+      rows.map(r=>'<tr'+(r.mine?' class="mine"':'')+'><td class="rk">'+medal(r.rank)+'</td><td class="av"><img src="'+lbAvatar(r.look)+'" alt=""></td><td>'+esc(r.name)+(r.mine?'（你）':'')+'</td><td class="n">'+(m==='kills'?r.kills+' 隻':fmtT(r.seconds))+'</td><td class="n">'+(m==='kills'?fmtT(r.seconds):r.kills+' 隻')+'</td></tr>').join('')+'</tbody></table>';})
   .catch(()=>{if(!$('#lbbody'))return;$('#lbbody').innerHTML='<p class="lbnote">目前連不上排行榜，請確認網路後再試一次。</p>';});
 }
 function lbAfterRun(run){
@@ -1264,7 +1309,7 @@ function lbAfterRun(run){
   if(save.lbConsent===null){el.innerHTML='要把這次成績上傳到排行榜嗎？會以「'+esc(lbName())+'」這個名字公開顯示。<div class="row" style="margin-top:8px"><button class="btn small" data-act="lbYes">上傳</button><button class="btn small ghost" data-act="lbRename">先改名</button><button class="btn small ghost" data-act="lbNo">不要上傳</button></div>';LB.pending=run;return;}
   if(!save.lbConsent){el.textContent='排行榜上傳已關閉，可以在設定裡打開。';return;}
   el.textContent='上傳中…';
-  lbSubmit(run).then(()=>lbFetch('seconds')).then(rows=>{const me=rows.find(r=>r.mine);if($('#lbstatus'))$('#lbstatus').textContent=me?'已上傳！你在「撐最久」排第 '+me.rank+' 名。':'已上傳！';})
+  lbSubmit(run).then(()=>lbFetch('seconds')).then(rows=>{const me=rows.find(r=>r.mine);if($('#lbstatus'))$('#lbstatus').textContent=me?'已上傳！你在「撐最久」最好的名次是第 '+me.rank+' 名。':'已上傳！';})
     .catch(()=>{if($('#lbstatus'))$('#lbstatus').textContent='這次沒能上傳（網路問題或送得太頻繁），成績已存在你自己的紀錄裡。';});
 }
 function renderMenu(){
@@ -1334,10 +1379,12 @@ function renderBadge(first){
   const opts=(obj,key,cur)=>Object.entries(obj).map(([k,v])=>'<button class="opt'+(k===cur?' on':'')+'" data-act="charSet" data-key="'+key+'" data-arg="'+k+'">'+esc(v.name)+'</button>').join('');
   show('<div class="badge" role="dialog" aria-label="員工證"><div class="strap">'+(first?'歡迎報到，請製作員工證':'EMPLOYEE ID')+'</div><div class="body"><div><div class="photo"><canvas id="pv" width="120" height="170"></canvas><div class="cap" id="pvcap">'+esc(playerName())+'　'+esc(OUTFITS[save.outfit].name)+'</div></div></div><div>'+
     '<label for="nm">姓名</label><input id="nm" maxlength="12" value="'+esc(c.name)+'" placeholder="社畜" autocomplete="off">'+
-    '<label>膚色</label><div class="sws">'+sw(SKINS.map((s,i)=>[i,s]),'skin',c.skin)+'</div>'+
+    '<label>膚色</label><div class="sws">'+sw(SKIN_ORDER.map(i=>[i,SKINS[i]]),'skin',c.skin)+'</div>'+
     '<label>髮型</label><div class="sws">'+opts(HAIRS,'hair',c.hair)+'</div>'+
     '<label>髮色</label><div class="sws">'+sw(Object.entries(HAIR_COLORS),'hairColor',c.hairColor)+'</div>'+
-    '<label>臉部</label><div class="sws">'+opts(FACES,'face',c.face)+'</div>'+
+    '<label>眼鏡</label><div class="sws">'+opts(GLASSES,'glasses',c.glasses)+'</div>'+
+    '<label>鬍子</label><div class="sws">'+opts(BEARDS,'beard',c.beard)+'</div>'+
+    '<label>其他</label><div class="sws">'+opts(EXTRAS,'extra',c.extra)+'</div>'+
     '<div class="row"><button class="btn small ghost" data-act="charRandom">隨機</button></div></div></div>'+
     '<div class="foot"><div class="row"><button class="btn'+(first?'':' ghost')+'" data-act="badgeDone">'+(first?'完成報到':'完成')+'</button></div></div></div>','#nm');
   const inp=$('#nm');inp.addEventListener('input',()=>{c.name=inp.value.slice(0,12);$('#pvcap').textContent=playerName()+'　'+OUTFITS[save.outfit].name;persist();});
@@ -1394,7 +1441,7 @@ const ACTIONS={
   wear:a=>{if(!save.outfits.includes(a))return;save.outfit=a;persist();renderWardrobe(a);},
   badgeDone:()=>{save.seenBadge=true;persist();if(LB.pending&&save.lbConsent===null){const r=LB.pending;show('<div class="memo" role="dialog" aria-label="上傳成績"><h2>上傳成績</h2><p>撐了 '+fmtLong(r.t)+'，擊倒 '+r.k+' 隻。</p><p id="lbstatus" style="font-size:13px"></p><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(r);return;}renderMenu();},
   charSet:(a,b)=>{const k=b.dataset.key;if(k==='skin')save.char.skin=+a;else save.char[k]=a;persist();renderBadge();},
-  charRandom:()=>{save.char.skin=Math.floor(Math.random()*SKINS.length);save.char.hair=pick(Object.keys(HAIRS));save.char.hairColor=pick(Object.keys(HAIR_COLORS));save.char.face=pick(Object.keys(FACES));persist();renderBadge();},
+  charRandom:()=>{save.char.skin=Math.floor(Math.random()*SKINS.length);save.char.hair=pick(Object.keys(HAIRS));save.char.hairColor=pick(Object.keys(HAIR_COLORS));save.char.glasses=Math.random()<.35?pick(Object.keys(GLASSES)):'none';save.char.beard=Math.random()<.3?pick(Object.keys(BEARDS)):'none';save.char.extra=Math.random()<.3?pick(Object.keys(EXTRAS)):'none';persist();renderBadge();},
   preview:a=>{const g=GUNS[a];if(!g)return;const m=$('#pvm');m.classList.remove('hidden');$('#pvname').textContent=g.name;$('#pvfeel').textContent=(g.feel||'')+'　'+gunStats(g);$('#pvcanvas').dataset.gun=a;drawPreviews();},
   closePreview:()=>{$('#pvm').classList.add('hidden');},
   lbRename:()=>renderBadge(false),
