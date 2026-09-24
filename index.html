@@ -30,6 +30,7 @@ body{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;co
 .memo h2{font-weight:900;font-size:30px;line-height:1.1;margin:0 0 10px}
 .memo p{margin:0 0 12px;font-size:15px;line-height:1.55}
 .memo .hint{margin:18px 0 0;font-size:13px;color:#4d4424}
+.ver{position:absolute;right:12px;bottom:8px;font-family:"DotGothic16",monospace;font-size:12px;color:#6b5f2a}
 .wallet{display:inline-flex;align-items:center;gap:8px;font-family:"DotGothic16",monospace;font-size:20px;margin:4px 0 6px}
 .coin{display:inline-block;width:14px;height:14px;background:var(--postit);box-shadow:inset -3px -3px 0 #c99a12,0 0 0 2px var(--ink)}
 .memo .coin{background:#fff3b0}
@@ -113,6 +114,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const VERSION='0.4.0';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -912,7 +914,7 @@ function renderMenu(){
     '<button class="btn" data-act="wardrobe">更衣室：'+esc(o.name)+'</button>'+
     '<button class="btn" data-act="badge">員工證：'+esc(playerName())+'</button>'+
     '<button class="btn ghost" data-act="settings">設定</button>'+
-    '<p class="hint">'+(isTouch?'左手拖曳移動，自動瞄準射擊。黃色按鈕切換手上的槍，藍色按鈕撿槍箱或衝刺。':'WASD 移動，自動瞄準射擊。Q／滾輪／右鍵換槍，F 換槍箱，空白鍵衝刺，Esc 暫停。')+'</p></div>');
+    '<p class="hint">'+(isTouch?'左手拖曳移動，自動瞄準射擊。黃色按鈕切換手上的槍，藍色按鈕撿槍箱或衝刺。':'WASD 移動，自動瞄準射擊。Q／滾輪／右鍵換槍，F 換槍箱，空白鍵衝刺，Esc 暫停。')+'</p><span class="ver">v'+VERSION+'</span></div>');
 }
 function renderLevels(){
   const cur=save.unlocked;
