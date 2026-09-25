@@ -1,0 +1,17 @@
+{
+  "name": "殭屍辦公室：活著下班",
+  "short_name": "殭屍辦公室",
+  "description": "像素風辦公室殭屍生存射擊。帶著文具槍一路殺上頂樓，把主管和老闆都打下班。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#1a1d27",
+  "theme_color": "#1a1d27",
+  "lang": "zh-Hant",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

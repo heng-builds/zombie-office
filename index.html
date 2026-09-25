@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <title>殭屍辦公室：活著下班</title>
+<meta name="theme-color" content="#1a1d27">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="殭屍辦公室">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <meta name="description" content="像素風辦公室殭屍生存射擊遊戲。帶著文具槍從 1F 殺上 25F，把主管和老闆都打下班。">
 <meta property="og:title" content="殭屍辦公室：活著下班">
 <meta property="og:description" content="像素風辦公室殭屍生存射擊遊戲，九層樓、八位魔王、十五把文具槍、二十套服裝。">
@@ -113,6 +121,7 @@ button.item{cursor:pointer}
 .lvbtns .btn{width:auto;margin:0;font-size:14px;padding:8px 14px;background:#eef0e8;color:#1a1d27;box-shadow:4px 4px 0 rgba(0,0,0,.5)}
 .lvbtns .btn[disabled]{opacity:.4}
 .hint2{color:#9aa3b5;font-size:12px}
+@media (max-height:500px){#lvl{justify-content:flex-start;gap:8px}#lvl h2{font-size:22px}#lvl .sub{font-size:12px}.cards{gap:8px}.cards.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:100%}.card{padding-bottom:8px}.card .ic{padding:6px 10px 2px}.card .ic img{width:32px;height:32px}.card h3{font-size:14px}.card .lv{font-size:11px}.card p{font-size:12px;margin:4px 10px 0}.card .tag{margin:4px 10px 0}.card .st{display:none}}
 .build{margin:6px 0 4px;font-weight:900}
 .hrrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed #b8a24a}
 .hrrow h4{margin:0;font-size:15px;font-weight:900}
@@ -120,7 +129,9 @@ button.item{cursor:pointer}
 .pips{display:inline-flex;gap:2px;margin-left:8px;vertical-align:middle}
 .pips i{width:8px;height:12px;background:#d5d8cc;border:1px solid var(--ink)}
 .pips i.on{background:#2d6a1f}
-.hrrow .btn{margin:0;width:auto;font-size:13px;padding:6px 10px;white-space:nowrap}
+.hrrow .btn{margin:0;width:auto;font-size:15px;padding:8px 12px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.hrlock{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:900;color:#8a8f99;border:2px dashed #b8bcc6;padding:6px 10px;white-space:nowrap}
+.hrlock .coin{filter:grayscale(1);opacity:.6}
 .stamp{display:inline-block;transform:rotate(-8deg);border:2px solid #c1121f;color:#c1121f;font-weight:900;font-size:11px;padding:0 4px}
 .heatbox{border:2px solid var(--ink);padding:10px 12px;margin:12px 0;background:#fff}
 .heatbox label{display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 0;cursor:pointer}
@@ -135,6 +146,10 @@ button.item{cursor:pointer}
 #actBtn{right:calc(112px + env(safe-area-inset-right,0px));bottom:calc(112px + env(safe-area-inset-bottom,0px));width:64px;height:64px;border-radius:50%;font-size:14px;background:#7bdff2}
 #actBtn.hidden{display:none}
 #pauseBtn{z-index:3;right:calc(14px + env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));width:44px;height:44px;font-size:15px;cursor:pointer}
+#upd{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--postit);color:var(--ink);border:3px solid var(--ink);box-shadow:5px 5px 0 rgba(0,0,0,.5);padding:10px 14px;display:flex;align-items:center;gap:12px;font-weight:900;font-size:14px;max-width:calc(100% - 32px)}
+#upd.hidden{display:none}
+#upd .btn{margin:0;width:auto;font-size:14px;padding:6px 12px}
+.code{width:100%;box-sizing:border-box;font-family:"DotGothic16",monospace;font-size:12px;border:3px solid var(--ink);padding:8px;background:#fff;color:var(--ink);resize:vertical;min-height:72px;word-break:break-all}
 #boot{position:fixed;inset:0;z-index:20;background:#0b0d14;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;transition:opacity .4s}
 #boot.hidden{display:none}#boot.out{opacity:0;pointer-events:none}
 #boot .logo{font-family:"DotGothic16","Noto Sans TC",monospace;font-size:14px;letter-spacing:.3em;color:#6b7280}
@@ -143,6 +158,7 @@ button.item{cursor:pointer}
 #screen>*{animation:fadeIn .25s ease-out}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 #screen>.memo{animation:memoIn .25s ease-out}
+#screen.same>*,#screen.same>.memo{animation:none}
 @keyframes memoIn{from{opacity:0;transform:rotate(-1.2deg) translateY(6px)}to{opacity:1;transform:rotate(-1.2deg)}}
 #doors{position:fixed;inset:0;z-index:15;pointer-events:none;display:none}
 #doors.on{display:block}
@@ -185,6 +201,7 @@ button.item{cursor:pointer}
 <div id="screen" class="hidden"></div>
 <div id="lvl" class="hidden" role="dialog" aria-label="升等"></div>
 <div id="pvm" class="pvm hidden" role="dialog" aria-label="槍枝預覽"><div class="box"><h3 id="pvname"></h3><p id="pvfeel"></p><canvas class="prev" id="pvcanvas" width="128" height="80" data-gun="stapler"></canvas><button class="btn" data-act="closePreview" style="margin-top:12px">關閉</button></div></div>
+<div id="upd" class="hidden" role="status"><span>有新版本可以更新</span><button class="btn" data-act="applyUpdate">立刻更新</button><button class="btn ghost" data-act="dismissUpdate">稍後</button></div>
 <div id="doors"><div class="l"></div><div class="r"></div><div class="num" id="doornum"></div></div>
 <div id="boot"><div class="logo">ZOMBIE OFFICE</div><div class="press">按任意鍵開始上班</div></div>
 <script>
@@ -196,7 +213,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.13.0';
+const VERSION='0.14.0';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -487,17 +504,18 @@ const ELITE_AFFIX={
 
 const DAILY_FLOORS=[0,1,2,3,5,6,7,8,9,10];
 const PERKS={
-  hp:{name:'健康檢查',desc:l=>'最大血量 +5（目前 +'+(l*5)+'）',max:10,price:200},
-  spd:{name:'通勤習慣',desc:l=>'移速 +2%（目前 +'+(l*2)+'%）',max:5,price:250},
-  dmg:{name:'手感訓練',desc:l=>'傷害 +2%（目前 +'+(l*2)+'%）',max:10,price:300},
-  coin:{name:'薪資談判',desc:l=>'金幣 +3%（目前 +'+(l*3)+'%）',max:10,price:200},
-  lunch:{name:'便當升級',desc:l=>'便當回血 +5（目前 +'+(l*5)+'）',max:4,price:250},
-  early:{name:'提前到班',desc:l=>'開局直接 Lv '+(l+1),max:2,price:800},
-  reroll:{name:'多一次重抽',desc:l=>'每局重抽次數 +'+l,max:2,price:1000},
-  raise:{name:'加薪季',desc:l=>'加薪通知掉落率 +10%（目前 +'+(l*10)+'%）',max:5,price:400},
-  shield:{name:'特休存量',desc:l=>'開局帶 1 層護盾',max:1,price:600},
-  four:{name:'人脈',desc:l=>'升等時看到 4 張卡而不是 3 張',max:1,price:3000},
+  hp:{name:'健康檢查',per:'每級最大血量 +5',val:l=>'+'+(l*5),max:10,price:200},
+  spd:{name:'通勤習慣',per:'每級移速 +2%',val:l=>'+'+(l*2)+'%',max:5,price:250},
+  dmg:{name:'手感訓練',per:'每級傷害 +2%',val:l=>'+'+(l*2)+'%',max:10,price:300},
+  coin:{name:'薪資談判',per:'每級金幣 +3%',val:l=>'+'+(l*3)+'%',max:10,price:200},
+  lunch:{name:'便當升級',per:'每級便當多回 5 血',val:l=>'+'+(l*5),max:4,price:250},
+  early:{name:'提前到班',per:'開局直接升等',val:l=>'Lv '+(l+1),max:2,price:800},
+  reroll:{name:'多一次重抽',per:'每局重抽次數 +1',val:l=>(2+l)+' 次',max:2,price:1000},
+  raise:{name:'加薪季',per:'每級加薪通知掉落率 +10%',val:l=>'+'+(l*10)+'%',max:5,price:400},
+  shield:{name:'特休存量',per:'開局帶 1 層護盾',val:l=>l?'有':'沒有',max:1,price:600},
+  four:{name:'人脈',per:'升等時看到 4 張卡而不是 3 張',val:l=>l?'4 張':'3 張',max:1,price:3000},
 };
+
 const FUN={
   coffee:{name:'買咖啡',desc:'開局第 1 秒射速 +100%，之後恢復正常。一秒。',price:300},
   busy:{name:'假裝很忙',desc:'站著不動 3 秒後，頭上出現「處理中…」',price:400},
@@ -1520,7 +1538,11 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;try{if(mode==
 
 /* ================= 選單 ================= */
 const scr=$('#screen');let pendingLv=0,pickSel=[],resetArm=false,previewT=0;
-function show(html,focusSel){scr.innerHTML=html;scr.classList.remove('hidden');scr.scrollTop=0;if(isTouch)return;const f=(focusSel&&scr.querySelector(focusSel))||scr.querySelector('button:not([disabled])');if(f)f.focus({preventScroll:true});}
+function show(html,focusSel){
+  const lbl=m=>{const r=m.match(/aria-label="([^"]*)"/);return r?r[1]:m.slice(0,60);};
+  const prev=scr.classList.contains('hidden')?null:scr.dataset.lbl,now=lbl(html),same=prev===now,st=scr.scrollTop;
+  scr.classList.toggle('same',same);scr.dataset.lbl=now;scr.innerHTML=html;scr.classList.remove('hidden');scr.scrollTop=same?st:0;
+  if(same&&focusSel===undefined)return;if(isTouch)return;const f=(focusSel&&scr.querySelector(focusSel))||scr.querySelector('button:not([disabled])');if(f)f.focus({preventScroll:true});}
 function hideScreen(){scr.classList.add('hidden');scr.innerHTML='';}
 const tierTag=t=>'<span class="tier" style="--tc:'+TIERS[t].color+'">'+TIERS[t].name+'</span>';
 const fmtT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
@@ -1683,13 +1705,45 @@ function renderHR(tab){
   G=null;mode='menu';HRTAB=tab||HRTAB||'perks';
   const pips=(l,m)=>'<span class="pips">'+Array.from({length:m},(_,i)=>'<i class="'+(i<l?'on':'')+'"></i>').join('')+'</span>';
   let body='';
-  if(HRTAB==='perks')body=Object.entries(PERKS).map(([id,pk])=>{const l=perk(id),full=l>=pk.max,pr=perkPrice(id);return '<div class="hrrow"><div><h4>'+esc(pk.name)+pips(l,pk.max)+'</h4><p>'+esc(pk.desc(l))+(full?'':'　→ '+esc(pk.desc(l+1)))+'</p></div>'+(full?'<span class="stamp">已滿級</span>':'<button class="btn" data-act="buyPerk" data-arg="'+id+'"'+(save.coins<pr?' disabled':'')+'><i class="coin"></i>'+pr+'</button>')+'</div>';}).join('');
+  if(HRTAB==='perks')body=Object.entries(PERKS).map(([id,pk])=>{const l=perk(id),full=l>=pk.max,pr=perkPrice(id);return '<div class="hrrow"><div><h4>'+esc(pk.name)+pips(l,pk.max)+'</h4><p>'+esc(pk.per)+'　目前 <b>'+esc(pk.val(l))+'</b>'+(full?'':'　升級後 <b>'+esc(pk.val(l+1))+'</b>')+'</p></div>'+(full?'<span class="stamp">已滿級</span>':'<button class="btn" data-act="buyPerk" data-arg="'+id+'"'+(save.coins<pr?' disabled':'')+'><i class="coin"></i>'+pr+'</button>')+'</div>';}).join('');
   else if(HRTAB==='fun')body='<p class="lead">這一區的效果都很無腦，請自行斟酌。</p>'+Object.entries(FUN).map(([id,f])=>'<div class="hrrow"><div><h4>'+esc(f.name)+'</h4><p>'+esc(f.desc)+'</p></div>'+(fun(id)?'<span class="stamp">核准</span>':'<button class="btn" data-act="buyFun" data-arg="'+id+'"'+(save.coins<f.price?' disabled':'')+'><i class="coin"></i>'+f.price+'</button>')+'</div>').join('');
-  else{const t=save.title,nx=TITLES[t+1];body='<p class="lead">職稱只有你自己和排行榜看得到，沒有任何效果。目前：<b>'+esc(titleName())+'</b></p>'+TITLES.map((x,i)=>'<div class="hrrow"><div><h4>'+(i<=t?'✓ ':'')+esc(x.n)+'</h4><p>'+(i===0?'預設':'第 '+i+' 級')+'</p></div>'+(i<=t?'<span class="stamp">'+(i===t?'現任':'已歷任')+'</span>':i===t+1?'<button class="btn" data-act="buyTitle"'+(save.coins<x.p?' disabled':'')+'><i class="coin"></i>'+x.p+'</button>':'<span class="pix" style="color:#9aa3b5">'+x.p+'</span>')+'</div>').join('');}
+  else{const t=save.title,nx=TITLES[t+1];body='<p class="lead">職稱要一級一級升，只有你自己和排行榜看得到，沒有任何效果。目前：<b>'+esc(titleName())+'</b></p>'+TITLES.map((x,i)=>'<div class="hrrow"><div><h4>'+(i<=t?'✓ ':'')+esc(x.n)+'</h4><p>'+(i===0?'預設':i<=t?'第 '+i+' 級':i===t+1?'第 '+i+' 級　下一個可以升的職稱':'第 '+i+' 級　先升到「'+esc(TITLES[i-1].n)+'」才能購買')+'</p></div>'+(i<=t?'<span class="stamp">'+(i===t?'現任':'已歷任')+'</span>':i===t+1?'<button class="btn" data-act="buyTitle"'+(save.coins<x.p?' disabled':'')+'><i class="coin"></i>'+x.p+'</button>':'<span class="hrlock"><span class="pxlock"></span><i class="coin"></i>'+x.p+'</span>')+'</div>').join('');}
   const tabs='<div class="lbtab"><button class="opt'+(HRTAB==='perks'?' on':'')+'" data-act="hrTab" data-arg="perks">年資加成</button><button class="opt'+(HRTAB==='fun'?' on':'')+'" data-act="hrTab" data-arg="fun">其他福利</button><button class="opt'+(HRTAB==='title'?' on':'')+'" data-act="hrTab" data-arg="title">職稱</button></div>';
   show('<div class="sheet" role="dialog" aria-label="人事室"><header><h2>人事室　考核表</h2>'+coinTag(save.coins)+'</header>'+tabs+body+'<div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>','[data-act="hrTab"][data-arg="'+HRTAB+'"]');
 }
 let HRTAB='perks';
+/* ================= PWA ================= */
+let deferredInstall=null,swWaiting=null;
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const isIOS=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;if(scr.dataset.lbl==='設定')renderSettings();});
+window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('已安裝到桌面');if(scr.dataset.lbl==='設定')renderSettings();});
+function showUpdateBar(){$('#upd').classList.remove('hidden');}
+if('serviceWorker' in navigator&&location.protocol!=='file:'){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{
+    if(reg.waiting&&navigator.serviceWorker.controller){swWaiting=reg.waiting;showUpdateBar();}
+    reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(!nw)return;nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller){swWaiting=nw;showUpdateBar();}});});
+    setInterval(()=>reg.update().catch(()=>{}),60*60*1000);
+  }).catch(()=>{});
+  let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload();});});
+}
+$('#upd').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='applyUpdate'){if(swWaiting){swWaiting.postMessage({type:'SKIP_WAITING'});}else location.reload();}else $('#upd').classList.add('hidden');});
+/* ---- 存檔轉移 ---- */
+function saveCode(){const json=JSON.stringify(save);const b=btoa(unescape(encodeURIComponent(json)));let h=0;for(let i=0;i<b.length;i++)h=(h*31+b.charCodeAt(i))>>>0;return 'ZO1.'+h.toString(36)+'.'+b;}
+function parseSaveCode(code){code=(code||'').trim();if(!code.startsWith('ZO1.'))return null;const i=code.indexOf('.',4);if(i<0)return null;const hs=code.slice(4,i),b=code.slice(i+1);let h=0;for(let k=0;k<b.length;k++)h=(h*31+b.charCodeAt(k))>>>0;if(h.toString(36)!==hs)return null;try{return JSON.parse(decodeURIComponent(escape(atob(b))));}catch(e){return null;}}
+function renderTransfer(){G=null;mode='menu';
+  show('<div class="memo" role="dialog" aria-label="存檔轉移"><h2>存檔轉移</h2><p>把金幣、槍、服裝、進度和人事室搬到另一台裝置，或是從 Safari 搬到桌面版。</p>'+
+    '<div class="build">1. 在原本的裝置產生代碼</div><textarea class="code" id="codeOut" readonly>'+esc(saveCode())+'</textarea><button class="btn" data-act="copyCode">複製代碼</button>'+
+    '<div class="build" style="margin-top:14px">2. 在新裝置貼上代碼</div><textarea class="code" id="codeIn" placeholder="把代碼貼在這裡"></textarea><button class="btn ghost" data-act="applyCode">還原這份存檔（會覆蓋目前的）</button>'+
+    '<p id="codeMsg" class="hint" style="margin:8px 0 0"></p><button class="btn ghost" data-act="settings">返回</button></div>','[data-act="copyCode"]');
+}
+function renderInstall(){G=null;mode='menu';const ios=isIOS(),inst=isStandalone();
+  let body;if(inst)body='<p>已經是桌面版了。從桌面圖示打開就不會有網址列。</p>';
+  else if(deferredInstall)body='<p>安裝後會在桌面出現遊戲圖示，全螢幕、可離線玩。</p><button class="btn" data-act="doInstall">安裝到桌面</button>';
+  else if(ios)body='<p>iPhone 的安裝方式：</p><ol style="padding-left:22px;line-height:1.7"><li>點 Safari 下方的「分享」按鈕</li><li>選「加入主畫面」</li><li>按右上角「新增」</li></ol><p class="hint">注意：桌面版和 Safari 的存檔是分開的。安裝後請用「存檔轉移」把進度搬過去。</p>';
+  else body='<p>用手機的 Chrome 打開遊戲，從右上角選單選「安裝應用程式」或「加到主畫面」。</p>';
+  show('<div class="memo" role="dialog" aria-label="安裝到桌面"><h2>安裝到桌面</h2>'+body+'<p class="hint">直向單手玩，橫向視野更大，兩種都可以。</p><button class="btn ghost" data-act="settings">返回</button></div>');
+}
 function renderSettings(){
   const s=save.settings,V=['','小','中','大'];
   const row=(label,on,tAct,vAct,vol)=>'<div class="row" style="margin-top:10px"><button class="btn" data-act="'+tAct+'" style="flex:2">'+label+'：'+(on?'開':'關')+'</button><button class="btn ghost" data-act="'+vAct+'" style="flex:1" '+(on?'':'disabled')+'>音量 '+V[vol]+'</button></div>';
@@ -1697,7 +1751,8 @@ function renderSettings(){
     '<p class="hint" style="margin-top:14px">音量按一下會在小、中、大之間循環。</p>'+
     '<button class="btn'+(save.lbConsent?'':' ghost')+'" data-act="toggleLb">上傳成績到排行榜：'+(save.lbConsent?'開':'關')+'</button>'+
     '<button class="btn'+(s.easy?'':' ghost')+'" data-act="toggleEasy">輕鬆模式：'+(s.easy?'開':'關')+'</button><p class="hint" style="margin:6px 0 0">殭屍傷害減 30%、同時在場數量減 20%。不影響金幣和解鎖。</p>'+
-    '<button class="btn ghost" data-act="reset">'+(resetArm?'再按一次，清除所有金幣與解鎖':'清除存檔')+'</button><button class="btn ghost" data-act="menu">返回</button></div>');
+    '<button class="btn ghost" data-act="install">安裝到桌面'+(isStandalone()?'（已安裝）':'')+'</button><button class="btn ghost" data-act="transfer">存檔轉移</button>'+
+    '<button class="btn ghost" data-act="reset">'+(resetArm?'再按一次，清除所有金幣與解鎖':'清除存檔')+'</button><button class="btn ghost" data-act="menu">返回</button><span class="ver">v'+VERSION+'</span></div>');
 }
 /* ================= 升等卡片 ================= */
 const lvlEl=$('#lvl');
@@ -1803,6 +1858,11 @@ const ACTIONS={
   lbYes:()=>{save.lbConsent=true;persist();if(LB.pending){const r=LB.pending;LB.pending=null;lbAfterRun(r);}},
   lbNo:()=>{save.lbConsent=false;persist();LB.pending=null;const el=$('#lbstatus');if(el)el.textContent='好的，不會上傳。之後想上傳可以在設定裡打開。';},
   toggleLb:()=>{save.lbConsent=!save.lbConsent;persist();renderSettings();},
+  install:()=>renderInstall(),transfer:()=>renderTransfer(),
+  doInstall:()=>{if(!deferredInstall)return;deferredInstall.prompt();deferredInstall.userChoice.then(()=>{deferredInstall=null;renderInstall();});},
+  copyCode:()=>{const t=$('#codeOut');t.select();const done=()=>{$('#codeMsg').textContent='已複製，到另一台裝置的設定 → 存檔轉移貼上。';};if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,()=>{document.execCommand('copy');done();});else{document.execCommand('copy');done();}},
+  applyCode:()=>{const data=parseSaveCode($('#codeIn').value);if(!data){$('#codeMsg').textContent='代碼不對，請確認有完整複製。';return;}
+    localStorage.setItem(SAVE_KEY,JSON.stringify(data));save=loadSave();persist();$('#codeMsg').textContent='還原完成！金幣 '+save.coins+'、'+save.guns.length+' 把槍、'+save.outfits.length+' 套服裝。';sfx('clear');},
   toggleEasy:()=>{save.settings.easy=!save.settings.easy;persist();renderSettings();},
   toggleSound:()=>{save.settings.sound=!save.settings.sound;persist();renderSettings();},
   toggleMusic:()=>{save.settings.music=!save.settings.music;persist();musicGain();renderSettings();},
