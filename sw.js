@@ -1,5 +1,5 @@
-/* 殭屍辦公室 離線快取 v0.14.0 */
-const CACHE='zombie-office-v0.14.0';
+/* 殭屍辦公室 離線快取 v0.17.2 */
+const CACHE='zombie-office-v0.17.2';
 const PRECACHE=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-maskable-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRECACHE)));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
