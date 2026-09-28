@@ -286,6 +286,8 @@ button.item{cursor:pointer}
 .frow.done .fb{color:#8fd14f}.frow .fn{font-weight:900;font-size:15px}.frow .fs{font-size:12px;color:#9aa3b5;margin-top:2px}
 .frow .rw{display:flex;align-items:center;gap:4px;font-size:11px;color:#c9d0db;white-space:nowrap}.frow .rw img{width:36px;height:24px;image-rendering:pixelated;object-fit:contain}.frow .rw.got{color:#8fd14f}
 @media (max-width:560px){.frow{grid-template-columns:48px 1fr auto;gap:8px;padding:6px 8px}.frow .fb{font-size:16px}.frow .rw span{display:none}}
+.card.kbsel{outline:5px solid #ffd23f;outline-offset:6px;transform:translateY(-4px)}
+#lvl .card:focus:not(.kbsel){outline:none}
 .setsec{margin:14px 0 4px;font-weight:900;font-size:14px;border-bottom:2px solid var(--ink);padding-bottom:2px;grid-column:1/-1}
 .newfeat{margin:10px 0 0;padding:10px;border:3px solid var(--ink);background:#fff6c9}
 .newfeat b{display:block;font-size:16px}
@@ -363,7 +365,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.19.1';
+const VERSION='0.19.3';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -1065,7 +1067,7 @@ window.addEventListener('keydown',e=>{
     if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();
   }else if(mode==='paused'&&(e.code==='Escape'||e.code==='KeyP'))resumeGame();
 });
-window.addEventListener('keyup',e=>{keys[e.code]=false;});
+window.addEventListener('keyup',e=>{keys[e.code]=false;if(G&&G.heldAtOpen)G.heldAtOpen.delete(e.code);});
 window.addEventListener('blur',()=>{for(const k in keys)keys[k]=false;});
 cv.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'){isTouch=false;if(e.button===2&&mode==='play')switchGun();}});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
@@ -2355,7 +2357,7 @@ function renderLevels(){
 }
 function eGoNow(){if(!eCanGo())return;const i=ESEL,L=LEVELS[i];const d=document.createElement('div');d.className='edoors';d.innerHTML='<i></i><i></i><em>▲ '+(L.endless?'∞':L.floor)+'</em>';document.body.appendChild(d);sfx('ui');requestAnimationFrame(()=>requestAnimationFrame(()=>d.classList.add('shut')));setTimeout(()=>{ACTIONS.pickLevel(String(i));setTimeout(()=>{d.classList.remove('shut');setTimeout(()=>d.remove(),450);},60);},480);}
 addEventListener('resize',()=>{if(scr.querySelector('.elev3'))renderLevels();});
-addEventListener('keydown',e=>{if(!scr.querySelector('.elev3'))return;if(e.key==='Escape'){e.preventDefault();renderMenu();return;}if(e.key==='Enter'&&!e.target.closest('.ebtn,.ewide,.ebanks')){e.preventDefault();eGoNow();}});
+addEventListener('keydown',e=>{if(!scr.querySelector('.elev3'))return;if(e.code==='Escape'){e.preventDefault();renderMenu();return;}if((e.code==='Enter'||e.code==='NumpadEnter')&&!e.target.closest('.ebtn,.ewide,.ebanks')){e.preventDefault();eGoNow();}});
 
 function pairNote(){if(pickSel.length<2)return '';const r=pickSel.map(id=>ROLES[id]||['單體','中']),a=r[0][0],b=r[1][0];let t;
   if(a==='清群'&&b==='清群')t='兩把都是清群：清小怪很快，魔王戰可能比較辛苦。';else if([a,b].includes('清群')&&[a,b].includes('單體'))t='清群＋單體：均衡，打魔王也有手段。';
@@ -2549,7 +2551,7 @@ function renderSettings(){
     '<div class="setsec">遊戲</div><button class="btn'+(s.easy?'':' ghost')+'" data-act="toggleEasy">輕鬆模式：'+(s.easy?'開':'關')+'</button><p class="hint" style="margin:6px 0 0">殭屍傷害減 30%、同時在場數量減 20%。不影響金幣和解鎖。</p><button class="btn ghost" data-act="resetTips">重看教學提示</button>'+
     '<div class="setsec">資料與安裝</div><button class="btn'+(save.lbConsent?'':' ghost')+'" data-act="toggleLb">上傳成績到排行榜：'+(save.lbConsent?'開':'關')+'</button>'+cyc('匿名遊玩數據',save.settings.telemetry?'開':'關','telToggle')+
     '<button class="btn ghost" data-act="install">安裝到桌面'+(isStandalone()?'（已安裝）':'')+'</button><button class="btn ghost" data-act="transfer">存檔轉移</button><button class="btn ghost" data-act="reset">清除存檔</button>'+(getBackup()?'<button class="btn ghost" data-act="restoreBackup">'+(restoreArm?'再按一次，用備份覆蓋目前進度':'復原上一份存檔（'+(d=>(d.getMonth()+1)+'/'+d.getDate())(new Date(getBackup().at))+' 清除的）')+'</button>':'')+
-    '<div class="setsec">操作說明</div><p class="hint" style="margin:4px 0 0">'+(isTouch?'左手在畫面上拖曳移動，射擊全自動。黃色「切換」換手上的武器，淺藍「閃避」往移動方向閃開、瞬間無敵。靠近橘色槍箱時按「撿槍」換槍。':'WASD 或方向鍵移動，射擊全自動。Q、滾輪或右鍵換武器，1／2 直接選，F 撿橘色槍箱，空白鍵閃避（瞬間無敵），Esc 暫停。升等時按 1／2／3 選卡。')+'</p>'+
+    '<div class="setsec">操作說明</div><p class="hint" style="margin:4px 0 0">'+(isTouch?'左手在畫面上拖曳移動，射擊全自動。黃色「切換」換手上的武器，淺藍「閃避」往移動方向閃開、瞬間無敵。靠近橘色槍箱時按「撿槍」換槍。':'WASD 或方向鍵移動，射擊全自動。Q、滾輪或右鍵換武器，1／2 直接選，F 撿橘色槍箱，空白鍵閃避（瞬間無敵），Esc 暫停。升等時按 1／2／3／4 選卡，或用 ← →（A、D）選擇後按 Enter；也可以直接點選。')+'</p>'+
     '<button class="btn ghost" data-act="menu">返回</button><span class="ver">v'+VERSION+'</span></div>');
   tabifySettings();
 }
@@ -2586,8 +2588,9 @@ function renderCards(){
   const sub0=kind==='raise'?'這次是四選一，保證至少一張稀有以上':kind==='gun'?'撿到升級槍箱，選一張這把槍的強化':'選一張考績單，立刻生效';
   const html=o.cards.map((c,i)=>{const I=cardInfo(c);const im=document.createElement('canvas');im.width=im.height=I.icon.width>12?I.icon.width:12;
     return '<button class="card" data-act="pickCard" data-arg="'+i+'" style="--rc:'+RAR[I.rar].color+'"><div class="hd"><span>考績單　'+RAR[I.rar].name+'</span><span class="k">'+(i+1)+'</span></div><div class="ic"><img src="'+toIcon('cd_'+(c.t==='c'?c.id:c.gun+'_'+c.id),I.icon,4)+'" alt=""><div><h3>'+esc(I.name)+'</h3><div class="lv">'+(I.lv?'Lv '+I.lv+' → <b>'+(I.lv+1)+'</b>':'新卡 → <b>Lv 1</b>')+(I.lv+1>=I.max?'（滿級）':'')+'</div></div></div><p>'+esc(I.desc)+'</p><span class="tag">'+esc(I.tag)+'</span><span class="st">核准</span></button>';}).join('');
-  const sub=sub0+(firstLv?'<br><b style="color:#ffd23f">選一張卡立刻變強，這局結束後會重置。</b>':'');lvlEl.innerHTML='<h2>'+title+'</h2><p class="sub">'+sub+'</p><div class="cards'+(o.cards.length===4?' four':'')+'">'+html+'</div><div class="lvbtns"><button class="btn" data-act="reroll"'+(g.rerolls>0?'':' disabled')+'>重抽（剩 '+g.rerolls+' 次）</button><button class="btn" data-act="skipCard">跳過（+30 金幣）</button></div><div class="hint2">'+(isTouch?'點選卡片':'按 1／2／3'+(o.cards.length===4?'／4':'')+' 或點選卡片')+'</div>';
-  lvlEl.classList.remove('hidden');const f=lvlEl.querySelector('.card');if(f&&!isTouch)f.focus({preventScroll:true});
+  const sub=sub0+(firstLv?'<br><b style="color:#ffd23f">選一張卡立刻變強，這局結束後會重置。</b>':'');lvlEl.innerHTML='<h2>'+title+'</h2><p class="sub">'+sub+'</p><div class="cards'+(o.cards.length===4?' four':'')+'">'+html+'</div><div class="lvbtns"><button class="btn" data-act="reroll"'+(g.rerolls>0?'':' disabled')+'>重抽（剩 '+g.rerolls+' 次）</button><button class="btn" data-act="skipCard">跳過（+30 金幣）</button></div><div class="hint2">'+(isTouch?'點選卡片':'按 1／2／'+(o.cards.length===4?'3／4':'3')+' 選卡，或用 ← → 選擇後按 Enter；也可以直接點選')+'</div>';
+  lvlEl.classList.remove('hidden');g.offerT=performance.now();g.csel=-1;g.heldAtOpen=new Set(Object.keys(keys).filter(k=>keys[k]));
+  lvlEl.querySelectorAll('.card').forEach((b,i)=>b.addEventListener('pointerenter',ev=>{if(ev.pointerType!=='mouse'||!G||!G.offer)return;G.csel=i;lvlEl.querySelectorAll('.card').forEach((x,j)=>x.classList.toggle('kbsel',j===i));}));if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
 }
 function closeCards(){const g=G;g.offer=null;lvlEl.classList.add('hidden');lvlEl.innerHTML='';mode='play';controlsUI(true);updateActBtn();last=performance.now();}
 function applyCard(c){const p=G.player;try{G.cardLog=G.cardLog||[];G.cardLog.push({p:(c.t==='c'?c.id:c.gun+':'+c.id),o:G.offer.cards.map(x=>x.t==='c'?x.id:x.gun+':'+x.id),lv:p.lvl});}catch(e){}if(c.t==='c'){const d=CARDS[c.id];p.cards[c.id]=(p.cards[c.id]||0)+1;d.apply(p);toast(d.name+' Lv'+p.cards[c.id]);}
@@ -2597,7 +2600,16 @@ lvlEl.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b|
   if(a==='pickCard'){applyCard(G.offer.cards[+b.dataset.arg]);G.pendingLv--;closeCards();}
   else if(a==='reroll'){if(G.rerolls<=0)return;G.rerolls--;G.rerollUsed=(G.rerollUsed||0)+1;G.offer.cards=pickOffer(G.offer.kind,G.offer.gunId);sfx('ui');renderCards();}
   else if(a==='skipCard'){try{G.cardLog=G.cardLog||[];G.cardLog.push({p:'skip',o:G.offer.cards.map(x=>x.t==='c'?x.id:x.gun+':'+x.id),lv:G.player.lvl});}catch(e){}G.coins+=30;G.pendingLv--;toast('跳過，+30 金幣');closeCards();}});
-window.addEventListener('keydown',e=>{if(mode!=='cards'||!G||!G.offer)return;const n=parseInt(e.key);if(n>=1&&n<=G.offer.cards.length){applyCard(G.offer.cards[n-1]);G.pendingLv--;closeCards();}});
+window.addEventListener('keydown',e=>{if(mode!=='cards'||!G||!G.offer)return;const c=e.code,N=G.offer.cards.length,early=performance.now()-(G.offerT||0)<300;
+  const dm=/^(Digit|Numpad)([1-9])$/.exec(c),isOk=c==='Enter'||c==='NumpadEnter';
+  if(c==='Space'){e.preventDefault();return;}
+  if(e.repeat||(G.heldAtOpen&&G.heldAtOpen.has(c))){if(isOk||dm||/Arrow|KeyA|KeyD/.test(c))e.preventDefault();return;}
+  if(early&&(isOk||dm)){e.preventDefault();return;}
+  const setSel=k=>{G.csel=k;lvlEl.querySelectorAll('.card').forEach((b,i)=>b.classList.toggle('kbsel',i===k));};
+  if(c==='ArrowLeft'||c==='KeyA'){e.preventDefault();setSel(G.csel<0?0:Math.max(0,G.csel-1));return;}
+  if(c==='ArrowRight'||c==='KeyD'){e.preventDefault();setSel(G.csel<0?0:Math.min(N-1,G.csel+1));return;}
+  if(isOk){e.preventDefault();if(G.csel>=0&&G.csel<N){const k=G.csel;applyCard(G.offer.cards[k]);G.pendingLv--;closeCards();}return;}
+  if(dm){const n=+dm[2];if(n>=1&&n<=N){e.preventDefault();applyCard(G.offer.cards[n-1]);G.pendingLv--;closeCards();}}});
 function buildList(){const p=G.player,rows=[];
   for(const [id,l] of Object.entries(p.cards)){if(!CARDS[id])continue;rows.push('<div class="brow"><img src="'+toIcon('cd_'+id,skillIcon(CARDS[id].icon),4)+'" alt=""><div style="flex:1"><b>'+esc(CARDS[id].name)+'</b> <span class="pix">Lv '+l+'</span></div></div>');}
   for(const s of p.slots){const u=p.gunUp[s.id]||{};for(const k of ['dmg','rate','sig']){if(u[k])rows.push('<div class="brow"><img src="'+toIcon('cd_'+s.id+'_'+k,gunSprite(s.id).img,4)+'" alt=""><div style="flex:1"><b>'+esc(GUNS[s.id].name)+'：'+(k==='sig'?SIG[s.id].name:WCARDS[k].name)+'</b> <span class="pix">Lv '+u[k]+'</span></div></div>');}}
