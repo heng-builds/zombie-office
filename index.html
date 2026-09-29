@@ -322,7 +322,7 @@ button.item{cursor:pointer}
 .celev{max-width:420px}.celev .epanel{gap:10px}.cbar{background:#1b8a3a;color:#fff;font-weight:900;font-size:12px;padding:6px;border:2px solid #0d0f14;border-radius:8px}
 .celvs{display:grid;gap:8px}.celvs.two{grid-template-columns:1fr 1fr}
 .celv{background:#1f2432;color:#eef0e8;border:2px solid #4b5366;padding:10px 8px;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}.celv.on{border:4px solid #ffd23f}.celv.secret{border-color:#b18cff}
-.celv .ebtn{width:52px;height:52px;font-size:15px;pointer-events:none}.celv b{font-size:15px}.celv em{font-style:normal;font-weight:900;color:#0d0f14;padding:3px 10px;border-radius:6px;font-size:13px}.celv small{font-size:11px;color:#c9d0db}.celv small.dim{color:#8d99ae}
+.celv .ebtn{display:grid;place-items:center;line-height:1;width:52px;height:52px;font-size:15px;pointer-events:none}.celv b{font-size:15px}.celv em{font-style:normal;font-weight:900;color:#0d0f14;padding:3px 10px;border-radius:6px;font-size:13px}.celv small{font-size:11px;color:#c9d0db}.celv small.dim{color:#8d99ae}
 .cmini{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;background:#1f2432;border:2px solid #0d0f14;padding:6px}.mn{font-size:10px;font-weight:900;min-width:28px;padding:3px 4px;border:2px solid #6b7688;border-radius:10px;color:#8d99ae}.mn.d{border-color:#8fd14f;color:#8fd14f}.mn.c{border-color:#ffd23f;color:#ffd23f}.mn.zb{border-radius:3px}.mn.s{border-color:#b18cff;color:#b18cff}
 .cheal{grid-column:3/5;background:#2b3346;color:#8fd14f;border:2px solid #6b7688;border-radius:10px;font-size:12px;font-weight:900;padding:5px}
 .cmode{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cmode button{background:#1f2432;color:#eef0e8;border:2px solid #3a86ff;padding:8px;font:inherit;cursor:pointer;text-align:left}.cmode button.red{border-color:#e2443b}.cmode button.on{border-width:4px;background:#2b3346}.cmode b{display:block;font-size:16px;color:#7fb3ff}.cmode .red b{color:#ff8a80}.cmode small{font-size:11px}
@@ -357,6 +357,24 @@ button.item{cursor:pointer}
 #devpanel .drow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:5px}#devpanel .dsel{font-size:11px;padding:2px;background:#1f2432;color:#eef0e8;border-color:#6b7688;max-width:130px}
 .dstat{background:#0d0f14;padding:5px;line-height:1.5}.dstat b{color:#ffd23f}.dsm{color:#9aa3b5}
 @media (max-width:600px){#devpanel{width:230px;top:auto;bottom:8px;max-height:45vh}.dgrid{grid-template-columns:1fr}.dcards{grid-template-columns:1fr 1fr}}
+.cel2{display:grid;grid-template-columns:92px 1fr;gap:8px;align-items:start}.cshaft{background:#1f2432;border:2px solid #0d0f14;padding:6px 4px;display:flex;flex-direction:column;gap:3px;position:relative}
+.cshaft h5{margin:0 0 2px;color:#ffd23f;font-size:11px;text-align:center}.cs{position:relative;display:flex;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:900;color:#8d99ae;border:2px solid #4b5366;border-radius:9px;padding:1px 2px;margin-left:8px}
+.cs.zb{border-radius:2px}.cs.d{color:#8fd14f;border-color:#8fd14f}.cs.c{color:#ffd23f;border-color:#ffd23f;box-shadow:0 0 0 2px rgba(255,210,63,.35)}.cs.s4{color:#b18cff;border-color:#b18cff}.cs i{position:absolute;left:-10px;top:-2px;bottom:-2px;width:4px}.cs em{font-style:normal;color:#8fd14f;font-size:9px}
+.cright{display:flex;flex-direction:column;gap:8px}.celv .risk{font-size:11px;font-weight:900}.celv .rar{font-size:11px;color:#c9d0db}
+.cinfo{display:flex;gap:8px;align-items:stretch}.cinfo>div{flex:1;background:#2b3346;border:2px solid #6b7688;border-radius:10px;font-size:11px;font-weight:900;padding:5px;color:#8fd14f;display:flex;flex-direction:column;justify-content:center;text-align:center}.cinfo b{color:#ffd23f;font-size:15px}
+.cmode .on b::before{content:'✓ '}.csyn{margin:6px 8px 0;background:#e6f4d7;border:2px solid #8fd14f;color:#1b6428;font-size:11px;font-weight:900;padding:3px 6px;text-align:left}
+.cbuild .meta{margin-top:6px;font-size:11px;color:#c9d0db;line-height:1.6}.cbuild .meta .zb{color:#ff8a80}.chip.t{border-color:#8fd14f}
+.cdraft{max-width:460px}.cdraft .ctitle{font-size:26px}.cdg{display:flex;flex-direction:column;gap:10px}.cdg .crcard{display:grid;grid-template-columns:96px 1fr;text-align:left;align-items:center;padding:0}.cdg .crcard .hd{grid-column:1/-1}.cdg .crcard img{margin:10px auto}.cdg .crcard h4{margin:0;font-size:17px}.cdg .crcard p{margin:4px 0 0}
+@media (max-height:720px) and (orientation:portrait){.cel2{grid-template-columns:80px 1fr}.cs{font-size:9px}.cinfo{font-size:10px}}
+@media (max-height:520px) and (orientation:landscape){.celev{max-width:900px}.cel2{grid-template-columns:76px 1fr}.cright{display:grid;grid-template-columns:1.25fr 1fr;gap:6px;align-items:start}.cright .celvs{grid-row:span 3}.celev .edisp{display:none}.celev>.cbuild{display:none}.cs{font-size:9px;padding:0 2px}.cshaft{gap:1px}.cshaft h5{display:none}.celv{padding:4px}.celv .ebtn{width:36px;height:36px;font-size:12px}.celv small{font-size:10px}.cdg{flex-direction:row}.cdg .crcard{grid-template-columns:1fr}.cdraft .cbuild,.cdraft .cq{display:none}}
+.linkbtn{background:none;border:0;padding:0 6px 0 0;font:inherit;font-weight:900;color:#6b4f2a;text-decoration:underline;cursor:pointer}.memo .linkbtn{margin-top:6px}
+.memo.fb{max-width:520px;text-align:left}.fbk{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}.fbk button{font:inherit;font-size:13px;font-weight:900;padding:8px 2px;border:2px solid #0d0f14;background:#fffbe8;cursor:pointer}.fbk button.on{background:#ffd23f;box-shadow:inset 0 0 0 2px #0d0f14}
+.fbl{display:block;font-weight:900;font-size:13px;margin:8px 0 2px}.fbl span{font-weight:400;color:#6b7688;font-size:12px}.fbl textarea,.fbl input{display:block;width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:15px;padding:8px;border:2px solid #0d0f14;background:#fffbe8;resize:vertical}.fbl small{display:block;text-align:right;color:#6b7688}
+.fbc{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;margin-top:6px}.fbinfo{font-size:12px;color:#4b5366;background:#efe9d2;border:1px dashed #b8bcc6;padding:6px 8px;margin-top:4px;line-height:1.5}.fbmsg{min-height:1.2em;color:#c1121f;font-weight:900;font-size:13px;margin:6px 0 0}
+@media (max-width:420px){.fbk{grid-template-columns:repeat(2,1fr)}}
+.setsub{margin:10px 0 2px;font-size:12px;font-weight:900;color:#6b4f2a;letter-spacing:1px}.setsub.danger{margin-top:22px;color:#c1121f}.btn.danger{background:#c1121f;color:#fff}
+.memo.priv{max-width:560px;text-align:left}.priv h4{margin:12px 0 4px;color:#6b4f2a}.priv p,.priv li{font-size:13px;line-height:1.6;margin:2px 0}.priv ul{margin:0;padding-left:18px}.priv code{background:#efe9d2;padding:1px 6px;font-size:12px;word-break:break-all}
+.nmmsg{color:#c1121f;font-size:12px;font-weight:900;min-height:1em;margin:2px 0 0}
 .setsec{margin:14px 0 4px;font-weight:900;font-size:14px;border-bottom:2px solid var(--ink);padding-bottom:2px;grid-column:1/-1}
 .newfeat{margin:10px 0 0;padding:10px;border:3px solid var(--ink);background:#fff6c9}
 .newfeat b{display:block;font-size:16px}
@@ -434,7 +452,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.20.6';
+const VERSION='0.21.3';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -490,8 +508,8 @@ const GUNS={
     pal:{u:'#1d4e89',U:'#3a86ff',Y:'#ffd23f',S:'#cfd6df',H:'#8a5a2b',K:'#1a1d27'},rows:["...........KKKKKKK........",".........KKUUUUUUUKK......","KKKKKKKKKUUuUUuUUuUUK.....","KHHHSSSSSSSSSSSSSSSSSSSSYK","KKKKKKKKKUUuUUuUUuUUK.....",".........KKUUUUUUUKK......","...........KKKKKKK........"]},
   chair:   {name:'辦公椅',tier:'epic',price:3000,dmg:18,rate:2.6,speed:0,spread:0,pellets:1,pierce:0,life:0,size:0,color:'#4b5366',swing:{shape:'chair',dur:2,radius:64,tick:.2,kb:22},glow:'#9aa3b5',feel:'坐上去旋轉衝撞，受傷減半',desc:'有滾輪的那種。坐上去原地旋轉 2 秒，撞飛周圍殭屍，旋轉時受到的傷害減半。',grip:3,recoil:2,
     pal:{C:'#2b2d42',c:'#4b5366',S:'#9aa3b5',A:'#1a1d27',K:'#0d0f14'},rows:["....CCCCCCC.....","...CcccccccC....","...CcCCCCCcC....","...CcCCCCCcC....","...CcCCCCCcC....","...CcccccccC....","....CCCCCCC.....","......SS........","..AAAAAAAAAAAA..","..A.CCCCCCCC.A..","..A.CccccccC.A..","....CCCCCCCC....",".......SS.......",".......SS.......","..SSSSSSSSSSSS..",".S.....SS.....S.",".KK....KK....KK."]},
-  katana:  {name:'董事長的武士刀',tier:'legend',price:0,unlock:'chairman',dmg:62,rate:0.5,speed:0,spread:0,pellets:1,pierce:0,life:0,size:0,color:'#e6f7ff',swing:{shape:'arc',reach:92,arc:120,kb:14,combo:true,crit:.15},glow:'#bde0fe',feel:'三刀一組，第三刀大範圍，會暴擊',desc:'董事長室牆上的擺設。據說是某年尾牙抽中的，從來沒人敢碰。',grip:4,recoil:2,
-    pal:{G:'#ffd23f',R:'#9d0208',B:'#dfe6ee',T:'#1a1d27',b:'#9aa3b5',W:'#ffffff',K:'#1a1d27'},rows:["..........................WW.","KKKKKKG...................WB.","KRTRTRGGKKKKKKKKKKKKKKKKKKBB.","KTRTRTGGBBBBBBBBBBBBBBBBBBBb.","KKKKKKGGbbbbbbbbbbbbbbbbbbb..","......G......................"]},
+  katana:  {name:'董事長的武士刀',tier:'legend',price:0,unlock:'chairman',dmg:62,rate:0.5,speed:0,spread:0,pellets:1,pierce:0,life:0,size:0,color:'#e6f7ff',swing:{shape:'arc',reach:92,arc:120,kb:14,combo:true,crit:.15},glow:'#bde0fe',feel:'三刀一組，第三刀大範圍，會暴擊',desc:'董事長室牆上的擺設。據說是某年尾牙抽中的，從來沒人敢碰。',grip:5,recoil:2,
+    pal:{B:'#dfe6ee',b:'#9aa9bd',E:'#ffffff',T:'#ffd23f',t:'#c99a12',H:'#1a1d27',R:'#9d0208'},rows:[".....T...............","tHRHRTTBBBBBBBBBBBBEE","tHRHRTTbbbbbbbbbbbE..",".....T..............."]},
   laser:   {name:'簡報雷射筆',tier:'legend',price:3200,dmg:7,rate:0.035,speed:1500,spread:0.01,pellets:1,pierce:99,life:0.45,size:3,color:'#ff2e63',kind:'laser',glow:'#ff2e63',feel:'無限穿透的直線',desc:'開會時最強的武器，無限穿透。',grip:6,fore:13,
     pal:{g:'#c99a12',G:'#ffd23f',R:'#ff2e63',B:'#1a1d27',b:'#3d4455',W:'#ffffff',K:'#1a1d27',r:'#ff8fab'},rows:["........................RR..","KKKKKKKKKKKKKKKKKKKKKKKKRRRr","KbbbbbbbbGGbbbbbbbbbbbbKRWRr","KBBBBBBBBGgBBBBBBBBBBBBKRRRr","KKKKKKKKKKKKKKKKKKKKKKKKRR..","......KGGK..................","......KggK..................","......KKKK.................."]},
   resign:  {hs:.85,name:'離職信電磁砲',tier:'legend',price:5000,dmg:250,rate:4,speed:0,spread:0,pellets:1,pierce:99,life:0,size:0,color:'#c77dff',beam:{charge:1,width:30,len:1500},glow:'#c77dff',feel:'蓄力一秒，貫穿全場',desc:'蓄力 1 秒後射出貫穿全場的光束。傷害極高、冷卻很長。',grip:5,fore:12,recoil:14,
@@ -551,10 +569,10 @@ const FLOOR_TIP={B1:'逃脫關：撐到電梯到，再衝進右側電梯。車�
 /* ================= 爬樓模式：數值設定 ================= */
 const CLIMB_CONFIG={
   unlockFloor:3,quotaMul:1,hpStep:.04,hpLate:.07,lateFrom:7,dmgStep:.03,densStep:.04,densFrom:4,survivalTime:60,elevHeal:.4,xpMul:1.6,floorCoins:60,clearBonus:2000,
-  route:[{f:[0]},{f:[12,13],fork:1},{f:[1]},{f:[19],secret:1},{f:[2]},{f:[18,3],fork:1},{f:[14,15],fork:1},{f:[4],zb:1},{f:[5]},{f:[6,16],fork:1},{f:[7],zb:1},{f:[17,8],fork:1},{f:[20]},{f:[9],zb:1},{f:[10],zb:1,final:1}],
+  route:[{f:[12]},{f:[0]},{f:[13,1],fork:1},{f:[19],secret:1},{f:[2]},{f:[18,3],fork:1},{f:[14,15],fork:1},{f:[4],zb:1},{f:[5]},{f:[6,16],fork:1},{f:[7],zb:1},{f:[17,8],fork:1},{f:[20]},{f:[9],zb:1},{f:[10],zb:1,final:1}],
   shopAfter:[4,8,11],
   zoneOf:{12:0,0:0,13:0,1:0,19:0,2:0,18:1,3:1,14:1,15:1,4:1,5:2,6:2,16:2,7:2,17:3,8:3,20:3,9:3,10:4},
-  zones:[{n:'普通辦公區',c:'#8fd14f',tint:null,range:'1F～5F',sub:'還算正常的辦公室，先把手感找回來',rate:'32%',quip:'「新人訓練期間，死亡不列入考績。」'},
+  zones:[{n:'普通辦公區',c:'#8fd14f',tint:null,range:'B1～5F',sub:'還算正常的辦公室，先把手感找回來',rate:'32%',quip:'「新人訓練期間，死亡不列入考績。」'},
          {n:'混亂辦公區',c:'#ff8c42',tint:'rgba(255,140,66,.05)',range:'6F～10F',sub:'菁英殭屍開始出沒，事件越來越多',rate:'48%',quip:'「本季目標：活著開完下一場會。」'},
          {n:'感染區',c:'#8fd14f',tint:'rgba(110,200,60,.07)',range:'12F～18F',sub:'殭屍明顯變強，史詩獎勵開始出現',rate:'63%',quip:'「HR 表示：感染不算職業災害。」'},
          {n:'高危核心區',c:'#ff2e63',tint:'rgba(255,46,99,.06)',range:'20F～25F',sub:'傳說獎勵出現，但每一層都可能是最後一層',rate:'81%',quip:'「警告：主管已全數感染。」'},
@@ -562,12 +580,12 @@ const CLIMB_CONFIG={
   rarity:[{common:78,rare:22,epic:0,legend:0},{common:55,rare:37,epic:8,legend:0},{common:38,rare:40,epic:20,legend:2},{common:25,rare:40,epic:27,legend:8},{common:15,rare:40,epic:33,legend:12}],
 };
 const CLIMB_TAGS={
-  clinic:{n:'醫務室',c:'#8fd14f',d:'進樓前回復 25% 血量',risk:'安全'},
-  armory:{n:'軍械庫',c:'#ff8c42',d:'進樓前隨機一把武器升一級',risk:'一般'},
-  welfare:{n:'福委會',c:'#ffd23f',d:'進樓前獲得 120 金幣',risk:'安全'},
-  lab:{n:'研究室',c:'#b18cff',d:'進樓前獲得一個隨機被動',risk:'一般'},
-  safe:{n:'安全路線',c:'#3a86ff',d:'一般難度',risk:'低'},
-  danger:{n:'高危路線',c:'#ff2e63',d:'殭屍血量 +25%，這層獎勵稀有度 +1',risk:'高'},
+  clinic:{grp:'safe',n:'醫務室',c:'#8fd14f',d:'進樓前回復 25% 血量',risk:'安全'},
+  armory:{grp:'risk',n:'軍械庫',c:'#ff8c42',d:'進樓前隨機一把武器升一級',risk:'一般'},
+  welfare:{grp:'safe',n:'福委會',c:'#ffd23f',d:'進樓前獲得 120 金幣',risk:'安全'},
+  lab:{grp:'risk',n:'研究室',c:'#b18cff',d:'進樓前獲得一個隨機被動',risk:'一般'},
+  safe:{grp:'safe',n:'安全路線',c:'#3a86ff',d:'一般難度',risk:'低'},
+  danger:{grp:'risk',n:'高危路線',c:'#ff2e63',d:'殭屍血量 +25%，這層獎勵稀有度 +1',risk:'高'},
 };
 const CLIMB_EVENTS={
   blackout:{n:'停電',risk:'高風險',z:0,text:'整層陷入黑暗，只剩你手機的手電筒。黑暗裡好像有很多東西在動。',fx:'殭屍 +20%　視野縮小　獎勵稀有度 +1',quip:'HR 表示：停電期間的傷亡不列入考績。',
@@ -591,19 +609,19 @@ const CLIMB_EVENTS={
 };
 const CLIMB_QUIET=['這層很安靜……太安靜了。','走廊的燈一閃一閃，但什麼都沒有發生。','只有影印機在自己印東西。','茶水間傳來咖啡機的聲音，沒有人在。'];
 const CLIMB_PASSIVES={
-  veteran:{n:'辦公室老鳥',rar:'rare',d:'每層第一次受到致命傷害時，保留 1 血並無敵 1.5 秒'},
-  efficiency:{n:'效率至上',rar:'common',d:'每層通關金幣 +15%'},
-  adrenaline:{n:'腎上腺素',rar:'epic',d:'血量低於 30% 時，傷害 +30%'},
-  overtime:{n:'加班魂',rar:'rare',d:'連續擊倒 5 隻（每隻間隔 1 秒內），射速 +25% 持續 4 秒'},
-  teaRoom:{n:'茶水間常客',rar:'common',d:'便當回血 +50%'},
-  kpi:{n:'KPI 達標',rar:'rare',d:'每擊倒 40 隻獲得 1 層護盾（每層最多 3 層）'},
-  dodgeMaster:{n:'閃避大師',rar:'common',d:'閃避冷卻 -25%'},
-  sales:{n:'金牌業務',rar:'common',d:'撿到的金幣 +25%'},
-  punctual:{n:'準時下班',rar:'common',d:'電梯回血從 40% 提高到 60%'},
-  scapegoat:{n:'背鍋專家',rar:'epic',d:'魔王在場時，受到的傷害 -20%'},
-  sickLeave:{n:'帶薪病假',rar:'epic',d:'本局一次：致命傷害時回復 50% 血量'},
-  employee:{n:'年度最佳員工',rar:'legend',d:'本局每擊倒 100 隻，傷害 +4%（最多 +60%）'},
-  boardTrust:{n:'董事會的信任',rar:'legend',d:'每層開始時護盾 +2，射速 +15%'},
+  veteran:{tags:'防禦',n:'辦公室老鳥',rar:'rare',d:'每層第一次受到致命傷害時，保留 1 血並無敵 1.5 秒'},
+  efficiency:{tags:'經濟',n:'效率至上',rar:'common',d:'每層通關金幣 +15%'},
+  adrenaline:{tags:'攻擊',n:'腎上腺素',rar:'epic',d:'血量低於 30% 時，傷害 +30%'},
+  overtime:{tags:'攻擊,清群',n:'加班魂',rar:'rare',d:'連續擊倒 5 隻（每隻間隔 1 秒內），射速 +25% 持續 4 秒'},
+  teaRoom:{tags:'防禦',n:'茶水間常客',rar:'common',d:'便當回血 +50%'},
+  kpi:{tags:'防禦,清群',n:'KPI 達標',rar:'rare',d:'每擊倒 40 隻獲得 1 層護盾（每層最多 3 層）'},
+  dodgeMaster:{tags:'機動',n:'閃避大師',rar:'common',d:'閃避冷卻 -25%'},
+  sales:{tags:'經濟',n:'金牌業務',rar:'common',d:'撿到的金幣 +25%'},
+  punctual:{tags:'防禦',n:'準時下班',rar:'common',d:'電梯回血從 40% 提高到 60%'},
+  scapegoat:{tags:'防禦',n:'背鍋專家',rar:'epic',d:'魔王在場時，受到的傷害 -20%'},
+  sickLeave:{tags:'防禦',n:'帶薪病假',rar:'epic',d:'本局一次：致命傷害時回復 50% 血量'},
+  employee:{tags:'攻擊',n:'年度最佳員工',rar:'legend',d:'本局每擊倒 100 隻，傷害 +4%（最多 +60%）'},
+  boardTrust:{tags:'攻擊,防禦',n:'董事會的信任',rar:'legend',d:'每層開始時護盾 +2，射速 +15%'},
 };
 const CLIMB_SHOP=[
   {k:'bento',n:'便當',d:'回復 40% 血量',p:120,c:'#8fd14f'},
@@ -614,6 +632,10 @@ const CLIMB_SHOP=[
   {k:'swap',n:'換槍',d:'抽兩把武器選一把替換',p:250,c:'#6b7688'},
 ];
 const CLIMB_BOSS={4:{title:'部門主管突襲',boss:'kpi',line:'「午休結束了，誰准你們休息？」'},7:{add:['rumor','burst'],text:'副總經理被感染了！'},9:{add:['lockdodge','micshield'],text:'董事長開始封鎖你的行動！'},10:{final:'chairman',text:'董事長親自出馬'}};
+const CARD_TAGS={dmg:'攻擊',rate:'攻擊',speed:'機動',hp:'防禦',multi:'清群',pierce:'清群',magnet:'經濟',shield:'防禦',regen:'防禦',bonus:'經濟',dodge:'機動',punch:'攻擊'};
+const ROLE_TAG={清群:'清群',單體:'攻擊',控場:'控場',生存:'防禦'};
+const BUILD_NAME={清群:'清群型',攻擊:'輸出型',控場:'控場型',防禦:'坦克型',機動:'游擊型',經濟:'賺錢型'};
+const PASSIVE_PAIRS={adrenaline:['veteran','sickLeave','scapegoat'],veteran:['adrenaline'],sickLeave:['adrenaline'],overtime:['kpi','employee'],kpi:['overtime'],employee:['overtime','boardTrust'],efficiency:['sales'],sales:['efficiency'],punctual:['teaRoom'],teaRoom:['punctual']};
 const WLV_TEXT={2:'傷害 +1 級',3:'射速 +1 級',4:'傷害、射速各 +1 級',5:'專屬卡 +1 級（特殊能力）'};
 const CLIMB_QUIPS={death:['「HR 表示：你的死亡不影響公司營運。」','「你的座位明天會給實習生。」','「請假單已自動送出，事由：陣亡。」','「主管說：下次早點來。」'],clear:['「恭喜，公司終於倒了，你可以準時下班了。」','「你是今年唯一一個準時下班的人。」']};
 
@@ -1257,7 +1279,7 @@ function rewardFloorOf(t,id){for(const [k,v] of Object.entries(REWARDS))if(v[0]=
 function grantReward(i){const it=rewardItem(i);if(!it)return null;const arr=it.t==='g'?save.guns:save.outfits;if(arr.includes(it.id))return null;arr.push(it.id);return it;}
 function featOpen(id){const u=UNLOCKS.find(x=>x.id===id);return !u||save.cleared.includes(u.need);}
 function dailyUnlocked(){return save.cleared.includes(2);}
-function startRun(lv,loadout,opts){
+function startRun(lv,loadout,opts){try{crumb('開始 '+(LEVELS[lv]?LEVELS[lv].floor:lv)+(opts&&opts.climb?'（爬樓）':opts&&opts.daily?'（每日）':''));}catch(e){}
   const daily=opts&&opts.daily||null;let def=LEVELS[lv];const diffV=daily?(LEVELS[daily.floor].diff??daily.floor):(def.diff??lv);
   let mods=[];
   if(daily){def={...LEVELS[daily.floor],endless:true,survival:0,quota:0,boss:null,floor:'每日',name:'每日挑戰',rooftop:false,mix:{...LEVELS[daily.floor].mix},dark:!!LEVELS[daily.floor].dark};mods=daily.mods.slice();Math.random=seeded(daily.seed);}
@@ -2392,7 +2414,7 @@ function render(){
   if(mode!=='play'){ctx.fillStyle='rgba(10,12,18,.55)';ctx.fillRect(0,0,W,H);}
 }
 let last=performance.now();
-function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(mode==='play'&&G){QS.avg=QS.avg*.9+dt*1000*.1;if(QS.avg>24){QS.hi+=dt;QS.lo=0;if(QS.hi>2&&!QS.low){QS.low=true;}}else if(QS.avg<19){QS.lo+=dt;QS.hi=0;if(QS.lo>10&&QS.low)QS.low=false;}}try{if(mode==='play'&&G){const n=G.dev?G.dev.speed:1;for(let k=0;k<n&&G&&mode==='play';k++)update(dt);}else if(!G)updateDemo(dt);render();}catch(e){console.error(e);}requestAnimationFrame(loop);}
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(mode==='play'&&G){QS.avg=QS.avg*.9+dt*1000*.1;if(QS.avg>24){QS.hi+=dt;QS.lo=0;if(QS.hi>2&&!QS.low){QS.low=true;}}else if(QS.avg<19){QS.lo+=dt;QS.hi=0;if(QS.lo>10&&QS.low)QS.low=false;}}try{if(mode==='play'&&G){const n=G.dev?G.dev.speed:1;for(let k=0;k<n&&G&&mode==='play';k++)update(dt);}else if(!G)updateDemo(dt);render();}catch(e){console.error(e);reportError('loop',e&&e.message,e&&e.stack);}requestAnimationFrame(loop);}
 
 /* ================= 選單 ================= */
 const scr=$('#screen');let pendingLv=0,pickSel=[],resetArm=false,previewT=0;
@@ -2413,7 +2435,8 @@ function playerName(){return save.char.name||'社畜';}
 const LB={url:'https://ngdzzokilfasdwawthpl.supabase.co',key:'sb_publishable_o4dmSvN0u1Ipu_r7B6SPYg_2DP-I8d6',tab:'seconds',cache:{}};
 function lbReq(path,body){const ctl=new AbortController();const to=setTimeout(()=>ctl.abort(),6000);
   return fetch(LB.url+path,{method:'POST',headers:{apikey:LB.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(body),signal:ctl.signal})
-    .then(r=>{clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():null;});}
+    .then(r=>{clearTimeout(to);if(!r.ok)return r.text().then(t=>{throw new Error('HTTP '+r.status+' '+t);});const ct=r.headers.get('content-type')||'';return ct.includes('json')?r.json():null;});}
+function nameCheck(n){return fetch(LB.url+'/rest/v1/rpc/name_ok',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key},body:JSON.stringify({n})}).then(r=>r.ok?r.json():true).catch(()=>true);}
 function lbName(){return (save.char.name||'社畜').replace(/[<>]/g,'').slice(0,12)||'社畜';}
 function lbLook(){const c=save.char;return [c.skin,c.hair,c.hairColor,c.glasses,c.beard,c.extra,save.outfit].join('|').toLowerCase().replace(/[^a-z0-9_|]/g,'').slice(0,80);}
 function lbSubmit(run){return lbReq('/rest/v1/endless_scores',{name:lbName(),seconds:run.t,kills:run.k,bosses:run.b,device:save.device,version:VERSION,look:lbLook(),mode:run.mode||'endless',day:run.day||null,floor:run.floor??null,heat:run.heat||0,hits:run.hits||0,title:titleName()});}
@@ -2463,7 +2486,7 @@ function lbAfterRun(run){
   el.textContent='上傳中…';
   const nm={daily:'今日挑戰',floor:'樓層通關',survival:'午休保衛戰',climb:'爬樓'}[run.mode]||'撐最久';
   lbSubmit(run).then(()=>lbFetch(run.mode==='survival'?'kills':'seconds',run.mode||'endless',run.day||null,25,run.floor??null)).then(rows=>{const me=rows.find(r=>r.mine);if($('#lbstatus'))$('#lbstatus').textContent=me?'已上傳！你在「'+nm+'」最好的名次是第 '+me.rank+' 名。':'已上傳！';})
-    .catch(()=>{if($('#lbstatus'))$('#lbstatus').textContent='這次沒能上傳（網路問題或送得太頻繁），成績已存在你自己的紀錄裡。';});
+    .catch(e=>{if($('#lbstatus'))$('#lbstatus').textContent=/name not allowed/.test(e&&e.message||'')?'你的名字不能用在排行榜，請到「員工證」改名，下次就能上傳。':'這次沒能上傳（網路問題或送得太頻繁），成績已存在你自己的紀錄裡。';});
 }
 const FLOOR_OF=['1F','3F','5F'];
 function mbtn(id,act,name){const u=UNLOCKS.find(x=>x.id===id);return featOpen(id)?'<button class="btn" data-act="'+act+'">'+name+'</button>':'<button class="btn lockbtn" data-act="lockedFeat" data-arg="'+id+'"><span><span class="pxlock"></span> '+name+'</span><span class="lk">打完 '+FLOOR_OF[u.need]+' 開放</span></button>';}
@@ -2592,7 +2615,7 @@ function renderBadge(first){
   const sw=(list,key,cur)=>list.map(([k,col])=>'<button class="sw'+(String(k)===String(cur)?' on':'')+'" style="--c:'+col+'" data-act="charSet" data-key="'+key+'" data-arg="'+k+'" aria-label="'+key+' '+k+'"></button>').join('');
   const opts=(obj,key,cur)=>Object.entries(obj).map(([k,v])=>'<button class="opt'+(k===cur?' on':'')+'" data-act="charSet" data-key="'+key+'" data-arg="'+k+'">'+esc(v.name)+'</button>').join('');
   show('<div class="badge" role="dialog" aria-label="員工證"><div class="strap">'+(first?'歡迎報到，請製作員工證':'EMPLOYEE ID')+'</div><div class="body"><div><div class="photo"><canvas id="pv" width="120" height="170"></canvas><div class="cap" id="pvcap">'+esc(playerName())+'　'+esc(titleName())+'</div></div></div><div>'+
-    '<label for="nm">姓名</label><input id="nm" maxlength="12" value="'+esc(c.name)+'" placeholder="社畜" autocomplete="off">'+
+    '<label for="nm">姓名</label><input id="nm" maxlength="12" value="'+esc(c.name)+'" placeholder="社畜" autocomplete="off"><p class="nmmsg" id="nmmsg"></p>'+
     '<label>膚色</label><div class="sws">'+sw(SKIN_ORDER.map(i=>[i,SKINS[i]]),'skin',c.skin)+'</div>'+
     '<label>髮型</label><div class="sws">'+opts(HAIRS,'hair',c.hair)+'</div>'+
     '<label>髮色</label><div class="sws">'+sw(Object.entries(HAIR_COLORS),'hairColor',c.hairColor)+'</div>'+
@@ -2638,16 +2661,15 @@ const isFirefox=()=>/Firefox|FxiOS/.test(navigator.userAgent);
 const isIOS=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;if(scr.dataset.lbl==='設定')renderSettings();});
 window.addEventListener('appinstalled',()=>{deferredInstall=null;toast('已安裝到桌面');if(scr.dataset.lbl==='設定')renderSettings();});
-function showUpdateBar(){$('#upd').classList.remove('hidden');}
 if('serviceWorker' in navigator&&location.protocol!=='file:'){
   window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{
     if(reg.waiting&&navigator.serviceWorker.controller){swWaiting=reg.waiting;showUpdateBar();}
     reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(!nw)return;nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller){swWaiting=nw;showUpdateBar();}});});
-    setInterval(()=>reg.update().catch(()=>{}),60*60*1000);
+    setInterval(()=>reg.update().catch(()=>{}),30*60*1000);
   }).catch(()=>{});
   let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload();});});
 }
-$('#upd').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='applyUpdate'){if(swWaiting){swWaiting.postMessage({type:'SKIP_WAITING'});}else location.reload();}else $('#upd').classList.add('hidden');});
+$('#upd').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='applyUpdate'){if(swWaiting){swWaiting.postMessage({type:'SKIP_WAITING'});}else location.reload();}else{UPD_DISMISSED=true;$('#upd').classList.add('hidden');}});
 /* ---- 存檔轉移 ---- */
 function saveCode(){const json=JSON.stringify(save);const b=btoa(unescape(encodeURIComponent(json)));let h=0;for(let i=0;i<b.length;i++)h=(h*31+b.charCodeAt(i))>>>0;return 'ZO1.'+h.toString(36)+'.'+b;}
 function parseSaveCode(code){code=(code||'').trim();if(!code.startsWith('ZO1.'))return null;const i=code.indexOf('.',4);if(i<0)return null;const hs=code.slice(4,i),b=code.slice(i+1);let h=0;for(let k=0;k<b.length;k++)h=(h*31+b.charCodeAt(k))>>>0;if(h.toString(36)!==hs)return null;try{return JSON.parse(decodeURIComponent(escape(atob(b))));}catch(e){return null;}}
@@ -2672,7 +2694,7 @@ function toastMenu(t){let el=$('#mtoast');if(!el){el=document.createElement('div
 /* ================= 匿名遊玩數據 ================= */
 function platformTag(){return (isTouch?(innerWidth<innerHeight?'mobile-p':'mobile-l'):'desktop');}
 function floorLabel(i){const L=LEVELS[i];if(!L)return null;return L.endless?'無限加班':L.floor+' '+L.name;}
-function telSend(res){if(!save.settings.telemetry||!G)return;const g=G,p=g.player,L=g.daily?g.def:LEVELS[g.lv];
+function telSend(res){if(G)LAST_RUN=runSummary(G,res);if(!save.settings.telemetry||!G)return;const g=G,p=g.player,L=g.daily?g.def:LEVELS[g.lv];
   const body={device:save.device,version:VERSION,mode:g.daily?'daily':L.endless?'endless':L.survival?'survival':'floor',floor:floorLabel(g.daily?g.daily.floor:g.lv),result:res,seconds:Math.floor(g.time),kills:p.kills,lvl:p.lvl,
     killer:res==='death'?String(g.killer||g.lastHit||'').slice(0,20):null,gun1:p.slots[0].id,gun2:(p.slots[1]||{}).id||null,outfit:save.outfit,heat:g.heatPts||0,mods:(g.mods||[]).join(',').slice(0,60),
     cards:JSON.stringify((g.cardLog||[]).slice(0,60)),dodges:p.dodges||0,hits:g.hits||0,platform:platformTag()};
@@ -2718,11 +2740,13 @@ function renderResetConfirm(){G=null;mode='menu';const s=save,hi=s.cleared.lengt
     '<div style="margin-top:22px;padding-top:12px;border-top:2px dashed #b8a24a"><button class="btn" data-act="resetDo" disabled style="background:#9d0208;color:#fff">確定清除（3）</button></div></div>','[data-act=menuFromReset]');
   let n=3;clearInterval(resetTimer);resetTimer=setInterval(()=>{const b=scr.querySelector('[data-act=resetDo]');if(!b){clearInterval(resetTimer);return;}n--;if(n<=0){b.disabled=false;b.textContent='確定清除';clearInterval(resetTimer);}else b.textContent='確定清除（'+n+'）';},1000);}
 let SETTAB='聲音';
-const SETMAP={'音效':'聲音','畫面效果':'畫面','遊戲':'遊戲','操作說明':'遊戲','資料與安裝':'資料'};
+let SET_FROM='menu';
+const SETMAP={'音效':'聲音','畫面效果':'畫面','遊戲':'遊戲','操作說明':'遊戲','資料與支援':'資料與支援'};
 function tabifySettings(){const m=scr.querySelector('.memo[aria-label="設定"]');if(!m)return;let cur=null;const kids=[...m.children];
   for(const el of kids){if(el.classList.contains('setsec')){cur=SETMAP[el.textContent.trim()]||el.textContent.trim();if(el.textContent.trim()!=='操作說明')el.style.display='none';}
     if(el.tagName==='H2'||el.classList.contains('ver')||el.dataset.act==='menu')continue;if(cur&&cur!==SETTAB)el.style.display='none';}
-  const bar=document.createElement('div');bar.className='settabs';bar.innerHTML=['聲音','畫面','遊戲','資料'].map(t=>'<button class="opt'+(t===SETTAB?' on':'')+'" data-act="setTab" data-arg="'+t+'">'+t+'</button>').join('');m.insertBefore(bar,m.querySelector('h2').nextSibling);}
+  const bar=document.createElement('div');bar.className='settabs';bar.innerHTML=(SET_FROM==='pause'?['聲音','畫面']:['聲音','畫面','遊戲','資料與支援']).map(t=>'<button class="opt'+(t===SETTAB?' on':'')+'" data-act="setTab" data-arg="'+t+'">'+t+'</button>').join('');m.insertBefore(bar,m.querySelector('h2').nextSibling);
+  if(SET_FROM==='pause'){m.querySelector('h2').textContent='設定（遊戲暫停中）';const bk=m.querySelector('[data-act=menu]');if(bk){bk.dataset.act='setBack';bk.textContent='返回暫停選單';}}}
 function renderSettings(){
   const s=save.settings,V=['','小','中','大'];
   const row=(label,on,tAct,vAct,vol)=>'<div class="row" style="margin-top:10px"><button class="btn" data-act="'+tAct+'" style="flex:2">'+label+'：'+(on?'開':'關')+'</button><button class="btn ghost" data-act="'+vAct+'" style="flex:1" '+(on?'':'disabled')+'>音量 '+V[vol]+'</button></div>';
@@ -2731,8 +2755,9 @@ function renderSettings(){
     '<div class="setsec">畫面效果</div>'+
     cyc('畫面震動',{on:'開',weak:'弱',off:'關'}[s.shake],'fxShake')+cyc('閃光效果',s.flash?'開':'關','fxFlash')+cyc('打擊停頓',s.hitstop?'開':'關','fxStop')+cyc('傷害數字',{merge:'合併',all:'全部',off:'關閉'}[s.dmgNum],'fxDmg')+cyc('粒子效果',s.particles==='less'?'減少':'一般','fxPart')+cyc('畫面距離',{auto:'自動',far:'遠',near:'近'}[s.zoom],'fxZoom')+cyc('畫質',{auto:'自動',high:'高',low:'低'}[s.quality||'auto'],'fxQ')+cyc('鏡頭前導',{auto:'自動（手機開）',on:'開',off:'關'}[s.lead||'auto'],'fxLead')+
     '<div class="setsec">遊戲</div><button class="btn'+(s.easy?'':' ghost')+'" data-act="toggleEasy">輕鬆模式：'+(s.easy?'開':'關')+'</button><p class="hint" style="margin:6px 0 0">殭屍傷害減 30%、同時在場數量減 20%。不影響金幣和解鎖。</p><button class="btn ghost" data-act="resetTips">重看教學提示</button>'+
-    '<div class="setsec">資料與安裝</div><button class="btn'+(save.lbConsent?'':' ghost')+'" data-act="toggleLb">上傳成績到排行榜：'+(save.lbConsent?'開':'關')+'</button>'+cyc('匿名遊玩數據',save.settings.telemetry?'開':'關','telToggle')+
-    '<button class="btn ghost" data-act="install">安裝到桌面'+(isStandalone()?'（已安裝）':'')+'</button><button class="btn ghost" data-act="transfer">存檔轉移</button><button class="btn ghost" data-act="reset">清除存檔</button>'+(getBackup()?'<button class="btn ghost" data-act="restoreBackup">'+(restoreArm?'再按一次，用備份覆蓋目前進度':'復原上一份存檔（'+(d=>(d.getMonth()+1)+'/'+d.getDate())(new Date(getBackup().at))+' 清除的）')+'</button>':'')+
+    '<div class="setsec">資料與支援</div><p class="setsub">支援</p><button class="btn" data-act="feedback">回報問題</button><button class="btn ghost" data-act="privacy">隱私說明</button>'+
+    '<p class="setsub">資料設定</p><button class="btn'+(save.lbConsent?'':' ghost')+'" data-act="toggleLb">上傳成績到排行榜：'+(save.lbConsent?'開':'關')+'</button>'+cyc('匿名遊玩數據與錯誤回報',save.settings.telemetry?'開':'關','telToggle')+
+    '<p class="setsub">裝置</p><button class="btn ghost" data-act="install">安裝到桌面'+(isStandalone()?'（已安裝）':'')+'</button><button class="btn ghost" data-act="transfer">存檔轉移</button><p class="setsub danger">危險操作</p><button class="btn danger" data-act="reset">清除存檔</button>'+(getBackup()?'<button class="btn ghost" data-act="restoreBackup">'+(restoreArm?'再按一次，用備份覆蓋目前進度':'復原上一份存檔（'+(d=>(d.getMonth()+1)+'/'+d.getDate())(new Date(getBackup().at))+' 清除的）')+'</button>':'')+
     '<div class="setsec">操作說明</div><p class="hint" style="margin:4px 0 0">'+(isTouch?'左手在畫面上拖曳移動，射擊全自動。黃色「切換」換手上的武器，淺藍「閃避」往移動方向閃開、瞬間無敵。靠近橘色槍箱時按「撿槍」換槍。':'WASD 或方向鍵移動，射擊全自動。Q、滾輪或右鍵換武器，1／2 直接選，F 撿橘色槍箱，空白鍵閃避（瞬間無敵），Esc 暫停。升等時按 1／2／3／4 選卡，或用 ← →（A、D）選擇後按 Enter；也可以直接點選。')+'</p>'+
     '<button class="btn ghost" data-act="menu">返回</button><span class="ver">v'+VERSION+'</span></div>');
   tabifySettings();
@@ -2797,8 +2822,8 @@ function buildList(){const p=G.player,rows=[];
   for(const s of p.slots){const u=p.gunUp[s.id]||{};for(const k of ['dmg','rate','sig']){if(u[k])rows.push('<div class="brow"><img src="'+toIcon('cd_'+s.id+'_'+k,gunSprite(s.id).img,4)+'" alt=""><div style="flex:1"><b>'+esc(GUNS[s.id].name)+'：'+(k==='sig'?SIG[s.id].name:WCARDS[k].name)+'</b> <span class="pix">Lv '+u[k]+'</span></div></div>');}}
   return rows.length?'<div class="build">本局強化　Lv '+p.lvl+'</div>'+rows.join(''):'<div class="build">本局強化　Lv '+p.lvl+'（還沒有選卡）</div>';}
 function pauseGame(){if(mode!=='play')return;mode='paused';controlsUI(false);$('#actBtn').classList.add('hidden');MUSIC.duck=.35;musicGain();
-  show('<div class="memo" role="dialog" aria-label="暫停"><h2>暫停</h2><p>這局已經賺到 '+Math.floor(G.coins)+' 金幣，現在離開也會帶走。</p>'+buildList()+'<button class="btn" data-act="resume">繼續上班</button><button class="btn ghost" data-act="quit">早退，回主選單</button></div>');}
-function resumeGame(){hideScreen();mode='play';controlsUI(true);updateActBtn();last=performance.now();MUSIC.duck=1;musicGain();}
+  show('<div class="memo" role="dialog" aria-label="暫停"><h2>暫停</h2><p>這局已經賺到 '+Math.floor(G.coins)+' 金幣，現在離開也會帶走。</p>'+buildList()+'<button class="btn" data-act="resume">繼續上班</button><button class="btn ghost" data-act="pauseSettings">設定（聲音、畫面）</button><button class="btn ghost" data-act="quit">早退，回主選單</button><button class="linkbtn" data-act="feedback">回報問題</button></div>');}
+function resumeGame(){SET_FROM='menu';hideScreen();mode='play';controlsUI(true);updateActBtn();last=performance.now();MUSIC.duck=1;musicGain();}
 const KILL_TIPS={'離職殭屍':'離職殭屍靠近時會閃紅圈，聽到嗶聲就往旁邊跑。','過勞殭屍':'過勞殭屍走得慢，拉開距離再打，或用穿透型的槍。','實習生殭屍':'實習生跑得快，霰彈槍或便利貼散射槍能一次擋住一群。','開會殭屍':'開會殭屍會丟文件，橫向移動比直線後退更容易閃。','主管跟班':'主管跟班正面擋子彈，繞到側面或上下方再打。','外包的外包':'外包殭屍死後會分裂，用範圍武器一次清掉。','文件攻擊':'紙張攻擊速度不快，看到白色紙片就側移。','退件印章':'紅圈出現後 0.8 秒會蓋章，看到紅圈就離開。','強制更新':'進度條跑滿會爆炸，趁早離開藍色圓圈。'};
 function resultExtras(win,quit,tsec,newBest){
   const g=G,parts=[];
@@ -2807,6 +2832,7 @@ function resultExtras(win,quit,tsec,newBest){
   return parts.map(t=>'<p style="margin:0 0 8px">'+t+'</p>').join('');
 }
 function endRun(win,quit){
+  try{crumb('結束 '+(quit?'早退':win?'通關':'陣亡'));}catch(e){}
   if(G&&G.dev&&!G.ended){G.ended=true;Math.random=MATH_RANDOM;mode='menu';controlsUI(false);$('#actBtn').classList.add('hidden');if($('#devpanel'))$('#devpanel').remove();G=null;renderDev();if(!quit)setTimeout(()=>{const b=$('#devbench');if(b)b.innerHTML='<p class="hint">上一場測試：'+(win?'過關':'陣亡')+'</p>';},30);return;}
   if(G&&G.climbRun&&!G.ended){G.ended=true;Math.random=MATH_RANDOM;mode='result';controlsUI(false);$('#actBtn').classList.add('hidden');MUSIC.duck=1;setMusic('menu');Climb.onFloorEnd(!!win,!!quit);return;}
   if(!G||G.ended)return;G.ended=true;G.winFlag=!!win;G.quitFlag=!!quit;if(G.collapsed&&!save.achv.collapse){save.achv.collapse=true;G.newAch=true;persist();}try{telSend(win?'win':quit?'quit':'death');}catch(e){}try{G.shareData=shareInfo();}catch(e){}Math.random=MATH_RANDOM;const lv=G.lv,L=G.daily?G.def:LEVELS[lv];
@@ -2832,14 +2858,16 @@ function endRun(win,quit){
   if(win&&!G.daily)lbAfterRun({t:L.survival?L.survival:tsec,k:G.player.kills,b:G.bossKills||1,mode:L.survival?'survival':'floor',floor:lv,heat:G.heatPts||0,hits:G.hits||0});
 }
 const ACTIONS={
-  menu:renderMenu,levels:()=>{G=null;mode='menu';ESEL=null;EBANK=null;renderLevels();},shop:()=>{G=null;mode='menu';renderShop();},wardrobe:()=>{G=null;mode='menu';renderWardrobe();},badge:()=>{G=null;mode='menu';renderBadge();},settings:()=>{resetArm=false;renderSettings();},
+  menu:renderMenu,levels:()=>{G=null;mode='menu';ESEL=null;EBANK=null;renderLevels();},shop:()=>{G=null;mode='menu';renderShop();},wardrobe:()=>{G=null;mode='menu';renderWardrobe();},badge:()=>{G=null;mode='menu';renderBadge();},settings:()=>{resetArm=false;SET_FROM='menu';if(SETTAB==='資料')SETTAB='資料與支援';renderSettings();},
+  pauseSettings:()=>{SET_FROM='pause';if(!['聲音','畫面'].includes(SETTAB))SETTAB='聲音';renderSettings();},
+  setBack:()=>{SET_FROM='menu';if(G&&!G.ended){mode='play';pauseGame();}else renderMenu();},
   pickLevel:a=>{if(!floorOpen(+a))return;G=null;mode='menu';pendingLv=+a;pendingClimb=false;pickSel=save.loadout.filter(id=>save.guns.includes(id)).slice(0,2);for(const id of save.guns){if(pickSel.length>=2)break;if(!pickSel.includes(id))pickSel.push(id);}renderLoadout();},
   toggleGun:a=>{const k=pickSel.indexOf(a);if(k>=0)pickSel.splice(k,1);else if(pickSel.length<2)pickSel.push(a);else pickSel[1]=a;renderLoadout(a);},
   start:()=>{if(pickSel.length<2)return;save.loadout=pickSel.slice();persist();if(pendingClimb){pendingClimb=false;Climb.newRun(pickSel.slice());return;}const L=LEVELS[pendingLv],heat=(!L.endless&&!L.survival&&save.cleared.includes(pendingLv))?(save.heatSel[pendingLv]||[]).filter(k=>HEAT[k]):[];elevatorTo(pendingLv,()=>startRun(pendingLv,pickSel.slice(),{heat}));},
   buyGun:a=>{const g=GUNS[a];if(!g||save.guns.includes(a)||save.coins<g.price||rewardFloorOf('g',a)!==null)return;save.coins-=g.price;save.guns.push(a);persist();sfx('power');renderShop(a);},
   buyOutfit:a=>{const o=OUTFITS[a];if(!o||save.outfits.includes(a)||save.coins<o.price||rewardFloorOf('o',a)!==null)return;save.coins-=o.price;save.outfits.push(a);save.outfit=a;persist();sfx('power');renderWardrobe(a);},
   wear:a=>{if(!save.outfits.includes(a))return;save.outfit=a;persist();renderWardrobe(a);},
-  badgeDone:()=>{save.seenBadge=true;persist();if(LB.pending&&save.lbConsent===null){const r=LB.pending;show('<div class="memo" role="dialog" aria-label="上傳成績"><h2>上傳成績</h2><p>撐了 '+fmtLong(r.t)+'，擊倒 '+r.k+' 隻。</p><p id="lbstatus" style="font-size:13px"></p><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(r);return;}renderMenu();},
+  badgeDone:()=>{const nm=(save.char.name||'').trim();if(nm&&!ACTIONS._nameOk){const el=$('#nmmsg');if(el)el.textContent='檢查名字中…';nameCheck(nm).then(ok=>{if(ok){ACTIONS._nameOk=true;ACTIONS.badgeDone();ACTIONS._nameOk=false;}else{const e2=$('#nmmsg');if(e2)e2.textContent='這個名字不能使用，請換一個。';}});return;}save.seenBadge=true;persist();if(LB.pending&&save.lbConsent===null){const r=LB.pending;show('<div class="memo" role="dialog" aria-label="上傳成績"><h2>上傳成績</h2><p>撐了 '+fmtLong(r.t)+'，擊倒 '+r.k+' 隻。</p><p id="lbstatus" style="font-size:13px"></p><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(r);return;}renderMenu();},
   charSet:(a,b)=>{const k=b.dataset.key;if(k==='skin')save.char.skin=+a;else save.char[k]=a;persist();renderBadge();},
   charRandom:()=>{save.char.skin=Math.floor(Math.random()*SKINS.length);save.char.hair=pick(Object.keys(HAIRS));save.char.hairColor=pick(Object.keys(HAIR_COLORS));save.char.glasses=Math.random()<.35?pick(Object.keys(GLASSES)):'none';save.char.beard=Math.random()<.3?pick(Object.keys(BEARDS)):'none';save.char.extra=Math.random()<.3?pick(Object.keys(EXTRAS)):'none';persist();renderBadge();},
   preview:a=>{const g=GUNS[a];if(!g)return;const m=$('#pvm');m.classList.remove('hidden');$('#pvname').textContent=g.name;$('#pvfeel').textContent=(g.feel||'')+'　'+gunStats(g);$('#pvcanvas').dataset.gun=a;drawPreviews();},
@@ -2950,12 +2978,16 @@ Climb.drawBar=function(ctx,x,y,w){const st=Climb.st;if(!st)return;const z=CLIMB_
   ctx.fillStyle='#c9d0db';ctx.font='900 11px "DotGothic16",monospace';ctx.fillText('RF',x1+6,cy+4);
   if(G.cTimer>0){ctx.fillStyle='#ff5a3c';ctx.font='900 11px "Noto Sans TC",sans-serif';ctx.textAlign='right';ctx.fillText('警報 '+Math.ceil(G.cTimer)+' 秒',x+w,y+21);ctx.textAlign='left';}};
 /* --- 一局的流程 --- */
-Climb.entry=function(){if(!climbOpen())return;if(save.climb){Climb.renderContinue();return;}
-  G=null;mode='menu';pendingClimb=true;pendingLv=0;pickSel=save.loadout.filter(id=>save.guns.includes(id)).slice(0,2);for(const id of save.guns){if(pickSel.length>=2)break;if(!pickSel.includes(id))pickSel.push(id);}renderLoadout();};
-Climb.newRun=function(loadout){const seed=(Date.now()%1e9).toString(36).toUpperCase();
-  Climb.st={seed,step:0,picked:0,tag:null,bonus:false,loadout:loadout.slice(),snap:null,passives:{},wlv:{[loadout[0]]:1,[loadout[1]]:1},coins:0,time:0,kills:0,maxCombo:0,noHitRun:true,route:[],log:{ev:[],rw:[],shop:[]},shopN:0,rr:1,sickUsed:false,phase:'event',zone:-1};
-  Climb.goFloor();};
-Climb.resume=function(){if(!save.climb)return;Climb.st=JSON.parse(JSON.stringify(save.climb));const ph=Climb.st.phase;G=null;mode='menu';if(ph==='shop')Climb.renderShop();else if(ph==='elev')Climb.renderElevator();else Climb.goFloor();};
+Climb.entry=function(){if(!climbOpen())return;if(save.climb){Climb.renderContinue();return;}G=null;mode='menu';Climb.newRun();};
+Climb.newRun=function(){const seed=(Date.now()%1e9).toString(36).toUpperCase();
+  Climb.st={rv:2,seed,step:0,picked:cRoute()[0].f[0],tag:null,bonus:false,loadout:null,snap:null,passives:{},wlv:{},coins:0,time:0,kills:0,maxCombo:0,noHitRun:true,route:[],log:{ev:[],rw:[],shop:[]},shopN:0,rr:1,sickUsed:false,phase:'draft',zone:-1};
+  Climb.renderDraft();};
+function cGunPool(z){const tiers=z>=3?['common','rare','epic','legend']:z>=2?['common','rare','epic']:['common','rare'];return save.guns.filter(g=>GUNS[g]&&tiers.includes(GUNS[g].tier));}
+Climb.renderDraft=function(){const st=Climb.st,r=seeded(hashStr('zc-'+st.seed+'-draft'));const pool=save.guns.filter(g=>GUNS[g]&&['common','rare'].includes(GUNS[g].tier));const a=[];const c=pool.slice();while(a.length<3&&c.length){a.push(c.splice(Math.floor(r()*c.length),1)[0]);}for(const g of ['stapler','rubber','postit'])if(a.length<3&&!a.includes(g))a.push(g);st.draft=a;
+  show('<div class="cwrap cdraft" role="dialog" aria-label="開局武器"><div class="ctop"><b>B1 停車場</b><span>爬樓開始</span></div><h1 class="ctitle">選一把開局武器</h1><p class="csub">你從停車場的後門溜進公司，只來得及抓一樣東西防身。</p><div class="cdg">'+
+    a.map((g,i)=>{const G_=GUNS[g],role=(ROLES[g]||['',''])[0];return '<button class="crcard r-'+G_.tier+'" data-act="cDraft" data-arg="'+i+'"><div class="hd">'+esc(TIERS[G_.tier].name)+'　#'+esc(ROLE_TAG[role]||role)+'<span class="k">'+(i+1)+'</span></div><img src="'+gunIcon(g)+'" alt=""><div><h4>'+esc(G_.name)+'</h4><p>'+esc(G_.feel||'')+'</p></div></button>';}).join('')+
+    '</div><div class="cbuild"><div class="meta">・另一隻手拿著公司配發的'+(a.includes('stapler')?'釘書機手槍或橡皮筋霰彈槍':'釘書機手槍')+'，路上可以換掉<br>・樓層獎勵、便利商店、事件都可能拿到新武器<br>・傳說武器 12F 以後才會出現；解鎖越多武器，開局選擇越多</div></div><p class="cq">「HR 表示：公司不提供任何裝備。」</p><button class="btn ghost" data-act="menu">返回主選單</button></div>','.crcard');};
+Climb.resume=function(){if(!save.climb)return;if(save.climb.rv!==2){cClear();Climb.entry();return;}Climb.st=JSON.parse(JSON.stringify(save.climb));const ph=Climb.st.phase;G=null;mode='menu';if(ph==='draft')Climb.renderDraft();else if(ph==='shop')Climb.renderShop();else if(ph==='elev')Climb.renderElevator();else Climb.goFloor();};
 Climb.goFloor=function(){const st=Climb.st;const z=cZone(st.picked);st.phase='event';cSave();if(z!==st.zone){st.zone=z;Climb.renderZone(z,()=>Climb.renderEvent());}else Climb.renderEvent();};
 Climb.pickEvent=function(){const st=Climb.st,r=cRng('ev'),R=cRoute()[st.step];if(R.zb)return 'boss';if(st.step===0)return null;
   if(r()<.45)return null;const z=cZone(st.picked);const pool=Object.entries(CLIMB_EVENTS).filter(([k,e])=>e.z<=z&&!(e.noZB&&(R.zb||cRoute()[st.step+1]&&cRoute()[st.step+1].zb||R.final)));return cPick(r,pool)[0];};
@@ -2977,9 +3009,12 @@ Climb.chooseEvent=function(i){const st=Climb.st,ek=st.ev,E=ek&&ek!=='boss'?CLIMB
   if(o.skip){st.route.push(st.picked);st.log.ev.push('skip');Climb.toElevator();return;}
   Climb.launch(c);};
 Climb.launch=function(c){const st=Climb.st,R=cRoute()[st.step],f=st.picked;
-  if(st.bonus&&!c.mods.length){const neg=['sprinkler','stamps','dark','overtime'];c.mods=[neg[Math.floor(cRng('neg')()*neg.length)]];}
-  const cc={step:st.step,zb:!!R.zb,final:!!R.final,mods:c.mods,rarityUp:(c.rarityUp||0)+(st.tag==='danger'?1:0),danger:st.tag==='danger',bonus:st.bonus,timer:c.timer,timerCoins:c.timerCoins,xpMul:c.xpMul,enemy:c.enemy};st.floorRarityUp=cc.rarityUp;st.phase='floor';
+  if(st.bonus){const neg=cNeg(st.step);if(!c.mods.includes(neg))c.mods.push(neg);}
+  const cc={step:st.step,zb:!!R.zb,final:!!R.final,mods:c.mods,rarityUp:(c.rarityUp||0)+(st.tag==='danger'?1:0)+(st.bonus?1:0),danger:st.tag==='danger',bonus:st.bonus,timer:c.timer,timerCoins:c.timerCoins,xpMul:c.xpMul,enemy:c.enemy};st.floorRarityUp=cc.rarityUp;st.phase='floor';
   const lo=st.snap?st.snap.slots:st.loadout;elevatorTo(f,()=>startRun(f,lo.slice(),{climb:cc}));};
+const CLIMB_NEG=['sprinkler','stamps','dark','overtime'];
+function cNeg(step){const st=Climb.st;const r=seeded(hashStr('zc-'+st.seed+'-'+step+'-neg'));return CLIMB_NEG[Math.floor(r()*CLIMB_NEG.length)];}
+function cNegName(k){return k==='dark'?'停電':(EVENTS[k]&&EVENTS[k].name)||k;}
 /* --- 樓層結束 --- */
 Climb.onFloorEnd=function(win,quit){const g=G,st=Climb.st,p=g.player,lv=g.lv;
   if(quit||!st){G=null;renderMenu();return;}
@@ -2997,8 +3032,9 @@ const RAR_ORDER=['common','rare','epic','legend'],RAR_NAME={common:'普通',rare
 Climb.rollRewards=function(){const st=Climb.st,z=cZone(st.route[st.route.length-1]),r=cRng('rw'+st.rwRoll),w=CLIMB_CONFIG.rarity[z],up=st.floorRarityUp||0,out=[],used=new Set();
   const rollRar=()=>{let tot=0;for(const k of RAR_ORDER)tot+=w[k];let x=r()*tot,rr='common';for(const k of RAR_ORDER){x-=w[k];if(x<=0){rr=k;break;}}let i=RAR_ORDER.indexOf(rr)+up;const cap=st.step===0?1:z>=3?3:2;return RAR_ORDER[Math.min(i,cap)];};
   const sn=st.snap,slots=sn.slots;
+  const zbR=cRoute()[st.step]&&cRoute()[st.step].zb,bt=cBuildTags();
   for(let n=0;n<3;n++){let rar=rollRar(),tries=0,card=null;
-    while(!card&&tries<12){tries++;const types={common:['heal','coins','weapon','passive'],rare:['weapon','passive','coins','heal','levelup','swap'],epic:['passive','weapon2','sig','raise','heal'],legend:['passive']}[rar];const t=cPick(r,types);if(used.has(t)&&t!=='passive')continue;
+    while(!card&&tries<12){tries++;const types=zbR?['passive']:{common:z<=1?['heal','coins','weapon','passive','swap']:['heal','coins','weapon','passive'],rare:['weapon','passive','coins','heal','levelup','swap'],epic:['passive','weapon2','sig','raise','heal'],legend:['passive']}[rar];const t=cPick(r,types);if(used.has(t)&&t!=='passive')continue;
       if(t==='heal'){const pc={common:.3,rare:.5,epic:1}[rar];card={t,rar,cat:'回復',name:{common:'健康檢查',rare:'員工旅遊',epic:'留職停薪'}[rar],desc:'回復 '+Math.round(pc*100)+'% 血量',v:pc,ic:'heal'};}
       else if(t==='coins'){const v=Math.round((rar==='common'?70:140)*(z+1));card={t,rar,cat:'金幣',name:rar==='common'?'加班費':'年終分紅',desc:'本局金幣 +'+v,v,ic:'coin'};}
       else if(t==='weapon'){const c=slots.filter(g=>(st.wlv[g]||1)<5);if(!c.length)continue;const g=cPick(r,c),lv=(st.wlv[g]||1);card={t,rar,cat:'武器強化',name:GUNS[g].name,desc:'Lv'+lv+' → Lv'+(lv+1)+'：'+WLV_TEXT[lv+1],v:g,ic:'gun:'+g};}
@@ -3006,8 +3042,8 @@ Climb.rollRewards=function(){const st=Climb.st,z=cZone(st.route[st.route.length-
       else if(t==='sig'){const c=slots.filter(g=>SIG[g]&&((sn.gunUp[g]||{}).sig||0)<3);if(!c.length)continue;const g=cPick(r,c);card={t,rar,cat:'專屬卡',name:SIG[g].name,desc:GUNS[g].name+' 專屬卡 +1 級',v:g,ic:'gun:'+g};}
       else if(t==='levelup'){card={t,rar,cat:'升等',name:'考績單',desc:'下一層開始時立刻升等一次',ic:'lvl'};}
       else if(t==='raise'){card={t,rar,cat:'升等',name:'加薪通知',desc:'下一層開始時四選一，保證稀有以上',ic:'raise'};}
-      else if(t==='swap'){const c=save.guns.filter(g=>!slots.includes(g)&&!GUNS[g].unlock);if(!c.length)continue;const g=cPick(r,c);card={t,rar,cat:'新武器',name:GUNS[g].name,desc:'換掉手上一把武器（選擇要換哪一把）',v:g,ic:'gun:'+g};}
-      else if(t==='passive'){const c=Object.keys(CLIMB_PASSIVES).filter(k=>CLIMB_PASSIVES[k].rar===rar&&!st.passives[k]&&!out.some(o=>o.v===k));if(!c.length)continue;const k=cPick(r,c);card={t,rar,cat:'爬樓被動',name:CLIMB_PASSIVES[k].n,desc:CLIMB_PASSIVES[k].d,v:k,ic:'passive'};}
+      else if(t==='swap'){const c=cGunPool(z).filter(g=>!slots.includes(g));if(!c.length)continue;const g=cPick(r,c);card={t,rar,cat:'新武器',name:GUNS[g].name,desc:'換掉手上一把武器（選擇要換哪一把）',v:g,ic:'gun:'+g};}
+      else if(t==='passive'){let c=Object.keys(CLIMB_PASSIVES).filter(k=>CLIMB_PASSIVES[k].rar===rar&&!st.passives[k]&&!out.some(o=>o.v===k));if(!c.length&&zbR)c=Object.keys(CLIMB_PASSIVES).filter(k=>!st.passives[k]&&CLIMB_PASSIVES[k].rar!=='legend'&&!out.some(o=>o.v===k));if(!c.length)continue;const wts=c.map(k=>1+1.5*CLIMB_PASSIVES[k].tags.split(',').filter(t=>bt[t]).length);let tw=wts.reduce((a,b)=>a+b,0),x=r()*tw,k=c[0];for(let q=0;q<c.length;q++){x-=wts[q];if(x<=0){k=c[q];break;}}card={t,rar,cat:'爬樓被動',name:CLIMB_PASSIVES[k].n,desc:CLIMB_PASSIVES[k].d,v:k,ic:'passive'};}
       if(card)used.add(t);}
     if(!card)card={t:'coins',rar:'common',cat:'金幣',name:'零用金',desc:'本局金幣 +'+60*(z+1),v:60*(z+1),ic:'coin'};out.push(card);}
   return out;};
@@ -3016,13 +3052,19 @@ Climb.renderReward=function(){const st=Climb.st,lv=st.route[st.route.length-1],R
   const title=R.zb?'FLOOR '+L.floor+'　BOSS CLEAR':L.floor+' CLEARED';const sub='★ FLOOR CLEAR ★　用時 '+fmtT(st.lastTime||0)+(st.lastNoHit?'　無傷':'')+'　金幣 +'+st.lastBonus+(st.timerOk?'（含警報獎金）':'');
   const quip=R.zb?cPick(cRng('bq'),['「恭喜，你成功通過了主管審查。」','「區域主管已經下班了，永久的那種。」']):cPick(cRng('fq'),['「恭喜，你成功活過了季度審查。」','「這層的殭屍已經申請離職了。」','「KPI 完成度：這層 100%。」','「今日 KPI：活著下班。」']);
   const build=Climb.buildChips();
-  show('<div class="cwrap crw'+(leg?' legend':'')+'" role="dialog" aria-label="樓層獎勵"><h1 class="ctitle">'+esc(title)+'</h1><p class="csub">'+sub+'</p><p class="cq">'+quip+'</p>'+(st.gotItem?'<p class="cgot">首次通關獎勵：'+esc(st.gotItem)+'（已放進武器庫或更衣室）</p>':'')+(leg?'<div class="clegend">LEGENDARY！</div>':'')+'<h3 class="cpick">選一項獎勵</h3><div class="crcards">'+
-    cards.map((c,i)=>'<button class="crcard r-'+c.rar+'" data-act="cRw" data-arg="'+i+'" style="animation-delay:'+(i*.18)+'s"><div class="hd">'+c.cat+'　'+RAR_NAME[c.rar]+'<span class="k">'+(i+1)+'</span></div><img src="'+cIcon(c.ic)+'" alt=""><h4>'+esc(c.name)+'</h4><p>'+esc(c.desc)+'</p></button>').join('')+'</div>'+
+  show('<div class="cwrap crw'+(leg?' legend':'')+'" role="dialog" aria-label="樓層獎勵"><h1 class="ctitle">'+esc(title)+'</h1><p class="csub">'+sub+'</p><p class="cq">'+quip+'</p>'+(st.gotItem?'<p class="cgot">首次通關獎勵：'+esc(st.gotItem)+'（已放進武器庫或更衣室）</p>':'')+(leg?'<div class="clegend">LEGENDARY！</div>':'')+(R.zb?'<p class="cgot" style="color:#e0c3ff">區域魔王獎勵：保證爬樓被動三選一</p>':'')+'<h3 class="cpick">選一項獎勵</h3><div class="crcards">'+
+    cards.map((c,i)=>'<button class="crcard r-'+c.rar+'" data-act="cRw" data-arg="'+i+'" style="animation-delay:'+(i*.18)+'s"><div class="hd">'+c.cat+'　'+RAR_NAME[c.rar]+'<span class="k">'+(i+1)+'</span></div><img src="'+cIcon(c.ic)+'" alt=""><h4>'+esc(c.name)+'</h4><p>'+esc(c.desc)+'</p>'+(cSynergy(c)?'<div class="csyn">搭配：'+esc(cSynergy(c))+'</div>':'')+'</button>').join('')+'</div>'+
     '<div class="row"><button class="btn ghost" data-act="cRr"'+(st.rr>0?'':' disabled')+'>重抽（剩 '+st.rr+' 次）</button><button class="btn ghost" data-act="cSkip">跳過（+'+40*(cZone(lv)+1)+' 金幣）</button></div><div class="cbuild">'+build+'</div></div>','.crcard');
   if(leg){sfx('clear');fxShake&&0;}else sfx('ui');};
+function cBuildTags(){const st=Climb.st,sn=st&&st.snap,t={};if(!sn)return t;const add=k=>{if(k)t[k]=(t[k]||0)+1;};for(const g of sn.slots)add(ROLE_TAG[(ROLES[g]||[''])[0]]);for(const k of Object.keys(st.passives))for(const x of CLIMB_PASSIVES[k].tags.split(','))add(x);for(const [k,n] of Object.entries(sn.cards||{}))if(n>0&&CARD_TAGS[k])add(CARD_TAGS[k]);return t;}
+function cSynergy(c){const st=Climb.st,bt=cBuildTags();if(c.t==='passive'){const p=PASSIVE_PAIRS[c.v]||[];const own=p.find(k=>st.passives[k]);if(own)return '與「'+CLIMB_PASSIVES[own].n+'」搭配';const tags=CLIMB_PASSIVES[c.v].tags.split(',').filter(t=>bt[t]);if(tags.length)return '你已有 '+tags.map(t=>bt[t]+' 個 #'+t).join('、');}
+  if(c.t==='swap'){const tg=ROLE_TAG[(ROLES[c.v]||[''])[0]];if(tg&&bt[tg])return '符合你的 #'+tg+' 流派';}return '';}
+function cNextOf(pred){const st=Climb.st,R=cRoute();for(let i=st.step+1;i<R.length;i++){if(R[i].secret)continue;if(pred(i,R[i]))return R[i].f.length>1?R[i].f.map(f=>LEVELS[f].floor).join('／'):LEVELS[R[i].f[0]].floor;}return null;}
 Climb.buildChips=function(){const st=Climb.st,sn=st.snap;if(!sn)return '';const chips=[];for(const g of sn.slots)chips.push(['gun',GUNS[g].name+' Lv'+(st.wlv[g]||1)]);for(const k of Object.keys(st.passives))chips.push(['p',CLIMB_PASSIVES[k].n]);
   const top=Object.entries(sn.cards).filter(([k])=>CARDS[k]).sort((a,b)=>b[1]-a[1]).slice(0,4);for(const [k,n] of top)chips.push(['c',CARDS[k].name+' ×'+n]);
-  return '<b>目前構築</b><div class="chips">'+chips.map(([t,s])=>'<span class="chip '+t+'">'+esc(s)+'</span>').join('')+'</div>';};
+  const bt=cBuildTags(),tags=Object.entries(bt).sort((a,b)=>b[1]-a[1]);for(const [t,n] of tags.slice(0,3))chips.push(['t','#'+t+' ×'+n]);
+  const shop=cNextOf(i=>CLIMB_CONFIG.shopAfter.includes(i)),zb=cNextOf((i,r)=>r.zb);
+  return '<b>目前構築'+(tags.length?'　'+esc(BUILD_NAME[tags[0][0]]||''):'')+'</b><div class="chips">'+chips.map(([t,s])=>'<span class="chip '+t+'">'+esc(s)+'</span>').join('')+'</div><div class="meta">'+(shop?'下一個便利商店：'+shop+' 打完後<br>':'')+(zb?'<span class="zb">下一個區域魔王：'+zb+'</span>':'')+'</div>';};
 Climb.applyReward=function(c){const st=Climb.st,sn=st.snap;st.log.rw.push(c.t+':'+(c.v||'')+':'+c.rar);
   if(c.t==='heal')sn.hp=Math.min(sn.maxHp,sn.hp+sn.maxHp*c.v);else if(c.t==='coins')st.coins+=c.v;else if(c.t==='weapon')cWeaponUp(c.v);else if(c.t==='weapon2'){for(const g of sn.slots)cWeaponUp(g);}
   else if(c.t==='sig'){const u=sn.gunUp[c.v]=sn.gunUp[c.v]||{};u.sig=Math.min(3,(u.sig||0)+1);}else if(c.t==='levelup')sn.pendingLv=(sn.pendingLv||0)+1;else if(c.t==='raise')sn.raise=(sn.raise||0)+1;
@@ -3043,27 +3085,34 @@ Climb.buy=function(k){const st=Climb.st,sn=st.snap,it=CLIMB_SHOP.find(x=>x.k===k
   const pay=()=>{st.coins-=pr;st.shopBought[k]=true;st.log.shop.push(k);sfx('coin');cSave();};
   if(k==='bento'){pay();sn.hp=Math.min(sn.maxHp,sn.hp+sn.maxHp*.4);}else if(k==='reroll'){pay();st.rr++;}else if(k==='lvl'){pay();sn.pendingLv=(sn.pendingLv||0)+1;}else if(k==='raise'){pay();sn.raise=(sn.raise||0)+1;}
   else if(k==='sig'){Climb.renderSlotPick('強化哪一把的專屬卡？','專屬強化：專屬卡 +1',i=>{const g=sn.slots[i];const u=sn.gunUp[g]=sn.gunUp[g]||{};if((u.sig||0)>=3||!SIG[g]){Climb.renderShop();return;}u.sig=(u.sig||0)+1;pay();Climb.renderShop();},g=>SIG[g]&&((sn.gunUp[g]||{}).sig||0)<3);return;}
-  else if(k==='swap'){const r=cRng('swap'+st.shopN),c=save.guns.filter(g=>!sn.slots.includes(g)&&!GUNS[g].unlock);const a=[];while(a.length<2&&c.length){const i=Math.floor(r()*c.length);a.push(c.splice(i,1)[0]);}if(!a.length)return;
+  else if(k==='swap'){const r=cRng('swap'+st.shopN),c=cGunPool(cZone(st.route[st.route.length-1])).filter(g=>!sn.slots.includes(g));const a=[];while(a.length<2&&c.length){const i=Math.floor(r()*c.length);a.push(c.splice(i,1)[0]);}if(!a.length)return;
     Climb._swapOpts=a;show('<div class="cwrap" role="dialog" aria-label="換槍"><h1 class="ctitle" style="font-size:26px">選一把新武器</h1><p class="csub">接著選要換掉手上哪一把</p><div class="crcards">'+a.map((g,i)=>'<button class="crcard r-'+GUNS[g].tier+'" data-act="cSwapPick" data-arg="'+i+'"><div class="hd">'+esc(TIERS[GUNS[g].tier].name)+'</div><img src="'+gunIcon(g)+'" alt=""><h4>'+esc(GUNS[g].name)+'</h4><p>'+esc(GUNS[g].feel||'')+'</p></button>').join('')+'</div><div class="row"><button class="btn ghost" data-act="cShopBack">返回商店</button></div></div>','.crcard');return;}
   Climb.renderShop();};
 /* --- 電梯 --- */
 Climb.toElevator=function(){const st=Climb.st;const n=st.step+1,R=cRoute();let opts=[];
   if(R[n].secret){if(st.noHitRun)opts.push({f:R[n].f[0],to:n,secret:1});opts.push({f:R[n+1].f[0],to:n+1});}
-  else if(R[n].fork){const r=seeded(hashStr('zc-'+st.seed+'-'+n+'-tag')),keys=Object.keys(CLIMB_TAGS),a=keys.splice(Math.floor(r()*keys.length),1)[0],b=keys[Math.floor(r()*keys.length)];opts=R[n].f.map((f,i)=>({f,to:n,tag:i?b:a}));}
+  else if(R[n].fork){const r=seeded(hashStr('zc-'+st.seed+'-'+n+'-tag')),safe=Object.keys(CLIMB_TAGS).filter(k=>CLIMB_TAGS[k].grp==='safe'),risk=Object.keys(CLIMB_TAGS).filter(k=>CLIMB_TAGS[k].grp==='risk');const a=cPick(r,safe),b=cPick(r,risk),sw=r()<.5;opts=R[n].f.map((f,i)=>({f,to:n,tag:(i===0)!==sw?a:b}));}
   else opts=[{f:R[n].f[0],to:n}];
   st.elev={opts,sel:0,healed:false};st.bonus=false;st.phase='elev';
   const sn=st.snap;if(sn&&!st.elev.healed){const h=st.passives.punctual?.6:CLIMB_CONFIG.elevHeal;st.elev.hp0=Math.round(sn.hp);sn.hp=Math.min(sn.maxHp,sn.hp+sn.maxHp*h);st.elev.hp1=Math.round(sn.hp);st.elev.healed=true;}
   cSave();Climb.renderElevator();};
-Climb.renderElevator=function(){const st=Climb.st,E=st.elev,sn=st.snap,R=cRoute();const o=E.opts[E.sel]||E.opts[0];const fork=E.opts.length>1;
-  let mini=st.route.map(f=>'<span class="mn d">'+LEVELS[f].floor+'</span>').join('');if(R[o.to].secret)mini+='<span class="mn c s">4F</span>';
-  for(let i=o.to;i<R.length;i++){const r=R[i];if(r.secret)continue;mini+='<span class="mn'+(i===o.to&&!R[o.to].secret?' c':'')+(r.zb?' zb':'')+'">'+(i===o.to&&!R[o.to].secret?LEVELS[o.f].floor:(r.f.length>1?'?':LEVELS[r.f[0]].floor))+'</span>';}
-  const card=(x,i)=>{const L=LEVELS[x.f],T=x.tag?CLIMB_TAGS[x.tag]:null,zb=R[x.to].zb;return '<button class="celv'+(i===E.sel?' on':'')+(x.secret?' secret':'')+'" data-act="cSel" data-arg="'+i+'"><span class="ebtn cur">'+L.floor+'</span><b>'+esc(L.name)+(x.secret?'（支線）':'')+'</b>'+(T?'<em style="background:'+T.c+'">'+T.n+'</em><small>'+T.d+'</small>':'<small>'+(zb?'區域魔王樓層':esc(bossLine(L)))+'</small>')+'<small class="dim">'+CLIMB_CONFIG.zones[cZone(x.f)].n+(T?'　危險度：'+T.risk:'')+'</small></button>';};
+Climb.renderElevator=function(){const st=Climb.st,E=st.elev,sn=st.snap,R=cRoute();const o=E.opts[E.sel]||E.opts[0];const fork=E.opts.length>1&&!E.opts.some(x=>x.secret);const secret=E.opts.some(x=>x.secret);
+  const ZC=CLIMB_CONFIG.zones.map(z=>z.c);let rows=[];
+  for(let i=R.length-1;i>=0;i--){const r=R[i];if(r.secret&&!(st.route.includes(19)||secret))continue;const done=i<o.to,cur=i===o.to;const took=r.f.find(f=>st.route.includes(f));
+    const lab=done&&took!==undefined?LEVELS[took].floor:cur?LEVELS[o.f].floor:r.f.map(f=>LEVELS[f].floor).join('／');const shop=CLIMB_CONFIG.shopAfter.includes(i);
+    rows.push('<span class="cs'+(r.zb?' zb':'')+(done?' d':cur?' c':'')+(r.secret?' s4':'')+'"><i style="background:'+ZC[cZone(r.f[0])]+'"></i>'+lab+(shop?'<em>店</em>':'')+'</span>');}
+  const shaft='<div class="cshaft"><h5>樓層路線</h5>'+rows.join('')+'</div>';
+  const stars=(x)=>{const z=cZone(x.f),T=x.tag?CLIMB_TAGS[x.tag]:null;let n=1+(z>=2?1:0)+(T&&T.grp==='risk'?1:0)+(R[x.to].zb?1:0);return '★★★★'.slice(0,Math.min(3,n))+'☆☆☆'.slice(0,3-Math.min(3,n));};
+  const rarTxt=(x)=>{const z=cZone(x.f)+((x.tag==='danger')?1:0);return ['普通～稀有','普通～史詩','稀有～史詩','稀有～傳說','史詩～傳說'][Math.min(4,z)];};
+  const card=(x,i)=>{const L=LEVELS[x.f],T=x.tag?CLIMB_TAGS[x.tag]:null,zb=R[x.to].zb,bn=L.boss==='board'?'董事會':BOSSES[L.boss]?BOSSES[L.boss].name:(L.survival?'午休保衛戰':'');
+    return '<button class="celv'+(i===E.sel?' on':'')+(x.secret?' secret':'')+'" data-act="cSel" data-arg="'+i+'"><span class="ebtn cur">'+L.floor+'</span><b>'+esc(L.name)+(x.secret?'（支線）':'')+'</b><small>'+(zb?'區域魔王：':'魔王：')+esc(bn)+'</small>'+(T?'<em style="background:'+T.c+'">'+T.n+'</em><small>'+T.d+'</small>':'')+'<span class="risk" style="color:'+((T&&T.grp==='risk')||zb?'#ff8a80':'#8fd14f')+'">危險度 '+stars(x)+'</span><span class="rar">獎勵 '+rarTxt(x)+'</span></button>';};
+  const full=sn&&E.hp0>=Math.round(sn.maxHp);const neg=cNeg(o.to);
   show('<div class="cwrap celev" role="dialog" aria-label="爬樓電梯"><div class="epanel"><div class="cbar">爬樓中　第 '+(cNodeIndex(o.to)+1)+' / '+cStepsTotal()+' 層　'+CLIMB_CONFIG.zones[cZone(o.f)].n+'　'+fmtT(Math.floor(st.time))+'</div>'+
-    '<div class="edisp"><b>'+(E.opts.some(x=>x.secret)?'多了一個按鈕……':fork?'路線分岔！':'下一層：'+LEVELS[o.f].floor)+'</b><span>'+(E.opts.some(x=>x.secret)?'電梯面板上好像多了什麼':fork?'選一條路往上':'本局金幣 '+Math.floor(st.coins))+'</span></div>'+
-    '<div class="celvs'+(E.opts.length>1?' two':'')+'">'+E.opts.map(card).join('')+'</div><div class="cmini">'+mini+'</div>'+
-    '<div class="ectrl"><button class="eround" data-act="cLeave" aria-label="存檔離開"><i>◀▶</i><small>存檔離開</small></button><button class="eround go ready" data-act="cGo" aria-label="出發"><i>▶◀</i><small>出發</small></button>'+
-    '<div class="cheal">電梯裡回復 '+Math.round((st.passives.punctual?.6:CLIMB_CONFIG.elevHeal)*100)+'% 血量<br>♥ '+(E.hp0??Math.round(sn.hp))+' → '+Math.round(sn.hp)+' / '+Math.round(sn.maxHp)+'</div></div>'+
-    '<div class="cmode"><button class="'+(st.bonus?'':'on')+'" data-act="cMode" data-arg="0"><b>標準</b><small>一般難度</small></button><button class="red'+(st.bonus?' on':'')+'" data-act="cMode" data-arg="1"><b>加碼</b><small>必有負面事件，金幣 ×1.5</small></button></div></div>'+
+    '<div class="edisp"><b>'+(secret?'多了一個按鈕……':fork?'路線分岔！':'下一層：'+LEVELS[o.f].floor)+'</b><span>'+(secret?'電梯面板上好像多了什麼':fork?'兩條路都往上，選一條':'繼續往上')+'</span></div>'+
+    '<div class="cel2">'+shaft+'<div class="cright"><div class="celvs'+(E.opts.length>1?' two':'')+'">'+E.opts.map(card).join('')+'</div>'+
+    '<div class="cinfo"><div>'+(sn?(full?'血量已滿':'電梯回血 '+Math.round((st.passives.punctual?.6:CLIMB_CONFIG.elevHeal)*100)+'%<br>♥ '+E.hp0+' → '+Math.round(sn.hp)+' / '+Math.round(sn.maxHp)):'')+'</div><div>本局金幣<b>'+Math.floor(st.coins)+'</b></div></div>'+
+    '<div class="ectrl"><button class="eround" data-act="cLeave" aria-label="存檔離開"><i>◀▶</i><small>存檔離開</small></button><button class="eround go ready" data-act="cGo" aria-label="出發"><i>▶◀</i><small>出發</small></button></div>'+
+    '<div class="cmode"><button class="'+(st.bonus?'':'on')+'" data-act="cMode" data-arg="0"><b>標準</b><small>一般難度</small></button><button class="red'+(st.bonus?' on':'')+'" data-act="cMode" data-arg="1"><b>加碼</b><small>必定遇到：'+esc(cNegName(neg))+'<br>金幣 ×1.5、獎勵稀有度 +1</small></button></div></div></div></div>'+
     '<div class="cbuild">'+Climb.buildChips()+'</div></div>','[data-act=cGo]');};
 Climb.depart=function(){const st=Climb.st,E=st.elev,o=E.opts[E.sel]||E.opts[0],sn=st.snap;st.step=o.to;st.picked=o.f;st.tag=o.tag||null;
   if(o.tag==='clinic')sn.hp=Math.min(sn.maxHp,sn.hp+sn.maxHp*.25);else if(o.tag==='armory'){const c=sn.slots.filter(g=>(st.wlv[g]||1)<5);if(c.length){const g=c[Math.floor(cRng('arm')()*c.length)];const lv=cWeaponUp(g);toastMenu&&toastMenu('軍械庫：'+GUNS[g].name+' 升到 Lv'+lv);}}
@@ -3089,7 +3138,7 @@ Climb.renderEnd=function(R){const st=R.st,sn=R.sn||{slots:st.loadout},lastF=st.l
     '<p class="cline">本局金幣 +'+R.earned.toLocaleString()+(R.clear?'（含通關獎金 '+CLIMB_CONFIG.clearBonus.toLocaleString()+'）':'')+'　'+(R.better?'<b>新紀錄！</b>':'')+'</p><p class="cline dim">種子：'+esc(st.seed)+'</p>'+(R.newTitle?'<p class="cline hl">解鎖成就職稱「爬到頂樓的人」</p>':'')+
     '<p class="cq">'+q+'</p><p id="lbstatus" class="lbnote"></p><button class="btn" data-act="cAgain">'+(R.clear?'再爬一次（挑戰更快）':'再爬一次')+'</button><div class="row"><button class="btn ghost" data-act="menu">返回主選單</button></div></div>','[data-act=cAgain]');
   if(R.clear){sfx('clear');}};
-Climb.tel=function(res,steps,killer){if(!save.settings.telemetry)return;const st=Climb.st,sn=st.snapEnd||st.snap||{slots:st.loadout,lvl:1};
+Climb.tel=function(res,steps,killer){LAST_RUN={mode:'climb',floor:floorLabel(Climb.st.lastFloor??0),result:res,seconds:Math.floor(Climb.st.time),kills:Climb.st.kills,lvl:(Climb.st.snapEnd||Climb.st.snap||{}).lvl||1,guns:(Climb.st.snapEnd||Climb.st.snap||{slots:Climb.st.loadout||[]}).slots,outfit:save.outfit,killer:killer||null,steps};if(!save.settings.telemetry)return;const st=Climb.st,sn=st.snapEnd||st.snap||{slots:st.loadout,lvl:1};
   const body={device:save.device,version:VERSION,mode:'climb',floor:floorLabel(st.lastFloor??0),result:res,seconds:Math.floor(st.time),kills:st.kills,lvl:sn.lvl||1,killer:res==='death'?String(killer||'').slice(0,20):null,gun1:(sn.slots||[])[0]||null,gun2:(sn.slots||[])[1]||null,outfit:save.outfit,heat:0,mods:'',
     cards:JSON.stringify(Object.keys(st.passives)),dodges:0,hits:0,platform:platformTag(),extra:JSON.stringify({steps,route:st.route,ev:st.log.ev.slice(0,40),rw:st.log.rw.slice(0,40),shop:st.log.shop,seed:st.seed}).slice(0,4000)};
   fetch(LB.url+'/rest/v1/run_stats',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key,Prefer:'return=minimal'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});};
@@ -3108,11 +3157,12 @@ Object.assign(ACTIONS,{
   cGo:()=>{const d=document.createElement('div');d.className='edoors';d.innerHTML='<i></i><i></i><em>▲</em>';document.body.appendChild(d);sfx('ui');requestAnimationFrame(()=>requestAnimationFrame(()=>d.classList.add('shut')));setTimeout(()=>{Climb.depart();setTimeout(()=>{d.classList.remove('shut');setTimeout(()=>d.remove(),450);},60);},480);},
   cLeave:()=>{cSave();Climb.st=null;renderMenu();},
   cResume:()=>Climb.resume(),cAbandon:()=>{if(!confirm('確定放棄這局爬樓？本局金幣不會帶回。'))return;cClear();Climb.entry();},
-  cAgain:()=>{const lo=(Climb.lastLoadout||save.loadout).filter(id=>save.guns.includes(id));if(lo.length<2){Climb.entry();return;}Climb.newRun(lo);},
+  cAgain:()=>{Climb.entry();},
+  cDraft:a=>{const st=Climb.st;if(!st||!st.draft)return;const g=st.draft[+a]||st.draft[0];const second=g==='stapler'?'rubber':'stapler';st.loadout=[g,second];st.wlv={[g]:1,[second]:1};st.log.ev.push('draft:'+g);st.draft=null;st.phase='event';Climb.goFloor();},
   cZoneGo:()=>{clearTimeout(Climb._zt);const n=Climb._zoneNext;Climb._zoneNext=null;if(n)n();},
 });
 addEventListener('keydown',e=>{if(!scr||scr.classList.contains('hidden'))return;const c=e.code,m=/^(Digit|Numpad)([1-3])$/.exec(c);
-  if(scr.querySelector('.crw')&&m){const b=scr.querySelectorAll('.crcard')[+m[2]-1];if(b){e.preventDefault();b.click();}}
+  if((scr.querySelector('.crw')||scr.querySelector('.cdraft'))&&m){const b=scr.querySelectorAll('.crcard')[+m[2]-1];if(b){e.preventDefault();b.click();}}
   else if(scr.querySelector('.celev')&&(c==='Enter'||c==='NumpadEnter')&&!e.target.closest('button')){e.preventDefault();ACTIONS.cGo();}
   else if(scr.querySelector('.czone')&&(c==='Enter'||c==='Space')){e.preventDefault();ACTIONS.cZoneGo();}});
 
@@ -3161,10 +3211,10 @@ function devPanel(open){let el=$('#devpanel');if(!el){el=document.createElement(
     '<div class="drow">'+devSel('pG1',devGunOpts(),G.player.slots[0].id)+devSel('pG2',devGunOpts(),(G.player.slots[1]||{}).id)+'<button data-act="devSwapGuns">換武器</button></div>'+
     '<div class="drow">'+devSel('pOut',Object.keys(OUTFITS).map(k=>[k,OUTFITS[k].name]),save.outfit)+'<button data-act="devOutfit">換服裝（重開）</button></div>'+
     '<div class="drow">'+devSel('pSpeed',[[1,'1x'],[2,'2x'],[4,'4x']],G.dev.speed)+'<label class="dchk"><input type="checkbox" data-pdev="god"'+(G.dev.god?' checked':'')+'>無敵</label><label class="dchk"><input type="checkbox" data-pdev="infDodge"'+(G.dev.infDodge?' checked':'')+'>無限閃避</label><label class="dchk"><input type="checkbox" data-pdev="noSpawn"'+(G.dev.noSpawn?' checked':'')+'>停生怪</label></div>'+
-    '<div class="drow"><button data-act="devBack">回設定</button><button data-act="menu">離開</button></div></div>';
+    '<div class="drow"><button data-act="devErr">製造錯誤</button><button data-act="devBack">回設定</button><button data-act="menu">離開</button></div></div>';
   el.querySelectorAll('[data-dev]').forEach(s=>s.addEventListener('change',()=>{const k=s.dataset.dev;if(k==='pBoss')el.dataset.boss=s.value;if(k==='pMul')el.dataset.mul=s.value;if(k==='pType')el.dataset.type=s.value;if(k==='pSpeed'){G.dev.speed=+s.value;DevCfg.speed=+s.value;}}));
   el.querySelectorAll('[data-pdev]').forEach(s=>s.addEventListener('change',()=>{const k=s.dataset.pdev;G.dev[k]=s.checked;DevCfg[k]=s.checked;if(k==='noSpawn'){G.def.rate=s.checked?0:LEVELS[G.lv].rate||2;G.eliteT=s.checked?1e9:20;G.surgeT=s.checked?1e9:30;}}));
-  el.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;e.stopPropagation();const f=ACTIONS[b.dataset.act];if(f)f(b.dataset.arg);};}
+  el.onclick=e=>{const b=e.target.closest('[data-act]');if(!b)return;e.stopPropagation();const f=ACTIONS[b.dataset.act];try{crumb(b.dataset.act+(b.dataset.arg!==undefined?':'+b.dataset.arg:''));}catch(_){}if(f)f(b.dataset.arg);};}
 function devTick(){if(!G||!G.dev)return;const el=$('#devstats');if(!el)return;const s=devStats(),D=G.dev;const guns=Object.entries(D.byGun).sort((a,b)=>b[1]-a[1]).map(([k,v])=>GUNS[k].name+' '+Math.round(v).toLocaleString()).join('<br>');
   const src=Object.entries(D.src).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>esc(k)+' '+Math.round(v)).join('、');
   const boss=G.bosses.filter(b=>!b.dead).map(b=>esc(b.name)+' '+Math.round(b.hp).toLocaleString()+'/'+Math.round(b.maxHp).toLocaleString()).join('<br>');
@@ -3197,6 +3247,81 @@ Object.assign(ACTIONS,{
   devOutfit:()=>{const el=$('#devpanel');DevCfg.outfit=el.querySelector('[data-dev=pOut]').value;devStart();},
   devBack:()=>{devPanel(false);G=null;$('#devpanel')&&$('#devpanel').remove();renderDev();},
 });
+
+/* ================= 回饋表單 ================= */
+let LAST_RUN=null,FB={kind:'bug',msg:'',contact:'',attach:true,ret:null,busy:false};
+const FB_KINDS=[['bug','錯誤回報','例如：打完 8F 魔王後畫面卡住，按什麼都沒反應。'],['balance','太難／太簡單','例如：23F 季度目標太難達成，每次都失敗。'],['idea','建議','例如：希望可以自訂按鈕位置。'],['other','其他','想說什麼都可以。'],['delete','刪除我的資料','會自動附上你的裝置代碼。']];
+function runSummary(g,res){if(!g)return null;const p=g.player;return {mode:g.climbRun?'climb':g.daily?'daily':g.def.endless?'endless':g.def.survival?'survival':'floor',floor:floorLabel(g.daily?g.daily.floor:g.lv),result:res||(g.dead?'death':'playing'),seconds:Math.floor(g.time),kills:p.kills,lvl:p.lvl,guns:p.slots.map(s=>s.id),outfit:save.outfit,killer:g.killer||null};}
+function fbContext(){const run=(G&&mode==='paused')?runSummary(G,'playing'):LAST_RUN;return {run,screen:innerWidth+'x'+innerHeight,ua:navigator.userAgent.slice(0,160),lang:navigator.language,standalone:!!(matchMedia&&matchMedia('(display-mode: standalone)').matches),cleared:save.cleared.length};}
+function fbRunText(r){if(!r)return '（還沒有遊玩紀錄）';const md={floor:'樓層',daily:'每日挑戰',endless:'無限加班',survival:'午休保衛戰',climb:'爬樓'}[r.mode]||r.mode;const rs={win:'通關',death:'陣亡',quit:'早退',playing:'遊玩中'}[r.result]||r.result;return md+'　'+(r.floor||'')+'　'+rs+'　'+fmtT(r.seconds||0)+'　擊倒 '+(r.kills||0);}
+function renderFeedback(){const k=FB_KINDS.find(x=>x[0]===FB.kind)||FB_KINDS[0];const ctx=fbContext();
+  show('<div class="memo fb" role="dialog" aria-label="回報問題"><h2>回報問題</h2><p class="hint" style="margin:0">你的回饋會直接送到開發者的後台，每一則都會看。</p>'+
+    '<div class="fbk">'+FB_KINDS.filter(x=>x[0]!=='delete'||FB.kind==='delete').map(([id,t])=>'<button class="'+(FB.kind===id?'on':'')+'" data-act="fbKind" data-arg="'+id+'">'+t+'</button>').join('')+'</div>'+
+    '<label class="fbl">想說的話<span>（5 到 1000 字）</span><textarea id="fbmsg" maxlength="1000" rows="6" placeholder="'+esc(k[2])+'">'+esc(FB.msg)+'</textarea><small id="fbcnt">'+FB.msg.length+' / 1000</small></label>'+
+    '<label class="fbl">聯絡方式<span>（選填，想收到回覆再留：Email 或 Threads 帳號）</span><input id="fbcontact" maxlength="100" value="'+esc(FB.contact)+'"></label>'+
+    '<label class="fbc"><input type="checkbox" id="fbattach"'+(FB.attach?' checked':'')+'>附上遊戲資訊（幫助找出問題）</label>'+
+    '<div class="fbinfo">'+(FB.kind==='delete'?'裝置代碼：'+esc(save.device)+'（一定會附上）':'版本 v'+VERSION+'　'+esc(platformTag())+'　'+esc(ctx.screen)+'<br>'+(mode==='paused'?'目前這局：':'最近一局：')+esc(fbRunText(ctx.run)))+'　<button class="linkbtn" data-act="privacy">隱私說明</button></div>'+
+    '<p id="fbmsgline" class="fbmsg"></p><div class="row"><button class="btn" data-act="fbSend"'+(FB.busy?' disabled':'')+'>'+(FB.busy?'送出中…':'送出')+'</button><button class="btn ghost" data-act="fbBack">返回</button></div></div>','#fbmsg');
+  const ta=$('#fbmsg');ta.addEventListener('input',()=>{FB.msg=ta.value;$('#fbcnt').textContent=ta.value.length+' / 1000';});$('#fbcontact').addEventListener('input',e=>{FB.contact=e.target.value;});$('#fbattach').addEventListener('change',e=>{FB.attach=e.target.checked;});}
+function fbSend(){const msg=FB.msg.trim(),line=$('#fbmsgline');if(msg.length<5){line.textContent='再多寫一點點，至少 5 個字。';return;}
+  const last=+(localStorage.getItem('zo_fb_last')||0);if(Date.now()-last<60000){line.textContent='剛剛才送過，請一分鐘後再送。';return;}
+  FB.busy=true;renderFeedback();const body={device:save.device,version:VERSION,kind:FB.kind,message:msg.slice(0,1000),contact:FB.contact.trim().slice(0,100)||null,platform:platformTag(),context:FB.attach?fbContext():null};
+  fetch(LB.url+'/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key,Prefer:'return=minimal'},body:JSON.stringify(body)})
+    .then(r=>{if(!r.ok)throw new Error(r.status);localStorage.setItem('zo_fb_last',String(Date.now()));FB.busy=false;FB.msg='';
+      show('<div class="memo fb" role="dialog" aria-label="回報完成"><h2>收到了！</h2><p>謝謝你的回饋，開發者會認真看。</p><p class="cq">「HR 表示：你的意見已經列入會議紀錄。」</p><button class="btn" data-act="fbBack">返回</button></div>','[data-act=fbBack]');sfx('clear');})
+    .catch(()=>{FB.busy=false;renderFeedback();const l=$('#fbmsgline');if(l)l.textContent='送出失敗（網路問題或送得太頻繁），你寫的內容還在，請稍後再試一次。';});}
+Object.assign(ACTIONS,{
+  feedback:()=>{FB.ret=scr.querySelector('.memo[aria-label="設定"]')?'settings':mode==='paused'?'pause':'menu';if(FB.kind==='delete'){FB.kind='bug';FB.msg='';FB.attach=true;}renderFeedback();},
+  fbKind:a=>{FB.kind=a;const ta=$('#fbmsg');if(ta)FB.msg=ta.value;renderFeedback();},
+  fbSend:()=>{if(!FB.busy)fbSend();},
+  fbBack:()=>{if(FB.ret==='settings'){renderSettings();}else if(FB.ret==='pause'&&G&&!G.ended){mode='play';pauseGame();}else renderMenu();},
+});
+
+/* ================= 錯誤自動回報 ================= */
+const CRUMBS=[];function crumb(t){CRUMBS.push(t);if(CRUMBS.length>10)CRUMBS.shift();}
+const ERR_SENT=new Set();let ERR_TIMES=[];
+function errCtx(){const g=G;return {mode:mode,run:g?{floor:floorLabel(g.daily?g.daily.floor:g.lv),phase:g.phase,time:Math.floor(g.time||0),climb:!!g.climbRun,dev:!!g.dev}:null,crumbs:CRUMBS.slice(),screen:innerWidth+'x'+innerHeight,ua:navigator.userAgent.slice(0,160)};}
+function errSendBody(body){return fetch(LB.url+'/rest/v1/client_errors',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key,Prefer:'return=minimal'},body:JSON.stringify(body),keepalive:true}).then(r=>{if(!r.ok)throw new Error(r.status);});}
+function errQueue(){try{return JSON.parse(localStorage.getItem('zo_err_q')||'[]');}catch(e){return [];}}
+function reportError(kind,msg,stack){try{
+  if(!save||!save.settings||!save.settings.telemetry)return;
+  msg=String(msg||'unknown').slice(0,300);const st=String(stack||'').split('\n').slice(0,6).map(l=>l.replace(/\(?(https?|file):\/\/[^)\s]*\/([^/)\s]+)/g,'$2').trim()).join('\n').slice(0,1000);
+  const sig=kind+'|'+msg+'|'+(st.split('\n')[1]||'');if(ERR_SENT.has(sig))return;ERR_SENT.add(sig);
+  const now=Date.now();ERR_TIMES=ERR_TIMES.filter(t=>now-t<5000);ERR_TIMES.push(now);if(ERR_TIMES.length>=3&&G&&G.toasts){try{toast('遊戲發生錯誤，已自動回報，建議重新開啟',3);}catch(e){}}
+  const day=new Date().toISOString().slice(0,10);let cnt={};try{cnt=JSON.parse(localStorage.getItem('zo_err_day')||'{}');}catch(e){}if(cnt.d!==day)cnt={d:day,n:0};if(cnt.n>=20)return;cnt.n++;localStorage.setItem('zo_err_day',JSON.stringify(cnt));
+  const body={device:save.device,version:VERSION,platform:platformTag(),kind,message:msg,stack:st||null,context:errCtx()};
+  errSendBody(body).catch(()=>{const q=errQueue();if(q.length<5){q.push(body);localStorage.setItem('zo_err_q',JSON.stringify(q));}});
+}catch(e){}}
+function errFlush(){const q=errQueue();if(!q.length||!save.settings.telemetry)return;localStorage.removeItem('zo_err_q');q.forEach((b,i)=>setTimeout(()=>errSendBody(b).catch(()=>{}),i*9000));}
+window.addEventListener('error',e=>reportError('error',e.message,e.error&&e.error.stack||(e.filename?e.filename+':'+e.lineno:'')));
+window.addEventListener('unhandledrejection',e=>{const r=e.reason;reportError('promise',r&&r.message||String(r),r&&r.stack);});
+setTimeout(errFlush,4000);
+/* ================= 更新提示 ================= */
+let UPD_VER=null,UPD_DISMISSED=false,UPD_READY=false;
+function updCanShow(){return !(mode==='play'||mode==='cards'||mode==='paused'||(G&&!G.ended));}
+function maybeShowUpdate(){if(!UPD_READY||UPD_DISMISSED||!updCanShow())return;const el=$('#upd');if(!el)return;el.querySelector('span').textContent='有新版本'+(UPD_VER?' v'+UPD_VER:'')+'，點「立刻更新」就會換成新版';el.classList.remove('hidden');}
+function showUpdateBar(){UPD_READY=true;fetch('./index.html',{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=/const VERSION='([^']+)'/.exec(t);if(m&&m[1]!==VERSION)UPD_VER=m[1];}).catch(()=>{}).finally(maybeShowUpdate);}
+setInterval(maybeShowUpdate,3000);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&navigator.serviceWorker&&navigator.serviceWorker.getRegistration)navigator.serviceWorker.getRegistration().then(r=>r&&r.update().catch(()=>{})).catch(()=>{});});
+/* ================= 隱私說明 ================= */
+function renderPrivacy(){show('<div class="memo priv" role="dialog" aria-label="隱私說明"><h2>隱私說明</h2><p class="hint" style="margin:0">最後更新：2026 年 9 月 29 日</p>'+
+  '<h4>我們收集什麼</h4><ul><li><b>遊玩數據</b>：模式、樓層、結果、時間、擊倒數、等級、死因、武器、服裝、選卡、閃避與受擊次數、平台、版本；爬樓另外記錄路線、事件、獎勵與商店選擇。</li><li><b>錯誤回報</b>：錯誤訊息、發生位置、當下的樓層與最近 10 個操作、螢幕大小、瀏覽器資訊。</li><li><b>排行榜</b>（你開啟上傳時）：你取的名字、角色外觀、職稱與成績。</li><li><b>回報問題</b>（你送出時）：你寫的內容、選填的聯絡方式、勾選時附上的遊戲資訊。</li></ul>'+
+  '<h4>我們不收集什麼</h4><p>真實姓名、帳號、電話、位置、通訊錄。上面的資料都綁在一組<b>裝置代碼</b>上，這是遊戲第一次開啟時隨機產生的，和你的手機或電腦本身無關。</p>'+
+  '<h4>用來做什麼</h4><p>調整遊戲平衡、修正錯誤、顯示排行榜。不會拿來打廣告，也不會賣給任何人。</p>'+
+  '<h4>保存多久</h4><ul><li>遊玩數據、錯誤回報：180 天後自動刪除</li><li>回報問題：1 年後自動刪除</li><li>排行榜：保留到你要求刪除</li></ul>'+
+  '<h4>存在哪裡</h4><p>資料存在 Supabase 的資料庫；遊戲字型由 Google Fonts 提供。</p>'+
+  '<h4>怎麼關閉</h4><p>設定 →「資料與支援」可以關閉「上傳成績到排行榜」和「匿名遊玩數據與錯誤回報」，關閉後就不會再上傳。</p>'+
+  '<h4>怎麼刪除</h4><p>你的裝置代碼：<code id="devcode">'+esc(save.device)+'</code> <button class="linkbtn" data-act="copyDev">複製</button></p><p>按下方「申請刪除我的資料」，會自動帶入裝置代碼送出，收到後會刪除這台裝置在排行榜、遊玩數據、錯誤回報與回報問題中的所有紀錄。</p>'+
+  '<h4>聯絡</h4><p>有任何問題，請使用設定裡的「回報問題」。</p>'+
+  '<div class="row"><button class="btn ghost" data-act="privDelete">申請刪除我的資料</button><button class="btn" data-act="privBack">返回</button></div></div>','[data-act=privBack]');}
+Object.assign(ACTIONS,{
+  privacy:()=>{PRIV_RET=scr.querySelector('.memo.fb')?'feedback':'settings';renderPrivacy();},
+  privBack:()=>{if(PRIV_RET==='feedback')renderFeedback();else renderSettings();},
+  privDelete:()=>{FB.kind='delete';FB.msg='請刪除這台裝置的所有資料。';FB.attach=false;FB.ret='settings';renderFeedback();},
+  copyDev:()=>{const t=save.device;(navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toastMenu&&toastMenu('已複製裝置代碼')).catch(()=>{const r=document.createRange();const el=$('#devcode');if(el){r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}});},
+  devErr:()=>{setTimeout(()=>{throw new Error('測試錯誤（測試模式按鈕）');},0);},
+});
+let PRIV_RET='settings';
 
 requestAnimationFrame(loop);
 </script>
