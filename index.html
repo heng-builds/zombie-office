@@ -434,7 +434,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.20.5';
+const VERSION='0.20.6';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -2671,8 +2671,9 @@ const cyc=(label,val,act)=>'<button class="btn ghost" data-act="'+act+'" style="
 function toastMenu(t){let el=$('#mtoast');if(!el){el=document.createElement('div');el.id='mtoast';el.style.cssText='position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:#1a1d27;color:#ffd23f;font-weight:900;padding:10px 16px;border:3px solid #ffd23f;max-width:90%;text-align:center';document.body.appendChild(el);}el.textContent=t;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',2200);}
 /* ================= 匿名遊玩數據 ================= */
 function platformTag(){return (isTouch?(innerWidth<innerHeight?'mobile-p':'mobile-l'):'desktop');}
+function floorLabel(i){const L=LEVELS[i];if(!L)return null;return L.endless?'無限加班':L.floor+' '+L.name;}
 function telSend(res){if(!save.settings.telemetry||!G)return;const g=G,p=g.player,L=g.daily?g.def:LEVELS[g.lv];
-  const body={device:save.device,version:VERSION,mode:g.daily?'daily':L.endless?'endless':L.survival?'survival':'floor',floor:g.daily?g.daily.floor:g.lv,result:res,seconds:Math.floor(g.time),kills:p.kills,lvl:p.lvl,
+  const body={device:save.device,version:VERSION,mode:g.daily?'daily':L.endless?'endless':L.survival?'survival':'floor',floor:floorLabel(g.daily?g.daily.floor:g.lv),result:res,seconds:Math.floor(g.time),kills:p.kills,lvl:p.lvl,
     killer:res==='death'?String(g.killer||g.lastHit||'').slice(0,20):null,gun1:p.slots[0].id,gun2:(p.slots[1]||{}).id||null,outfit:save.outfit,heat:g.heatPts||0,mods:(g.mods||[]).join(',').slice(0,60),
     cards:JSON.stringify((g.cardLog||[]).slice(0,60)),dodges:p.dodges||0,hits:g.hits||0,platform:platformTag()};
   fetch(LB.url+'/rest/v1/run_stats',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key,Prefer:'return=minimal'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});}
@@ -3089,7 +3090,7 @@ Climb.renderEnd=function(R){const st=R.st,sn=R.sn||{slots:st.loadout},lastF=st.l
     '<p class="cq">'+q+'</p><p id="lbstatus" class="lbnote"></p><button class="btn" data-act="cAgain">'+(R.clear?'再爬一次（挑戰更快）':'再爬一次')+'</button><div class="row"><button class="btn ghost" data-act="menu">返回主選單</button></div></div>','[data-act=cAgain]');
   if(R.clear){sfx('clear');}};
 Climb.tel=function(res,steps,killer){if(!save.settings.telemetry)return;const st=Climb.st,sn=st.snapEnd||st.snap||{slots:st.loadout,lvl:1};
-  const body={device:save.device,version:VERSION,mode:'climb',floor:st.lastFloor??0,result:res,seconds:Math.floor(st.time),kills:st.kills,lvl:sn.lvl||1,killer:res==='death'?String(killer||'').slice(0,20):null,gun1:(sn.slots||[])[0]||null,gun2:(sn.slots||[])[1]||null,outfit:save.outfit,heat:0,mods:'',
+  const body={device:save.device,version:VERSION,mode:'climb',floor:floorLabel(st.lastFloor??0),result:res,seconds:Math.floor(st.time),kills:st.kills,lvl:sn.lvl||1,killer:res==='death'?String(killer||'').slice(0,20):null,gun1:(sn.slots||[])[0]||null,gun2:(sn.slots||[])[1]||null,outfit:save.outfit,heat:0,mods:'',
     cards:JSON.stringify(Object.keys(st.passives)),dodges:0,hits:0,platform:platformTag(),extra:JSON.stringify({steps,route:st.route,ev:st.log.ev.slice(0,40),rw:st.log.rw.slice(0,40),shop:st.log.shop,seed:st.seed}).slice(0,4000)};
   fetch(LB.url+'/rest/v1/run_stats',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key,Prefer:'return=minimal'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});};
 Climb.renderZone=function(z,next){const Z=CLIMB_CONFIG.zones[z];Climb._zoneNext=next;
