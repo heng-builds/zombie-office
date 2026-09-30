@@ -459,7 +459,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.22.0';
+const VERSION='0.24.0';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -517,7 +517,7 @@ const GUNS={
     pal:{C:'#2b2d42',c:'#4b5366',S:'#9aa3b5',A:'#1a1d27',K:'#0d0f14'},rows:["....CCCCCCC.....","...CcccccccC....","...CcCCCCCcC....","...CcCCCCCcC....","...CcCCCCCcC....","...CcccccccC....","....CCCCCCC.....","......SS........","..AAAAAAAAAAAA..","..A.CCCCCCCC.A..","..A.CccccccC.A..","....CCCCCCCC....",".......SS.......",".......SS.......","..SSSSSSSSSSSS..",".S.....SS.....S.",".KK....KK....KK."]},
   katana:  {name:'董事長的武士刀',tier:'legend',price:0,unlock:'chairman',dmg:62,rate:0.5,speed:0,spread:0,pellets:1,pierce:0,life:0,size:0,color:'#e6f7ff',swing:{shape:'arc',reach:92,arc:120,kb:14,combo:true,crit:.15},glow:'#bde0fe',feel:'三刀一組，第三刀大範圍，會暴擊',desc:'董事長室牆上的擺設。據說是某年尾牙抽中的，從來沒人敢碰。',grip:5,recoil:2,
     pal:{B:'#dfe6ee',b:'#9aa9bd',E:'#ffffff',T:'#ffd23f',t:'#c99a12',H:'#1a1d27',R:'#9d0208'},rows:[".....T...............","tHRHRTTBBBBBBBBBBBBEE","tHRHRTTbbbbbbbbbbbE..",".....T..............."]},
-  laser:   {name:'簡報雷射筆',tier:'legend',price:3200,dmg:7,rate:0.035,speed:1500,spread:0.01,pellets:1,pierce:99,life:0.45,size:3,color:'#ff2e63',kind:'laser',glow:'#ff2e63',feel:'無限穿透的直線',desc:'開會時最強的武器，無限穿透。',grip:6,fore:13,
+  laser:   {name:'簡報雷射筆',tier:'legend',price:3200,dmg:5,rate:0.035,speed:1500,spread:0.01,pellets:1,pierce:99,life:0.45,size:3,color:'#ff2e63',kind:'laser',glow:'#ff2e63',feel:'無限穿透的直線',desc:'開會時最強的武器，無限穿透。',grip:6,fore:13,
     pal:{g:'#c99a12',G:'#ffd23f',R:'#ff2e63',B:'#1a1d27',b:'#3d4455',W:'#ffffff',K:'#1a1d27',r:'#ff8fab'},rows:["........................RR..","KKKKKKKKKKKKKKKKKKKKKKKKRRRr","KbbbbbbbbGGbbbbbbbbbbbbKRWRr","KBBBBBBBBGgBBBBBBBBBBBBKRRRr","KKKKKKKKKKKKKKKKKKKKKKKKRR..","......KGGK..................","......KggK..................","......KKKK.................."]},
   resign:  {hs:.85,name:'離職信電磁砲',tier:'legend',price:5000,dmg:250,rate:4,speed:0,spread:0,pellets:1,pierce:99,life:0,size:0,color:'#c77dff',beam:{charge:1,width:30,len:1500},glow:'#c77dff',feel:'蓄力一秒，貫穿全場',desc:'蓄力 1 秒後射出貫穿全場的光束。傷害極高、冷卻很長。',grip:5,fore:12,recoil:14,
     pal:{e:'#c9d0db',G:'#ffd23f',R:'#c1121f',E:'#f4f4f0',B:'#1d3557',b:'#3a86ff',L:'#bde0fe',K:'#1a1d27'},rows:["....KKKKKKKKK................","...KEEEEEEEEEK...............","..KEeRRRRRRReEKKKKKKKKKKKKK..","KKKEEEEGEEEEEEBbbbbbbbbbbbbLL","KBBEEEEEEEEEEEBLLLLLLLLLLLLLL","KKKEeeeeeeeeeEBbbbbbbbbbbbbLL","..KEEEEEEEEEEEKKKKKKKKKKKKK..","...KKKKBBKKKKK...............","......KBBK...................","......KKKK..................."]},
@@ -575,7 +575,7 @@ const ACH_TITLES={collapse:'看著公司倒閉的人',fourth:'去過四樓的人
 const FLOOR_TIP={B1:'逃脫關：撐到電梯到，再衝進右側電梯。車子被打爆會爆炸',  '2F':'輸送帶會把你帶著走，從中間的穿越口通過','8F':'打爆販賣機會掉出 10 秒加成','9F':'跑步機會把人往後帶；靠近啞鈴架可以推倒壓殭屍','23F':'季度目標看板會隨機公布目標，達成掉加薪通知，失敗殭屍會被激勵','16F':'保護中央的原型機，畫面邊緣出現藍色箭頭代表它正被攻擊；同色傳送門可以瞬間移動','6F':'靠近響著的電話停一下就能掛斷，掛斷時會震開身邊的殭屍；畫面邊緣的紅色箭頭指向響鈴電話','4F':'……這層好像不該存在'};
 /* ================= 爬樓模式：數值設定 ================= */
 const CLIMB_CONFIG={
-  unlockFloor:3,quotaMul:1,hpStep:.04,hpLate:.07,lateFrom:7,dmgStep:.03,densStep:.04,densFrom:4,survivalTime:60,elevHeal:.4,xpMul:1.6,floorCoins:60,clearBonus:2000,
+  unlockFloor:2,quotaMul:1,hpStep:.04,hpLate:.07,lateFrom:7,dmgStep:.03,densStep:.04,densFrom:4,survivalTime:60,elevHeal:.4,xpMul:1.6,floorCoins:60,clearBonus:2000,
   route:[{f:[12]},{f:[0]},{f:[13,1],fork:1},{f:[19],secret:1},{f:[2]},{f:[18,3],fork:1},{f:[14,15],fork:1},{f:[4],zb:1},{f:[5]},{f:[6,16],fork:1},{f:[7],zb:1},{f:[17,8],fork:1},{f:[20]},{f:[9],zb:1},{f:[10],zb:1,final:1}],
   shopAfter:[4,8,11],
   zoneOf:{12:0,0:0,13:0,1:0,19:0,2:0,18:1,3:1,14:1,15:1,4:1,5:2,6:2,16:2,7:2,17:3,8:3,20:3,9:3,10:4},
@@ -639,7 +639,8 @@ const CLIMB_SHOP=[
   {k:'swap',n:'換槍',d:'抽兩把武器選一把替換',p:250,c:'#6b7688'},
 ];
 const CLIMB_BOSS={4:{title:'部門主管突襲',boss:'kpi',line:'「午休結束了，誰准你們休息？」'},7:{add:['rumor','burst'],text:'副總經理被感染了！'},9:{add:['lockdodge','micshield'],text:'董事長開始封鎖你的行動！'},10:{final:'chairman',text:'董事長親自出馬'}};
-const CARD_TAGS={dmg:'攻擊',rate:'攻擊',speed:'機動',hp:'防禦',multi:'清群',pierce:'清群',magnet:'經濟',shield:'防禦',regen:'防禦',bonus:'經濟',dodge:'機動',punch:'攻擊'};
+const CARD_TAGS={dmg:'攻擊',rate:'攻擊',speed:'機動',hp:'防禦',multi:'清群',pierce:'清群',magnet:'經濟',shield:'防禦',regen:'防禦',bonus:'經濟',dodge:'機動',punch:'攻擊',sign:'攻擊',bossd:'攻擊',bsize:'清群',rumor:'清群',jam:'控場',aura:'控場',boxes:'控場',appeal:'防禦',thorns:'防禦',dashd:'機動',mrate:'機動',expense:'經濟',train:'經濟',stipend:'經濟'};
+const CARD_BAL={softCap:2.0,softRate:.35,multiDmg:.75,jamMax:.25,bossDmg:[0,.10,.18,.25]};
 const ROLE_TAG={清群:'清群',單體:'攻擊',控場:'控場',生存:'防禦'};
 const BUILD_NAME={清群:'清群型',攻擊:'輸出型',控場:'控場型',防禦:'坦克型',機動:'游擊型',經濟:'賺錢型'};
 const PASSIVE_PAIRS={adrenaline:['veteran','sickLeave','scapegoat'],veteran:['adrenaline'],sickLeave:['adrenaline'],overtime:['kpi','employee'],kpi:['overtime'],employee:['overtime','boardTrust'],efficiency:['sales'],sales:['efficiency'],punctual:['teaRoom'],teaRoom:['punctual']};
@@ -651,6 +652,20 @@ const BOSS_LUP={mailman:7,kpi:2,gossip:4,rnd:3,parking:2,leader:2,hr:2,legal:2,g
 /* 無限加班後期平衡（只在無限加班生效） */
 const ENDLESS_BAL={xpFrom:20,xpGrow:1.08,xpDecay:.03,xpMin:.55,coinDecay:.04,coinMin:.4,softCap:2,softRate:.5,pierceFall:.15,pierceMin:.4,
   spdPerMin:.02,spdMax:.4,runnerMax:.2,throwerMax:.15,projPerMin:.015,projMax:.3,fanFrom:10,ringFrom:3,ringEvery:20,puddleFrom:5,puddleP0:.15,puddleMax:.35,touchStack:.15,touchMax:5,hpGrow:1.12,hpGrow2:1.08};
+const GUN_STYLE={stapler:['連射',1,'最基本的手槍，打哪都穩。'],rubber:['霰彈',1,'近距離威力大，貼近一群殭屍再開火。'],postit:['霰彈・控場',1,'扇形散射並減速，適合擋住衝過來的殭屍。'],coffee:['連射',1,'射速快、單體輸出穩，按住就好。'],
+ boomer:['貫穿',2,'丟出去會飛回來，來回都會打到，站位要讓它穿過殭屍群。'],clip:['貫穿',2,'單發傷害高、會爆頭，適合遠距離點掉強敵，清小怪較慢。'],tape:['控場',2,'命中會把殭屍黏住，搭配一把高傷害武器最好。'],water:['控場・霰彈',2,'近距離把殭屍推開，適合保命。'],
+ printer:['爆炸',2,'砲彈會爆炸，打一群殭屍最有效，小心不要打太近。'],excel:['連射・控場',1,'子彈會在殭屍之間跳躍，清群很穩。'],stamp:['近戰',2,'近戰重擊，要靠近才打得到，閃避時機很重要。'],ruler:['近戰',1,'近戰橫掃，攻擊範圍大，站在殭屍群邊緣揮。'],mop:['近戰',2,'旋轉攻擊一圈，適合被包圍時使用。'],
+ alarm:['控場',2,'放出去會吸引殭屍，趁機繞到側面攻擊。'],parcel:['爆炸',2,'彈射後爆炸，適合打聚在一起的殭屍。'],dumbbell:['近戰',3,'近戰重擊、速度慢，要算準時機揮。'],cigar:['控場',2,'留下煙霧削弱殭屍，適合守點。'],pen:['控場・貫穿',2,'墨水會留在地上減速並持續傷害，讓殭屍走進墨水區。'],
+ briefcase:['近戰',2,'可以擋下文件攻擊，適合對付會丟東西的魔王。'],umbrella:['近戰',2,'刺擊距離長，張開傘面可以擋前方攻擊。'],chair:['近戰',3,'旋轉衝撞，轉的時候移動變快，要主動衝進殭屍群。'],katana:['近戰',2,'三刀一組，第三刀範圍最大，要靠近才打得到。'],
+ laser:['貫穿・連射',1,'無限穿透的直線光束，連射太久會過熱，過熱時切換另一把武器。'],shredder:['連射',1,'越射越快，持續按住輸出最高。'],resign:['蓄力',3,'蓄力型：射擊前要先蓄力，適合對付魔王，清小怪較慢，建議搭配一把連射武器。'],
+ microwave:['爆炸',3,'加熱後爆炸，範圍大但需要等待，先放好再退開。'],turret:['召喚',2,'放下砲台自動攻擊，選好位置後在旁邊走位。'],phone:['控場',2,'電話會吸引並震暈殭屍，適合打亂殭屍群。']};
+function gunStyle(id){const s=GUN_STYLE[id];if(s)return {tags:s[0],stars:s[1],tip:s[2]};const r=(ROLES[id]||['一般'])[0];return {tags:r,stars:2,tip:(GUNS[id]&&GUNS[id].feel)||''};}
+const BOSS_PCT=[[.10,.25],[.15,.30],[.20,.40],[.25,.50]];
+const BOSS_RIDER={parking:['residue'],leader:['mark'],mailman:['residue'],kpi:['stress'],ghost:['dot'],accountant:['mark'],cs:['root'],blame:['stress'],gossip:['dot'],coach:['root','residue'],hr:['mark'],cio:['dot'],rnd:['residue'],boss:['residue'],pr:['root'],legal:['root','stress'],gm:['dot'],chairman:['mark'],dir_fin:['mark'],dir_ops:['residue'],dir_hr:['stress']};
+const MARK_TEXT={leader:'急件',accountant:'查帳',hr:'優退名單',chairman:'一閃',dir_fin:'查帳'};
+const WBAL={"coffee": 1.46, "boomer": 0.87, "clip": 0.76, "tape": 0.88, "water": 1.36, "mop": 1.53, "alarm": 3.5, "parcel": 1.49, "dumbbell": 3.5, "briefcase": 1.46, "shredder": 0.9, "printer": 0.87, "stamp": 1.94, "microwave": 1.27, "cigar": 2.3, "umbrella": 1.1, "chair": 3.5, "turret": 1.18, "pen": 1.21, "resign": 3.0, "stapler": 1.15, "rubber": 1.2, "katana": 0.9};
+const WBOSS={"excel": 1.71};
+const OT_PAY={rate:.12,streak:.10,streakMax:.5,minT:20,clearedMul:.5};
 const ORDER=[12,0,13,1,19,2,18,3,14,15,4,5,6,16,7,17,8,20,9,10,11];
 const PREREQ={0:[],12:[0],13:[0],1:[13,12],2:[1],18:[2],3:[18],14:[3],15:[14],4:[15],5:[4],6:[5],16:[6],7:[16],17:[7],8:[17],20:[8],9:[20],10:[9],11:[10]};
 const NOHIT_4F=[12,0,13,1];
@@ -794,7 +809,7 @@ const BOSSES={
   kpi:       {color:'#c65a00',name:'KPI 課長',   hp:1150,speed:64,scale:5.1,patterns:['spread','chart','spread','summon'],                   words:['KPI','OKR','150%'],        line:'「這季的 KPI 你要扛 150%。」'},
   accountant:{color:'#3d6b3d',name:'會計主任',   hp:1600,speed:62,scale:5.2,patterns:['stamp','beads','stamp','burst'],            words:['退件','扣薪','發票呢'],    line:'「這張單據沒有發票，退件。順便扣你薪水。」',salary:true},
   blame:     {color:'#9d0208',name:'甩鍋經理',   hp:2000,speed:78,scale:5.4,patterns:['blame','burst','dash','spread'],              words:['你的鍋','不是我'],         line:'「這件事是你負責的吧？」'},
-  hr:        {color:'#6a4c93',name:'人資處長',hp:2900,speed:66,scale:5.6,patterns:['purge','spread','summon','burst'],          words:['資遣','優化','調職'],      line:'「公司正在進行組織優化。」'},
+  hr:        {color:'#6a4c93',name:'人資處長',hp:2500,speed:66,scale:5.6,patterns:['purge','spread','summon','burst'],          words:['資遣','優化','調職'],      line:'「公司正在進行組織優化。」'},
   boss:      {color:'#1b1f3a',name:'副總經理',     hp:3500,speed:70,scale:5.9,  patterns:['spiral','dash','burst','yearend','spiral','dash'],            words:['加班','共體時艱','吃苦'],  line:'「年輕人要多吃苦。」'},
   legal:     {color:'#2f3348',name:'法務副總',     hp:3700,speed:60,scale:6,patterns:['wall','spread','homing','summon','grid','burst'],words:['合約','條款','免責'],  line:'「依照合約第 47 條，你沒有下班的權利。」',front:true},
   cio:       {color:'#1d4fbf',name:'資訊長',     hp:3100,speed:64,scale:5.7,patterns:['update','spread','reboot','summon','update','burst'],words:['更新中','重開機','404'],line:'「系統要強制更新，請勿關機。」'},
@@ -831,7 +846,7 @@ const LEVELS=[
   {floor:'9F', name:'健身房',     quota:100,rate:2.25,max:52,mix:{walker:.35,runner:.4,thrower:.1,tank:.15},             boss:'coach',    fa:'#2d6a4f',fb:'#285e46',diff:3.6},
   {floor:'16F',name:'研發實驗室', quota:120,rate:2.6,max:60,mix:{walker:.3,runner:.25,thrower:.15,tank:.1,shield:.1,splitter:.1},boss:'rnd',protect:{hp:1400},fa:'#e6ebf0',fb:'#dde3e9',diff:6.5},
   {floor:'20F',name:'公關部',     quota:140,rate:2.85,max:65,mix:{walker:.3,runner:.25,thrower:.15,tank:.1,shield:.1,splitter:.1},boss:'pr',fa:'#5a1e24',fb:'#4d1a1f',diff:7.5},
-  {floor:'6F', name:'客服中心',   phones:{need:6},rate:1.8,max:40,mix:{walker:.45,runner:.3,thrower:.15,healer:.1},boss:'cs',fa:'#3a4a63',fb:'#35445b',diff:2.5},
+  {floor:'6F', name:'客服中心',   phones:{need:5},rate:1.8,max:40,mix:{walker:.45,runner:.3,thrower:.15,healer:.1},boss:'cs',fa:'#3a4a63',fb:'#35445b',diff:2.5},
   {floor:'4F', name:'不存在的樓層',quota:60, rate:1.6,max:36,mix:{walker:.6,runner:.4},                                  boss:'ghost',dark:true,ghost:true,side:true,fa:'#23262f',fb:'#1f2229',diff:1.5},
   {floor:'23F',name:'總經理室',   quota:150,rate:2.95,max:68,mix:{walker:.3,runner:.25,thrower:.15,tank:.1,shield:.1,splitter:.1},boss:'gm',fa:'#43352e',fb:'#3b2f2a',diff:8.5},
 ];
@@ -891,6 +906,20 @@ const CARDS={
   bonus: {name:'績效獎金',  icon:'bonus', rar:'common',max:3,desc:l=>'金幣 +15%（目前 +'+(l*15)+'%）',apply:p=>{p.st.coin+=.15}},
   dodge: {name:'躲主管',    icon:'hide',  rar:'common',max:3,def:true,desc:l=>'閃避冷卻 -20%（目前 -'+Math.round((1-Math.pow(.8,l))*100)+'%），閃避後 1 秒移速 +30%',apply:p=>{p.st.dodgeCd=(p.st.dodgeCd||1)*.8;p.st.dodgeBoost=true;}},
   punch: {name:'準時打卡',  icon:'punch', rar:'common',max:3,def:true,desc:l=>'每次升等回復 '+(l*15)+' 血',apply:p=>{p.st.lvHeal=(p.st.lvHeal||0)+15}},
+  sign:  {name:'簽核流程',  icon:'dmg',   rar:'rare',  max:3,desc:l=>'每第 5 發攻擊傷害 +'+(75+l*25)+'%',apply:p=>{p.st.sign=(p.st.sign?p.st.sign+.25:1)}},
+  bossd: {name:'越級報告',  icon:'punch', rar:'rare',  max:3,desc:l=>'對魔王傷害 +'+[0,10,18,25][l]+'%',apply:p=>{p.st.bossDmg=(p.st.bossDmg||0)+.12}},
+  bsize: {name:'雙螢幕',    icon:'multi', rar:'common',max:3,desc:l=>'子彈體積 +'+(l*20)+'%',apply:p=>{p.st.bsize=(p.st.bsize||0)+.2}},
+  rumor: {name:'謠言擴散',  icon:'pierce',rar:'rare',  max:3,desc:l=>'擊倒殭屍時 '+(5+l*10)+'% 機率小範圍爆炸',apply:p=>{p.st.rumorP=(p.st.rumorP?p.st.rumorP+.1:.15)}},
+  jam:   {name:'影印機卡紙',icon:'rate',  rar:'common',max:3,desc:l=>'命中時 '+(3+l*5)+'% 機率讓殭屍暈眩 0.5 秒',apply:p=>{p.st.jam=(p.st.jam?p.st.jam+.05:.08)}},
+  aura:  {name:'會議延長',  icon:'speed', rar:'common',max:3,desc:l=>'身邊 120 範圍內的殭屍減速 '+(5+l*5)+'%',apply:p=>{p.st.aura=(p.st.aura?p.st.aura+.05:.10)}},
+  boxes: {name:'堆紙箱',    icon:'shield',rar:'common',max:2,desc:l=>'閃避時在原地丟下紙箱，碰到的殭屍減速，持續 '+(1+l)+' 秒',apply:p=>{p.st.boxes=(p.st.boxes?p.st.boxes+1:2)}},
+  appeal:{name:'申訴成功',  icon:'hp', rar:'rare',  max:3,desc:l=>'被打中後 2 秒內，回復這次傷害的 '+(l*30)+'%',apply:p=>{p.st.appeal=(p.st.appeal||0)+.3}},
+  thorns:{name:'客訴處理',  icon:'shield',rar:'common',max:3,desc:l=>'被殭屍碰到時，反彈 '+(l*30)+'% 傷害',apply:p=>{p.st.thorns=(p.st.thorns||0)+.3}},
+  dashd: {name:'外出洽公',  icon:'hide', rar:'common',max:2,desc:l=>'閃避距離 +'+(l*20)+'%',apply:p=>{p.st.dashDist=(p.st.dashDist||0)+.2}},
+  mrate: {name:'跑公文',    icon:'rate',  rar:'common',max:3,desc:l=>'移動時射速 +'+(l*8)+'%',apply:p=>{p.st.moveRate=(p.st.moveRate||0)+.08}},
+  expense:{name:'報帳',     icon:'bonus', rar:'common',max:3,desc:l=>'擊倒菁英殭屍額外 +'+(l*20)+' 金幣',apply:p=>{p.st.expense=(p.st.expense||0)+20}},
+  train: {name:'教育訓練',  icon:'bonus', rar:'common',max:3,desc:l=>'經驗 +'+(l*10)+'%',apply:p=>{p.st.xpBonus=(p.st.xpBonus||0)+.1}},
+  stipend:{name:'職務加給', icon:'bonus', rar:'common',max:3,desc:l=>'每存活 1 分鐘 +'+(l*15)+' 金幣',apply:p=>{p.st.stipend=(p.st.stipend||0)+15}}
 };
 const WCARDS={
   dmg:{name:'傷害強化',rar:'rare',max:5,desc:(g,l)=>g.name+' 傷害 +20%（目前 +'+(l*20)+'%）'},
@@ -924,7 +953,7 @@ const SIG={
   umbrella:{name:'撐開',desc:['刺擊後張開傘面，擋住前方文件 1 秒','刺擊距離 +30%','傷害 +40%']},
   chair:{name:'滑輪加速',desc:['旋轉時間 +1 秒','旋轉範圍 +30%','旋轉時移動更快，並把殭屍撞得更遠']},
   katana:{name:'一閃',desc:['每揮 8 刀往前衝刺斬擊，衝刺中無敵','第三刀範圍再加大','暴擊擊殺時刀光往前延伸']},
-  laser:{name:'雙光束',desc:['同時射出兩道雷射','雷射命中的殭屍減速 20%','雷射寬度加倍']},
+  laser:{name:'雙光束',desc:['同時射出兩道雷射','雷射命中的殭屍減速 20%','雷射寬度加倍，過熱上限 +2 秒']},
   resign:{name:'群發離職信',desc:['蓄力時間 -30%','光束結束後殘留 1 秒灼燒地帶','發射時同時往後方射一道']},
 };
 const EVENTS={
@@ -1322,7 +1351,7 @@ function startRun(lv,loadout,opts){try{crumb('開始 '+(LEVELS[lv]?LEVELS[lv].fl
 function xpNeed(l){return 6+l*3;}
 function xpNeedG(l){const B=ENDLESS_BAL;return xpNeed(l)*(G&&G.def.endless&&l>B.xpFrom?Math.pow(B.xpGrow,l-B.xpFrom):1);}
 function endlessXpMul(){const B=ENDLESS_BAL;return G&&G.def.endless?Math.max(B.xpMin,1-B.xpDecay*hellM()):1;}
-function gainXp(n){const g=G,p=g.player;p.xp+=n*endlessXpMul();while(p.xp>=xpNeedG(p.lvl)){p.xp-=xpNeedG(p.lvl);p.lvl++;g.pendingLv++;}}
+function gainXp(n){const g=G,p=g.player;p.xp+=n*endlessXpMul()*(1+(p.st.xpBonus||0));while(p.xp>=xpNeedG(p.lvl)){p.xp-=xpNeedG(p.lvl);p.lvl++;g.pendingLv++;}}
 function bestArc(p,reach,arcR){let best=p.aim,bn=0;const near=G.enemies.filter(e=>!e.dead&&(e.x-p.x)**2+(e.y-p.y)**2<(reach+60)**2);
   for(const e of near){const a=Math.atan2(e.y-p.y,e.x-p.x);let n=0;for(const o of near){let d=Math.atan2(o.y-p.y,o.x-p.x)-a;d=Math.atan2(Math.sin(d),Math.cos(d));if(Math.abs(d)<=arcR/2)n++;}if(n>bn){bn=n;best=a;}}return {a:best,n:bn};}
 function meleeHit(p,sw,a,reach,arcR,dmg,kb,opt){const g=G;let kills=0,hits=0;
@@ -1401,7 +1430,7 @@ function tryAction(kind){
   if((kind==='swap'||kind==='any')&&G.nearRack){toppleRack(G.nearRack);G.nearRack=null;return;}
   if((kind==='dash'||kind==='any')&&p.dashCd<=0&&p.dashT<=0&&!(p.spinT>0)){
     let vx=p.mx||0,vy=p.my||0;if(!vx&&!vy){vx=Math.cos(p.aim);vy=Math.sin(p.aim);}const l=Math.hypot(vx,vy)||1,pro=!!G.ob.dash;
-    p.dashT=pro?.22:.18;p.dashCd=(pro?1.5:3)*(p.st.dodgeCd||1)*(G.cp&&G.cp.dodgeMaster?.75:1);if(G.dev&&G.dev.infDodge)p.dashCd=0;const sp=pro?760:500;p.dashVx=vx/l*sp;p.dashVy=vy/l*sp;p.invuln=Math.max(p.invuln,pro?.3:.25);p.dodges=(p.dodges||0)+1;
+    p.dashT=pro?.22:.18;p.dashCd=(pro?1.5:3)*(p.st.dodgeCd||1)*(G.cp&&G.cp.dodgeMaster?.75:1);if(G.dev&&G.dev.infDodge)p.dashCd=0;const sp=(pro?760:500)*(1+(p.st.dashDist||0));p.dashVx=vx/l*sp;p.dashVy=vy/l*sp;p.dots=[];if(p.st.boxes){G.boxes=G.boxes||[];G.boxes.push({x:p.x,y:p.y,t:p.st.boxes});}p.invuln=Math.max(p.invuln,pro?.3:.25);p.dodges=(p.dodges||0)+1;
     if(p.st.dodgeBoost)p.boostT=1;if(G.ob.press){for(const e of G.enemies){if(e.dead)continue;if(Math.hypot(e.x-p.x,e.y-p.y)<160){if(!e.boss)e.stun=Math.max(e.stun,.5);else e.slow=Math.max(e.slow,.5);}}G.slashes.push({x:p.x,y:p.y,a:0,arc:TAU,r:160,life:.2,max:.2,color:'#ffffff',w:8});}sfx('dash');burst(p.x,p.y,'#bde0fe',8,120,3);p.ghosts.push({x:p.x,y:p.y,life:.3,face:p.face,frame:p.frame||1});G.dodgeUsed=true;
   }
 }
@@ -1415,9 +1444,10 @@ function endlessMech(g,dt){const B=ENDLESS_BAL,p=g.player,hm=hellM();if(!g.hell|
   if(hm>=B.ringFrom){g.ringT=(g.ringT??6)-dt;if(g.ringT<=0){g.ringT=B.ringEvery;const n=Math.min(24,12+Math.floor(hm-B.ringFrom)),gaps=hm<15?2:1,gw=hm<15?.7:.5,ga=[];for(let k=0;k<gaps;k++)ga.push(Math.random()*TAU);
     let made=0;for(let k=0;k<n*2&&made<n;k++){const a=k/(n*2)*TAU;if(ga.some(x=>Math.abs(Math.atan2(Math.sin(a-x),Math.cos(a-x)))<gw/2))continue;if(k%2)continue;const x=clamp(p.x+Math.cos(a)*270,40,WORLD.w-40),y=clamp(p.y+Math.sin(a)*270,40,WORLD.h-40);spawnEnemy(Math.random()<.3?'runner':'walker',{x,y});made++;}
     if(!g.ringTip){g.ringTip=1;g.banner={text:'被包圍了！',sub:'找缺口衝出去',t:1.8};}else toast('包圍！找缺口',1.2);}}
-  if(g.puddles&&g.puddles.length){p.pudT=(p.pudT||0)-dt;for(const q of g.puddles){q.t-=dt;if(p.pudT<=0&&(p.x-q.x)**2+(p.y-q.y)**2<(q.r+p.r*.5)**2){p.pudT=.5;damagePlayer(Math.max(4,6*dmgMul()),'加班咖啡漬');}}g.puddles=g.puddles.filter(q=>q.t>0);}}
+  if(g.puddles&&g.puddles.length){p.pudT=(p.pudT||0)-dt;for(const q of g.puddles){if(q.pct)continue;q.t-=dt;if(p.pudT<=0&&(p.x-q.x)**2+(p.y-q.y)**2<(q.r+p.r*.5)**2){p.pudT=.5;damagePlayer(Math.max(4,6*dmgMul()),'加班咖啡漬');}}g.puddles=g.puddles.filter(q=>q.t>0);}}
 function endlessOnKill(e){const g=G,B=ENDLESS_BAL,hm=hellM();if(!g.def.endless||!g.hell||e.boss||hm<B.puddleFrom)return;const pc=Math.min(B.puddleMax,B.puddleP0+.01*(hm-B.puddleFrom));if(Math.random()<pc){g.puddles=g.puddles||[];if(g.puddles.length>60)g.puddles.shift();g.puddles.push({x:e.x,y:e.y,r:30,t:2.5});}}
-function softCapM(m){const B=ENDLESS_BAL;if(!G||!G.def.endless||m<=B.softCap)return m;return B.softCap+(m-B.softCap)*B.softRate;}
+function dmgMulLite(){return 1+.12*Math.max(0,(G.player.lvl||1)-1)/4;}
+function softCapM(m){const B=ENDLESS_BAL;if(!G)return m;const cap=G.def.endless?B.softCap:CARD_BAL.softCap,rt=G.def.endless?B.softRate:CARD_BAL.softRate;if(m<=cap)return m;return cap+(m-cap)*rt;}
 function healMul(){return 1-fatigue();}
 function dmgMul(){const lv=G.def.endless?G.diff-1+G.time/60:G.diff;return (G.climbDmg||1)*Math.min(1.5,1+lv*.06)*Math.pow(1.08,hellM())*(G.heat.includes('dmg')?1.25:1);}
 function spawnEnemy(type,at,minion){
@@ -1474,9 +1504,9 @@ function floorMech(g,dt){const p=g.player,fl=g.def.floor;
   // 23F 電話
   if(g.phones&&!g.dead){const need=g.def.phones.need,ringing=g.phones.filter(q=>q.ring).length;
     if(g.phase==='wave'&&g.hung<need){for(const q of g.phones){if(q.ring){const cx=q.d.x+q.d.w/2,cy=q.d.y+q.d.h/2;q.spT=(q.spT??3)-dt;if(q.spT<=0){q.spT=7;spawnEnemy(pickType(g.def.mix),{x:clamp(cx+rand(-60,60),40,WORLD.w-40),y:clamp(cy+80,40,WORLD.h-40)});}
-          if(Math.hypot(p.x-cx,p.y-(cy+40))<95){q.hold+=dt;if(q.hold>=.8){q.ring=false;q.hold=0;g.hung++;for(const o of g.enemies){if(o.dead||o.boss)continue;const od=Math.hypot(o.x-p.x,o.y-p.y);if(od<170){o.stun=Math.max(o.stun,1);knock(o,p.x,p.y,160);}}g.slashes.push({x:p.x,y:p.y,a:0,arc:TAU,r:170,life:.3,max:.3,color:'#8fd14f',w:6});burst(cx,cy,'#8fd14f',14,200,3);sfx('coin');floatText(cx,cy-20,'已掛斷 '+g.hung+'/'+need,'#8fd14f',14);q.cd=rand(4,7);}}else q.hold=Math.max(0,q.hold-dt*2);}
+          if(Math.hypot(p.x-cx,p.y-(cy+40))<95){q.hold+=dt;if(q.hold>=.6){q.ring=false;q.hold=0;g.hung++;for(const o of g.enemies){if(o.dead||o.boss)continue;const od=Math.hypot(o.x-p.x,o.y-p.y);if(od<170){o.stun=Math.max(o.stun,1);knock(o,p.x,p.y,160);}}g.slashes.push({x:p.x,y:p.y,a:0,arc:TAU,r:170,life:.3,max:.3,color:'#8fd14f',w:6});burst(cx,cy,'#8fd14f',14,200,3);sfx('coin');floatText(cx,cy-20,'已掛斷 '+g.hung+'/'+need,'#8fd14f',14);q.cd=rand(4,7);}}else q.hold=Math.max(0,q.hold-dt*2);}
         else{q.cd-=dt;}}
-      if(ringing<Math.min(3,need-g.hung)){const cand=g.phones.filter(q=>!q.ring&&q.cd<=0);if(cand.length){const q=cand[Math.floor(Math.random()*cand.length)];q.ring=true;q.hold=0;q.spT=2;}}
+      g.ringGap=(g.ringGap||0)-dt;if(ringing<Math.min(3,need-g.hung)&&g.ringGap<=0){const cand=g.phones.filter(q=>!q.ring&&q.cd<=0);if(cand.length&&g.time<60)g.ringGap=1.2;if(cand.length){const q=cand[Math.floor(Math.random()*cand.length)];q.ring=true;q.hold=0;q.spT=2;}}
       if(g.hung>=need){for(const q of g.phones)q.ring=false;startBoss();}}}
   // B1 逃脫
   if(g.def.escape&&!g.dead&&g.phase!=='done'){const E=g.def.escape;g.exit=g.exit||{t:0,open:false,left:0,next:E.wait};g.exit.t+=dt;
@@ -1503,11 +1533,12 @@ function endlessBoss(){
 /* ---------- 射擊 ---------- */
 function fire(){
   const p=G.player,s=p.slots[p.active],g=GUNS[s.id],st=p.st,u=p.gunUp[s.id]||{},lvMul=1+.2*(u.dmg||0),sg=u.sig||0;
-  let rateMul=softCapM(st.rate*(1+.15*(u.rate||0)))*(p.rateBoost>0?1.2:1)*(p.coffeeT>0?2:1)*(p.tbuff&&p.tbuff.k==='rate'?1.35:1)*(G.climbRun?Climb.rateMul():1);
+  let rateMul=softCapM(st.rate*(1+.15*(u.rate||0))*(st.moveRate&&(p.mx||p.my)?1+st.moveRate:1)*(p.coffeeT>0?2:1))*(p.rateBoost>0?1.2:1)*(p.tbuff&&p.tbuff.k==='rate'?1.35:1)*(G.climbRun?Climb.rateMul():1);
   if(s.id==='shredder'&&sg>=1){p.ramp=Math.min(1,(p.ramp||0)+.06);rateMul*=1+(sg>=2?.8:.4)*p.ramp;}
   if(s.id==='printer'&&sg>=3)rateMul/=.7;
+  if(s.id==='laser'){if(p.lzOver>0)return;p.lzLast=G.time;}
   p.flashT=.05;p.recoil=g.recoil||3;p.shots=(p.shots||0)+1;
-  const dmg=g.dmg*softCapM(lvMul*st.dmg)*(p.tbuff&&p.tbuff.k==='dmg'?1.35:1)*(G.climbRun?Climb.dmgMul(p):1);
+  const signMul=(st.sign&&((p.shots||0)+1)%5===0)?1+st.sign:1;const dmg=(WBAL[s.id]||1)*g.dmg*softCapM(lvMul*st.dmg*signMul)*(p.tbuff&&p.tbuff.k==='dmg'?1.35:1)*(G.climbRun?Climb.dmgMul(p):1);
   if(g.swing){if(!meleeAny(p,meleeReach(p,s.id)*(g.swing.shape==='chair'?1.5:1.05))){p.flashT=0;p.recoil=0;return;}meleeSwing(p,s,g,dmg,sg,rateMul);return;}
   if(g.melee){const m=g.melee,cx=p.x+Math.cos(p.aim)*m.reach,cy=p.y+Math.sin(p.aim)*m.reach,rad=m.radius*(sg>=1?1.3:1);
     for(const e of G.enemies){if(e.dead)continue;const d=Math.hypot(e.x-cx,e.y-cy);if(d<rad+e.r){if(sg>=3)e.stampMark=true;hurt(e,dmg);knock(e,cx,cy,m.kb);}}
@@ -1519,10 +1550,11 @@ function fire(){
     const cnt=sg>=2?2:1;for(let i=0;i<cnt;i++){const tx=clamp(best.x+(i?rand(-70,70):0),30,WORLD.w-30),ty=clamp(best.y+(i?rand(-70,70):0),30,WORLD.h-30);G.lobs.push({x0:p.x,y0:p.y,x:tx,y:ty,t:0,fly:.35,fuse:1,dmg,sg});}gunSfx(s.id);p.cd=g.rate/rateMul;return;}
   if(g.special==='turret'){const max=sg>=2?3:2;G.turrets.push({x:p.x+Math.cos(p.aim)*30,y:p.y+Math.sin(p.aim)*30+10,life:16,cd:.4,dmg,sg});while(G.turrets.length>max)G.turrets.shift();burst(p.x,p.y,'#3a86ff',10,160,3);gunSfx(s.id);p.cd=g.rate/rateMul;return;}
   if(g.beam){p.charge=g.beam.charge*(sg>=1?.7:1);p.chargeDmg=dmg;p.chargeBeam=g.beam;p.chargeSig=sg;p.cd=g.rate/rateMul;gunSfx('resign');return;}
-  let n=g.pellets+st.multi,fan=g.fan||.12;const reach=gunSprite(s.id).img.width*2.2-(g.grip||3)*2.2+6;
+  let n=g.pellets+st.multi,fan=g.fan||.12;
+  const lzMul=st.multi>0?(n-st.multi+(s.id==='laser'?.5:CARD_BAL.multiDmg)*st.multi)/n:1;const reach=gunSprite(s.id).img.width*2.2-(g.grip||3)*2.2+6;
   if(s.id==='rubber'&&sg>=2)n++;
   const ox=p.x+Math.cos(p.aim)*reach,oy=p.y-2+Math.sin(p.aim)*reach;
-  const mk=(a,extra)=>{const b={x:ox,y:oy,vx:Math.cos(a)*g.speed,vy:Math.sin(a)*g.speed,dmg,pierce:g.pierce+st.pierce+(s.id==='stapler'&&sg>=2?1:0),life:g.life,size:g.size,color:g.color,explode:g.explode||0,kind:g.kind||'',glow:g.glow||null,confetti:!!g.confetti,
+  const mk=(a,extra)=>{const b={x:ox,y:oy,vx:Math.cos(a)*g.speed,vy:Math.sin(a)*g.speed,dmg:dmg*lzMul,pierce:g.pierce+st.pierce+(s.id==='stapler'&&sg>=2?1:0),life:g.life,size:g.size*(1+(st.bsize||0)),color:g.color,explode:g.explode||0,kind:g.kind||'',glow:g.glow||null,confetti:!!g.confetti,
       slow:g.slow||0,stun:g.stun||0,kb:g.kb||0,chain:g.chain||0,homing:g.homing||0,boom:g.boomerang||0,t:0,hit:new Set(),spin:0,gun:s.id,sg,...(extra||{})};
     if(s.id==='rubber'&&sg>=1)b.bounce=1;if(s.id==='postit'&&sg>=1)b.slowK=.4;if(s.id==='tape'&&sg>=2)b.stun=1.5;if(s.id==='water'&&sg>=1){b.dmg*=1.4;}
     if(s.id==='parcel'){b.bounce=3+(sg>=1?2:0);if(sg>=2)b.pierce+=2;if(sg>=3)b.dmg*=1.4;}if(s.id==='cigar')b.smoke=1;if(s.id==='pen'){b.ink=1;b.sg=sg;p.penN=(p.penN||0)+1;if(sg>=3&&p.penN%5===0){const a0=p.aim;for(const e of G.enemies){if(e.dead)continue;const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy);if(d>240)continue;let da=Math.atan2(dy,dx)-a0;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)<1.1)hurt(e,dmg*2.5,true);}G.slashes.push({x:p.x,y:p.y-2,a:a0,arc:2.2,r:240,life:.3,max:.3,color:'#3a86ff',w:12,sweep:1});fxShake(5);}}if(s.id==='phone'&&sg>=2)b.explode=g.explode*1.4;if(s.id==='excel'&&sg>=1)b.chain=g.chain+2;if(s.id==='laser'&&sg>=3)b.size=g.size*2;
@@ -1547,7 +1579,7 @@ function fireBeam(){
 }
 function knock(e,fx,fy,k){if(e.dummy)return;if(e.boss)k*=.15;if(e.elite)k*=.4;k*=1-ccRes();const dx=e.x-fx,dy=e.y-fy,d=Math.hypot(dx,dy)||1;e.x+=dx/d*k;e.y+=dy/d*k;}
 function hurt(e,dmg,ignoreFront){
-  if(e.dead)return;if(e.mark)dmg*=1.2;if(e.rumor>0)dmg*=.7;e.hp-=dmg;if(G.dev)devRecord(e,dmg);if(e.boss){const hard=e.critFlash;e.critFlash=false;if(hard){e.flash=.1;e.flashSoft=false;}else if(G.time-(e.lastFl??-9)>=.2){e.flash=.06;e.flashSoft=true;e.lastFl=G.time;}e.hitShake=.08;}else e.flash=.07;
+  if(e.dead)return;if(e.mark)dmg*=1.2;if(e.boss&&G.player.cards&&G.player.cards.bossd)dmg*=1+CARD_BAL.bossDmg[Math.min(3,G.player.cards.bossd)];if(!e.boss&&G.player.st.jam&&!(e.jamCd>G.time)&&Math.random()<Math.min(CARD_BAL.jamMax,G.player.st.jam)){e.stun=Math.max(e.stun||0,.5);e.jamCd=G.time+1.5;}if(e.rumor>0)dmg*=.7;e.hp-=dmg;if(G.dev)devRecord(e,dmg);if(e.boss){const hard=e.critFlash;e.critFlash=false;if(hard){e.flash=.1;e.flashSoft=false;}else if(G.time-(e.lastFl??-9)>=.2){e.flash=.06;e.flashSoft=true;e.lastFl=G.time;}e.hitShake=.08;}else e.flash=.07;
   const dn=(lowFx()&&save.settings.dmgNum==='all')?'merge':save.settings.dmgNum;if(G.dense&&!e.boss&&dmg<50&&!(e.dmgF&&e.dmgF.life>.45)){if(e.hp<=0){e.dead=true;onKill(e);}return;}
   if(dn==='merge'){const f=e.dmgF;if(f&&f.life>(e.boss?.62:.45)&&G.floats.includes(f)){f.val+=dmg;f.text=Math.round(f.val);f.life=.8;if(!e.boss)f.x=e.x;f.size=Math.min(e.boss?14:15,(e.boss?12:12)+Math.log10(f.val+1)*(e.boss?.6:1));}else if(dmg>=4||e.boss){if(G.floats.length>90)G.floats.shift();const nf={x:e.boss?e.x+rand(-e.r*.5,e.r*.5):e.x+rand(-6,6),y:e.boss?e.y-e.r*.1:e.y-e.r-8,text:Math.round(dmg),val:dmg,color:e.boss?'#ffd23f':'#ffffff',size:12,life:.8};G.floats.push(nf);e.dmgF=nf;}}
   else if(dn==='all'&&(dmg>=12||Math.random()<.3))floatText(e.x+rand(-8,8),e.y-e.r-8,Math.round(dmg),e.boss?'#ffd23f':'#ffffff',12);
@@ -1562,7 +1594,7 @@ function enemyExplode(e,rad,dmg){const p=G.player;if(Math.hypot(p.x-e.x,p.y-e.y)
   for(let i=0;i<4;i++)eshoot(e,i/4*TAU+.4,200,{spr:'信封',dmg:8});}
 function dropCoins(x,y,count,value){for(let i=0;i<count;i++)G.pickups.push({type:'coin',x:x+rand(-10,10),y:y+rand(-10,10),vx:rand(-90,90),vy:rand(-90,90),value,life:25});}
 function onKill(e){
-  const g=G,p=g.player;sfx('kill');if(g.def.endless)endlessOnKill(e);if(g.climbRun)Climb.onKill(e);if(g.dev&&e.boss&&e.devT!=null){g.dev.ttk.unshift(+(g.time-e.devT).toFixed(1));g.dev.ttk.length=Math.min(5,g.dev.ttk.length);}
+  const g=G,p=g.player;sfx('kill');if(e.elite&&p.st.expense)g.coins+=p.st.expense;if(p.st.rumorP&&!e.boss&&!g.rumorLock&&Math.random()<p.st.rumorP){g.rumorLock=true;try{burst(e.x,e.y,'#ffb703',10,180,3);for(const o of g.enemies){if(o.dead||o===e||o.boss)continue;if((o.x-e.x)**2+(o.y-e.y)**2<64*64)hurt(o,22*p.st.dmg*dmgMulLite(),true);}}finally{g.rumorLock=false;}}if(g.def.endless)endlessOnKill(e);if(g.climbRun)Climb.onKill(e);if(g.dev&&e.boss&&e.devT!=null){g.dev.ttk.unshift(+(g.time-e.devT).toFixed(1));g.dev.ttk.length=Math.min(5,g.dev.ttk.length);}
   if(e.boss){if(g.def.endless)g.pendingLv+=2;G.corpses.push({x:e.x,y:e.y,pal:e.pal,scale:e.scale,face:e.face,life:3,fall:0});burst(e.x,e.y,'#8fd14f',70,380,5);burst(e.x,e.y,'#ffd23f',50,320,4);g.shake=16;dropCoins(e.x,e.y,36,3+Math.min(Math.round(g.diff),9));g.bossKills++;
     g.bosses=g.bosses.filter(b=>b!==e);if(g.boss===e)g.boss=g.bosses[0]||null;
     if(g.def.endless){g.banner={text:e.name+' 被打下班了',sub:'加班繼續',t:2};g.vacuum=Math.max(g.vacuum,1.2);sfx('power');if(!g.bosses.length)setMusic('endless');return;}
@@ -1592,7 +1624,19 @@ function onKill(e){
   if(g.phase==='wave'&&!e.extra)g.kills++;p.kills++;
   if(g.ob.meow){p.meowKills++;if(p.meowKills>=30){p.meowKills=0;g.vacuum=Math.max(g.vacuum,1.5);floatText(p.x,p.y-40,'喵～','#f4a261',22);sfx('meow');}}
 }
-function addHz(h){h.t=0;h.done=false;h.fired=false;G.hz.push(h);return h;}
+let BOSS_CTX=null;
+function addHz(h){h.t=0;h.done=false;h.fired=false;if(BOSS_CTX||(G.phase==='boss'&&G.bosses&&G.bosses.some(b=>!b.dead)&&h.dmg)){h.fromBoss=BOSS_CTX||G.bosses.find(b=>!b.dead)||1;if(G.lv===5&&h.warn)h.warn+=.2;}G.hz.push(h);return h;}
+function bossTier(){const g=G;if(g.def.endless){const m=g.time/60;return m<5?0:m<10?1:m<15?2:3;}const L=LEVELS[g.lv]||{};const f=L.floor==='RF'?26:L.floor==='B1'?0:parseInt(L.floor)||0;return f<=5?0:f<=12?1:f<=21?2:3;}
+function bossDmg(base){const p=G.player,t=BOSS_PCT[bossTier()],big=base>=20;return Math.max(base*(big?1.5:1)*dmgMul(),(big?t[1]:t[0])*p.maxHp);}
+function bossRider(b){const p=G.player,g=G;if(!b||!b.bkey||g.dead)return;const rs=BOSS_RIDER[b.bkey]||[];
+  for(const r of rs){if(r==='dot'){p.dots=(p.dots||[]).filter(x=>x>0);if(p.dots.length<3)p.dots.push(3);floatText(p.x,p.y-44,'持續傷害','#ff8c42',12);}
+    else if(r==='residue'){g.puddles=g.puddles||[];g.puddles.push({x:p.x,y:p.y,r:46,t:4,pct:.05,boss:1});}
+    else if(r==='stress'){p.stress=Math.min(5,(p.stress||0)+1);p.stressT=6;floatText(p.x,p.y-44,'壓力 ×'+p.stress,'#c77dff',12);}
+    else if(r==='root'&&!(p.ccImm>0)){p.ccImm=1.5;p.stunT=.6;floatText(p.x,p.y-44,'定身','#ffd23f',12);}}}
+function bossMarkTick(b,dt){const rs=BOSS_RIDER[b.bkey];if(!rs||!rs.includes('mark')||b.dead||G.dead)return;b.markT=(b.markT??5)-dt;if(b.markT<=0){b.markT=8;const p=G.player;BOSS_CTX=b;addHz({k:'circ',x:p.x,y:p.y,r:70,warn:1.4,dmg:25,src:MARK_TEXT[b.bkey]||'標記',label:MARK_TEXT[b.bkey]||'標記'});BOSS_CTX=null;}}
+function bossCC(kind,sx,sy){const p=G.player;if(p.ccImm>0)return;p.ccImm=1.5;if(kind==='stun'){p.stunT=.4;floatText(p.x,p.y-40,'暈眩','#ffd23f',13);}else if(kind==='kb'){const dx=p.x-sx,dy=p.y-sy,d=Math.hypot(dx,dy)||1;p.kbT=.18;p.kbVx=dx/d*420;p.kbVy=dy/d*420;}else if(kind==='slow'){p.bslowT=1.5;}}
+function bossPressure(){for(const b of G.bosses)if(!b.dead&&b.pcd>0)b.pcd*=.7;}
+function hzDamage(h){const p=G.player;if(!h.fromBoss){damagePlayer(h.dmg*dmgMul(),h.src);return;}const before=p.invuln;damagePlayer(bossDmg(h.dmg),h.src);if(before<=0&&p.invuln>0&&!G.dead){bossCC(h.k==='sweep'||h.k==='ring'||h.k==='line'||h.k==='wave'?'kb':'stun',h.x??p.x,h.y??p.y);bossPressure();bossRider(h.fromBoss);}}
 function hzHit(h,x,y,r){r=r||14;if(h.k==='circ'){const d=Math.hypot(x-h.x,y-h.y);return d<h.r+r*.5&&!(h.inner&&d<h.inner-r*.5);}
   if(h.k==='rect')return x>h.x-r*.5&&x<h.x+h.w+r*.5&&y>h.y-r*.5&&y<h.y+h.h+r*.5;
   if(h.k==='grid'){for(let i=-1;i<=1;i++){if(Math.abs(x-(h.cx+i*h.sp))<12+r*.3&&Math.abs(y-h.cy)<h.len/2)return true;if(Math.abs(y-(h.cy+i*h.sp))<12+r*.3&&Math.abs(x-h.cx)<h.len/2)return true;}return false;}
@@ -1609,7 +1653,7 @@ function projBase(name){let c=projCache.get(name);if(c)return c;const d=PROJ[nam
 function projRot(name,ang){const N=16,k=((Math.round(ang/(TAU/N))%N)+N)%N,key=name+'@'+k;let c=projCache.get(key);if(c)return c;const b=projBase(name),S=6,R=Math.ceil(Math.hypot(b.width,b.height)*S/2)+2;
   const up=document.createElement('canvas');up.width=b.width*S;up.height=b.height*S;const ux=up.getContext('2d');ux.imageSmoothingEnabled=false;ux.drawImage(b,0,0,up.width,up.height);
   c=document.createElement('canvas');c.width=c.height=R*2;const x=c.getContext('2d');x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.translate(R,R);x.rotate(k*TAU/N);x.drawImage(up,-up.width/2,-up.height/2);c.R=R;c.S=S;projCache.set(key,c);return c;}
-function eshoot(src,a,speed,opt={}){if(G.ebullets.length>260)return;G.ebullets.push({x:src.x+Math.cos(a)*src.r*.6,y:src.y+Math.sin(a)*src.r*.6,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,dmg:opt.dmg||12,life:opt.life||4,r:opt.r||7,homing:!!opt.homing,label:null,salary:!!opt.salary,jam:!!opt.jam,bounce:opt.bounce||0,box:opt.box||null,slowP:!!opt.slowP,color:opt.color||null,spr:opt.spr||projPick(src,opt),rot0:Math.random()*TAU,rs:(Math.random()<.5?-1:1)*rand(3,6)});
+function eshoot(src,a,speed,opt={}){if(G.ebullets.length>260)return;const _fb=(src&&src.boss)?src:null;G.ebullets.push({fromBoss:_fb,x:src.x+Math.cos(a)*src.r*.6,y:src.y+Math.sin(a)*src.r*.6,vx:Math.cos(a)*speed,vy:Math.sin(a)*speed,dmg:opt.dmg||12,life:opt.life||4,r:opt.r||7,homing:!!opt.homing,label:null,salary:!!opt.salary,jam:!!opt.jam,bounce:opt.bounce||0,box:opt.box||null,slowP:!!opt.slowP,color:opt.color||null,spr:opt.spr||projPick(src,opt),rot0:Math.random()*TAU,rs:(Math.random()<.5?-1:1)*rand(3,6)});
   if(opt.label&&src.boss&&!(src.say&&src.say.t>0)&&Math.random()<.5)src.say={text:opt.label,t:1.2};}
 function projPick(src,opt){if(opt.salary)return '扣薪金幣';if(opt.jam)return Math.random()<.5?'藍屏碎片':'磁碟片';if(opt.slowP)return '綠色紙鈔';if(opt.homing)return '解僱信封';
   const th=PROJ_THEME[src.boss?src.bkey:src.type]||PROJ_THEME.thrower;return th[Math.floor(Math.random()*th.length)];}
@@ -1618,7 +1662,7 @@ function damagePlayer(d,src,srcE){
   if(ob.transfer&&Math.random()<ob.transfer){let best=null,bd=320;for(const e of G.enemies){if(e.dead)continue;const dd=Math.hypot(e.x-p.x,e.y-p.y);if(dd<bd){bd=dd;best=e;}}if(best){hurt(best,d*3+20,true);G.zaps.push({x1:p.x,y1:p.y-10,x2:best.x,y2:best.y,life:.25,w:3,color:'#bde0fe'});floatText(p.x,p.y-40,'轉接','#bde0fe',13);p.invuln=Math.max(p.invuln,.3);return;}}
   const dodgeP=(ob.dodge||0);if(dodgeP>0&&Math.random()<dodgeP){p.invuln=.4;p.ghosts.push({x:p.x,y:p.y,life:.4,face:p.face,frame:p.frame||1});floatText(p.x,p.y-30,'閃避！','#e63946',14);return;}
   if(p.shield>0){p.shield--;p.invuln=.8;floatText(p.x,p.y-30,'特休擋下！','#7bdff2',14);sfx('power');return;}
-  d*=1-p.st.armor;if(GUNS[p.slots[p.active].id].swing)d*=.85;if(p.spinT>0)d*=.5;else if(p.guardT>0)d*=.7;if(save.settings.easy)d*=.7;p.hp-=d;g.hits++;p.hurtT=0;g.lastHit=src||g.lastHit;if(srcE&&srcE.elite==='leech'){srcE.hp=Math.min(srcE.maxHp,srcE.hp+srcE.maxHp*.2);floatText(srcE.x,srcE.y-srcE.r-20,'吸血','#c77dff',12);}p.invuln=.55*p.st.invuln;p.stealthT=0;p.stealth=false;g.shake=Math.max(g.shake,6);sfx('hurt');burst(p.x,p.y,'#e2443b',8,150,3);
+  d*=1-p.st.armor;if(GUNS[p.slots[p.active].id].swing)d*=.85;if(p.spinT>0)d*=.5;else if(p.guardT>0)d*=.7;if(save.settings.easy)d*=.7;if(p.stress>0&&g.bosses.some(b=>!b.dead))d*=1+.08*p.stress;p.hp-=d;if(p.st.appeal){p.appealPool=(p.appealPool||0)+d*p.st.appeal;p.appealT=2;p.appealRate=p.appealPool/2;}g.hits++;p.hurtT=0;g.lastHit=src||g.lastHit;if(srcE&&srcE.elite==='leech'){srcE.hp=Math.min(srcE.maxHp,srcE.hp+srcE.maxHp*.2);floatText(srcE.x,srcE.y-srcE.r-20,'吸血','#c77dff',12);}p.invuln=.55*p.st.invuln;p.stealthT=0;p.stealth=false;g.shake=Math.max(g.shake,6);sfx('hurt');burst(p.x,p.y,'#e2443b',8,150,3);
   if(ob.shock){for(const e of g.enemies){if(e.dead)continue;if(Math.hypot(e.x-p.x,e.y-p.y)<130){knock(e,p.x,p.y,70);hurt(e,10,true);}}burst(p.x,p.y,'#ffd23f',16,260,3);}
   if(p.hp<=0){
     if(g.climbRun&&Climb.lethal(p))return;
@@ -1723,7 +1767,8 @@ function ffAngle(x,y){if(!FF.dist)return null;const W=FF.w,H=FF.h,cx=clamp(Math.
   if(!best)return null;return Math.atan2(best[1]*FF.cs+FF.cs/2-y,best[0]*FF.cs+FF.cs/2-x);}
 function tutorial(g,dt){
   if(g.lv!==0||save.tut)return;g.tut=g.tut||{t:0,done:{}};const T=g.tut;T.t+=dt;
-  const tip=(k,text)=>{if(T.done[k])return;T.done[k]=true;g.toasts.push({text,t:4,max:4});sfx('ui');};
+  const tip=(k,text)=>{if(T.done[k])return;if(g.toasts.some(x=>x.tut&&x.t>0)||(g.tipQ&&g.tipQ.length))return;T.done[k]=true;g.toasts.push({text,t:4,max:4,tut:1});sfx('ui');};
+  if(T.xpSeen===undefined&&g.pickups.some(it=>it.type==='xp'))T.xpSeen=T.t;if(T.xpSeen!==undefined&&T.t-T.xpSeen>6&&g.player.xp===0&&!T.done.xp)tip('xp','走過去撿經驗，存滿就能升等選卡');
   if(T.t>1)tip('move',isTouch?'左手在畫面上拖曳就能移動，射擊是自動的':'WASD 移動，射擊是自動的');
   if(g.coins>0)tip('coin','金幣可以在武器庫買槍、在更衣室買服裝');
   if(g.pickups.some(it=>it.type==='gun'))tip('crate',isTouch?'綠色槍箱自動升級，橘色槍箱要按「撿槍」才會換':'綠色槍箱自動升級，橘色槍箱要按 F 才會換');
@@ -1752,8 +1797,16 @@ function update(dt){
     if(keys.KeyW||keys.ArrowUp)my-=1;if(keys.KeyS||keys.ArrowDown)my+=1;if(keys.KeyA||keys.ArrowLeft)mx-=1;if(keys.KeyD||keys.ArrowRight)mx+=1;
     if(joy.active){const jx=(joy.x-joy.ox)/55,jy=(joy.y-joy.oy)/55;if(Math.hypot(jx,jy)>.15){mx=jx;my=jy;}}
     const len=Math.hypot(mx,my);if(len>1){mx/=len;my/=len;}p.mx=mx;p.my=my;
-    p.boostT=(p.boostT||0)-dt;p.slowT=(p.slowT||0)-dt;
-    let sp=210*p.st.spd*(p.charge>0?.5:1)*(p.spinT>0?(p.spinSp||1.2):1)*(p.boostT>0?1.3:1)*(p.slowT>0?.6:1)*(p.tbuff&&p.tbuff.k==='spd'?1.3:1);if(g.mods.includes('sprinkler'))for(const q of g.puddles){if((q.x-p.x)**2+(q.y-p.y)**2<(q.r+4)**2){sp*=.7;break;}}
+    p.boostT=(p.boostT||0)-dt;p.slowT=(p.slowT||0)-dt;p.stunT=(p.stunT||0)-dt;p.bslowT=(p.bslowT||0)-dt;p.ccImm=(p.ccImm||0)-dt;
+    if(p.lzOver>0){p.lzOver-=dt;}else if(p.slots[p.active]&&p.slots[p.active].id==='laser'&&g.time-(p.lzLast??-9)<.12){p.lzHeat=(p.lzHeat||0)+dt;const cap=4+(((p.gunUp.laser||{}).sig||0)>=3?2:0);if(p.lzHeat>=cap){p.lzOver=1.2;p.lzHeat=0;}}else p.lzHeat=Math.max(0,(p.lzHeat||0)-dt*1.5);
+    if(g.boxes&&g.boxes.length){for(const b of g.boxes)b.t-=dt;g.boxes=g.boxes.filter(b=>b.t>0);}
+    if(p.dots&&p.dots.length&&!g.dead){p.dots=p.dots.map(x=>x-dt).filter(x=>x>0);const d=.03*p.maxHp*p.dots.length*dt*(save.settings.easy?.7:1);p.hp-=d;if(Math.random()<.3)g.parts.push({x:p.x+rand(-8,8),y:p.y-10,vx:0,vy:-40,life:.5,max:.5,color:'#ff8c42',size:3});if(p.hp<=0){p.hp=.01;p.invuln=0;damagePlayer(1,'持續傷害');}}
+    if(p.stressT>0){p.stressT-=dt;if(p.stressT<=0)p.stress=0;}
+    if(g.puddles&&g.puddles.length&&!g.dead){p.bpT=(p.bpT||0)-dt;for(const q of g.puddles){if(!q.pct)continue;if(!q.endlessDone){q.t-=dt;}if(p.bpT<=0&&(p.x-q.x)**2+(p.y-q.y)**2<(q.r+p.r*.5)**2){p.bpT=.5;const before=p.invuln;p.invuln=0;damagePlayer(q.pct*p.maxHp,'地面殘留');}}g.puddles=g.puddles.filter(q=>q.t>0);}
+    if(p.appealT>0){p.appealT-=dt;const h=Math.min(p.appealPool||0,(p.appealRate||0)*dt);p.appealPool-=h;p.hp=Math.min(p.maxHp,p.hp+h*healMul());}
+    if(p.st.stipend&&!g.dead){g.stipT=(g.stipT||0)+dt;if(g.stipT>=60){g.stipT-=60;g.coins+=p.st.stipend;floatText(p.x,p.y-42,'職務加給 +'+p.st.stipend,'#ffd23f',12);}}
+    if(p.kbT>0){p.kbT-=dt;p.x=clamp(p.x+p.kbVx*dt,20,WORLD.w-20);p.y=clamp(p.y+p.kbVy*dt,20,WORLD.h-20);}
+    let sp=210*p.st.spd*(p.charge>0?.5:1)*(p.spinT>0?(p.spinSp||1.2):1)*(p.boostT>0?1.3:1)*(p.slowT>0?.6:1)*(p.bslowT>0?.7:1)*(p.stunT>0?0:1)*(p.tbuff&&p.tbuff.k==='spd'?1.3:1);if(g.mods.includes('sprinkler'))for(const q of g.puddles){if((q.x-p.x)**2+(q.y-p.y)**2<(q.r+4)**2){sp*=.7;break;}}
     if(p.dashT>0){p.dashT-=dt;p.x+=p.dashVx*dt;p.y+=p.dashVy*dt;if(Math.random()<.6)g.parts.push({x:p.x,y:p.y+10,vx:0,vy:0,life:.3,max:.3,color:'#bde0fe',size:4});if(Math.random()<.5)p.ghosts.push({x:p.x,y:p.y,life:.22,face:p.face,frame:p.frame||1});}
     const px0=p.x,py0=p.y;
     if(p.dashT<=0){p.x+=mx*sp*dt;p.y+=my*sp*dt;}
@@ -1836,12 +1889,12 @@ function update(dt){
     const ex=Math.hypot(p.x-e.x,p.y-e.y);
     if(e.stun>0){e.face=p.x>=e.x?1:-1;continue;}
     e.anim+=dt;
-    if(e.boss){bossAI(e,dt);}
+    if(e.boss){BOSS_CTX=e;try{bossAI(e,dt);}finally{BOSS_CTX=null;}bossMarkTick(e,dt);}
     else{
       let tgx=p.x,tgy=p.y;if(g.proto&&e.tp){tgx=g.proto.d.x+g.proto.d.w/2;tgy=g.proto.d.y+g.proto.d.h/2;}
       const dx=tgx-e.x,dy=tgy-e.y,d=Math.hypot(dx,dy)||1;
       const direct=Math.atan2(dy,dx),kiter=e.type==='thrower'||e.type==='healer',fa=(d>90&&!(kiter&&d<300))?ffAngle(e.x,e.y):null;
-      let a=(fa===null?direct:fa)+Math.sin(g.time*2+e.seed)*(fa===null?.35:.15),sp=e.speed*(e.rumor>0?1.4:1);if(e.rumor>0)e.rumor-=dt;if(e.decoy){e.decoy-=dt;if(e.decoy<=0){e.dead=true;burst(e.x,e.y,'#9aa3b5',10,160,3);continue;}}
+      let a=(fa===null?direct:fa)+Math.sin(g.time*2+e.seed)*(fa===null?.35:.15),sp=e.speed*(e.rumor>0?1.4:1)*(p.st.aura&&!e.boss&&(e.x-p.x)**2+(e.y-p.y)**2<120*120?1-p.st.aura:1)*(g.boxes&&g.boxes.length&&g.boxes.some(b=>(e.x-b.x)**2+(e.y-b.y)**2<44*44)?.5:1);if(e.rumor>0)e.rumor-=dt;if(e.decoy){e.decoy-=dt;if(e.decoy<=0){e.dead=true;burst(e.x,e.y,'#9aa3b5',10,160,3);continue;}}
       e.chk=(e.chk||0)+dt;if(e.chk>=2){e.chk=0;const moved=Math.hypot(e.x-(e.lx??e.x),e.y-(e.ly??e.y));if(moved<8&&d>520){const np=spawnPos();e.x=np.x;e.y=np.y;}e.lx=e.x;e.ly=e.y;}
       if(e.slow>0)sp*=(e.slowK||.6);if(p.stealth)sp*=.6;
       for(const q of g.puddles){if((q.x-e.x)**2+(q.y-e.y)**2<(q.r+6)**2){sp*=.55;break;}}
@@ -1854,7 +1907,7 @@ function update(dt){
     }
     e.face=p.x>=e.x?1:-1;
     const cd=Math.hypot(p.x-e.x,p.y-e.y);
-    if(cd<e.r+p.r-4){if(ob.mech&&e.touchCd<=0){e.touchCd=.5;hurt(e,20,true);knock(e,p.x,p.y,30);}let tm=1;if(g.def.endless&&g.hell){if(g.time-(p.lastTouch??-9)<1.5)p.touchN=Math.min(ENDLESS_BAL.touchMax,(p.touchN||0)+1);else p.touchN=0;p.lastTouch=g.time;tm=1+ENDLESS_BAL.touchStack*p.touchN;}damagePlayer(e.dmg*tm,e.boss?e.name:(e.elite?ELITE_AFFIX[e.elite].name+ETYPES[e.type].name:ETYPES[e.type].name),e);if(!e.boss){const k=(e.r+p.r-cd)+6;e.x-=(p.x-e.x)/(cd||1)*k;e.y-=(p.y-e.y)/(cd||1)*k;}}
+    if(cd<e.r+p.r-4){if(ob.mech&&e.touchCd<=0){e.touchCd=.5;hurt(e,20,true);knock(e,p.x,p.y,30);}let tm=1;if(p.st.thorns)hurt(e,e.dmg*p.st.thorns,true);if(g.def.endless&&g.hell){if(g.time-(p.lastTouch??-9)<1.5)p.touchN=Math.min(ENDLESS_BAL.touchMax,(p.touchN||0)+1);else p.touchN=0;p.lastTouch=g.time;tm=1+ENDLESS_BAL.touchStack*p.touchN;}damagePlayer(e.dmg*tm,e.boss?e.name:(e.elite?ELITE_AFFIX[e.elite].name+ETYPES[e.type].name:ETYPES[e.type].name),e);if(!e.boss){const k=(e.r+p.r-cd)+6;e.x-=(p.x-e.x)/(cd||1)*k;e.y-=(p.y-e.y)/(cd||1)*k;}}
   }
   // 互相推開
   const es=g.enemies;
@@ -1881,7 +1934,8 @@ function update(dt){
         if(b.gun==='phone'&&b.sg>=3&&!b.mini)for(let k=0;k<3;k++){const a=Math.random()*TAU;g.bullets.push({...b,x:b.x,y:b.y,vx:Math.cos(a)*380,vy:Math.sin(a)*380,dmg:b.dmg*.4,explode:40,life:1.2,hit:new Set(),mini:true,t:0});}
         b.life=0;break;}
       let dm=b.dmg*(e.smoked>0&&g.smokes.some(S=>S.sg>=3)?1.25:1),crit=false;if(b.gun==='clip'&&b.sg>=1&&Math.random()<(b.sg>=2?.3:.15)){dm*=3;crit=true;floatText(e.x,e.y-e.r-18,'爆頭！','#ff2e63',13);}
-      if(g.def.endless&&b.hitN)dm*=Math.max(ENDLESS_BAL.pierceMin,1-ENDLESS_BAL.pierceFall*b.hitN);
+      if(e.boss&&WBOSS[b.gun])dm*=WBOSS[b.gun];
+      if(b.hitN){if(b.gun==='laser')dm*=Math.max(.5,1-.1*b.hitN);else if(g.def.endless)dm*=Math.max(ENDLESS_BAL.pierceMin,1-ENDLESS_BAL.pierceFall*b.hitN);}
       if(crit)e.critFlash=true;hurt(e,dm);b.hit.add(e);b.hitN=(b.hitN||0)+1;
       if(crit&&e.dead&&b.sg>=3&&!b.split){for(let k=0;k<3;k++){const a=Math.atan2(b.vy,b.vx)+(k-1)*.4;g.bullets.push({...b,vx:Math.cos(a)*1100,vy:Math.sin(a)*1100,hit:new Set(),split:true,life:.6,t:0});}}
       if(b.gun==='coffee'&&b.sg>=1)addBurn(e,b.sg>=2?5:3);
@@ -1901,7 +1955,7 @@ function update(dt){
     if(b.homing&&!g.dead){const want=Math.atan2(p.y-b.y,p.x-b.x),cur=Math.atan2(b.vy,b.vx);let df=want-cur;while(df>Math.PI)df-=TAU;while(df<-Math.PI)df+=TAU;const na=cur+clamp(df,-1.9*dt,1.9*dt),s=Math.hypot(b.vx,b.vy);b.vx=Math.cos(na)*s;b.vy=Math.sin(na)*s;}
     b.x+=b.vx*dt;b.y+=b.vy*dt;b.life-=dt;if(b.bounce>0&&b.box){if(b.x<b.box.x0||b.x>b.box.x1){b.vx=-b.vx;b.x=clamp(b.x,b.box.x0,b.box.x1);b.bounce--;}if(b.y<b.box.y0||b.y>b.box.y1){b.vy=-b.vy;b.y=clamp(b.y,b.box.y0,b.box.y1);b.bounce--;}}
     if(b.x<-20||b.y<-20||b.x>WORLD.w+20||b.y>WORLD.h+20)b.life=0;
-    const rr=b.r+p.r*.7;if(b.life>0&&(b.x-p.x)**2+(b.y-p.y)**2<rr*rr){const before=p.invuln;damagePlayer(b.dmg,'文件攻擊');if(before<=0&&p.invuln>0){if(b.slowP){p.slowT=3;floatText(p.x,p.y-56,'減薪！移動變慢','#8fd14f',13);}if(b.salary){g.coins=Math.max(0,g.coins-5);floatText(p.x,p.y-44,'-5 金幣','#ffd23f',13);}if(b.jam){p.jam=1.5;p.charge=0;floatText(p.x,p.y-44,'藍屏！槍當機了','#4cc9f0',13);}}b.life=0;}
+    const rr=b.r+p.r*.7;if(b.life>0&&(b.x-p.x)**2+(b.y-p.y)**2<rr*rr){const before=p.invuln;damagePlayer(b.fromBoss?bossDmg(b.dmg/Math.max(.01,dmgMul())):b.dmg,'文件攻擊');if(b.fromBoss&&before<=0&&p.invuln>0&&!g.dead){bossCC('slow');bossPressure();bossRider(b.fromBoss);}if(before<=0&&p.invuln>0){if(b.slowP){p.slowT=3;floatText(p.x,p.y-56,'減薪！移動變慢','#8fd14f',13);}if(b.salary){g.coins=Math.max(0,g.coins-5);floatText(p.x,p.y-44,'-5 金幣','#ffd23f',13);}if(b.jam){p.jam=1.5;p.charge=0;floatText(p.x,p.y-44,'藍屏！槍當機了','#4cc9f0',13);}}b.life=0;}
   }
   for(const b of g.ebullets){if(b.life<=0&&!b.pop){b.pop=true;const pb=projCache.get(b.spr);burst(b.x,b.y,pb&&pb.main||'#f4f4f0',4,110,3);}}g.ebullets=g.ebullets.filter(b=>b.life>0);
   g.enemies=g.enemies.filter(e=>!e.dead);if(g.boss&&g.boss.dead)g.boss=null;
@@ -1910,9 +1964,9 @@ function update(dt){
     if(d.ink&&Math.hypot(p.x-d.x,p.y-d.y)<d.r)p.inkSlow=.2;}
   g.decals=g.decals.filter(d=>d.life>0);if(p.inkSlow>0){p.inkSlow-=dt;if(p.inkSlow>0){p.x-=(p.mx||0)*90*dt;p.y-=(p.my||0)*90*dt;}}
   for(const h of g.hz){h.t+=dt;if(h.follow&&!h.fired&&h.t<h.warn-(h.lock||0)){h.x=p.x;h.y=p.y;}if(h.onBoss&&!h.fired){h.x=h.onBoss.x;h.y=h.onBoss.y;}
-    if(h.k==='sweep'){if(h.t>=h.warn&&!h.fired&&h.t<h.warn+h.dur&&hzHit(h,p.x,p.y,p.r)){h.fired=true;damagePlayer(h.dmg*dmgMul(),h.src);}if(h.t>=h.warn+h.dur)h.done=true;continue;}
-    if(h.k==='grid'){if(h.t>=h.warn&&h.t<h.warn+h.act&&!h.fired&&hzHit(h,p.x,p.y,p.r)){h.fired=true;damagePlayer(h.dmg*dmgMul(),h.src);}if(h.t>=h.warn+h.act+.15)h.done=true;continue;}
-    if(h.t>=h.warn&&!h.fired){h.fired=true;h.fireT=h.t;if(h.dmg&&hzHit(h,p.x,p.y,p.r))damagePlayer(h.dmg*dmgMul(),h.src);if(h.onFire)h.onFire(h);
+    if(h.k==='sweep'){if(h.t>=h.warn&&!h.fired&&h.t<h.warn+h.dur&&hzHit(h,p.x,p.y,p.r)){h.fired=true;hzDamage(h);}if(h.t>=h.warn+h.dur)h.done=true;continue;}
+    if(h.k==='grid'){if(h.t>=h.warn&&h.t<h.warn+h.act&&!h.fired&&hzHit(h,p.x,p.y,p.r)){h.fired=true;hzDamage(h);}if(h.t>=h.warn+h.act+.15)h.done=true;continue;}
+    if(h.t>=h.warn&&!h.fired){h.fired=true;h.fireT=h.t;if(h.dmg&&hzHit(h,p.x,p.y,p.r))hzDamage(h);if(h.onFire)h.onFire(h);
       if(h.k==='circ'&&h.dmg){burst(h.x,h.y,h.col||'#e2443b',18,260,4);fxShake(6);}if(h.k==='safe'){g.flashFx=.25;fxShake(8);}if(h.k==='vote'){for(const z of h.zones)if(!z.safe)burst(z.x,z.y,z.col,20,240,4);fxShake(6);}}
     if(h.fired&&h.t>=h.warn+.3)h.done=true;}
   g.hz=g.hz.filter(h=>!h.done);if(g.beadBox){g.beadBox.life-=dt;if(g.beadBox.life<=0)g.beadBox=null;}
@@ -1937,7 +1991,7 @@ function update(dt){
     if(tg&&pt.cd<=0&&Math.hypot(tg.x-pt.x,tg.y-pt.y)<tg.r+12){hurt(tg,15,true);knock(tg,pt.x,pt.y,20);pt.cd=.8;sfx('bark');floatText(pt.x,pt.y-16,'汪！','#e0a458',12);}
     for(const it of g.pickups){if(it.type==='coin'&&Math.hypot(it.x-pt.x,it.y-pt.y)<90){const ddx=p.x-it.x,ddy=p.y-it.y,dd=Math.hypot(ddx,ddy)||1;it.x+=ddx/dd*300*dt;it.y+=ddy/dd*300*dt;}}}
   // 撿東西
-  g.vacuum-=dt;const mag=g.vacuum>0?4000:70*p.st.magnet;g.nearCrate=null;let bestC=1e9;
+  g.vacuum-=dt;const mag=g.vacuum>0?4000:70*p.st.magnet*(g.lv===0&&!save.cleared.includes(0)?1.5:1);g.nearCrate=null;let bestC=1e9;
   for(const it of g.pickups){
     it.life-=dt;if(it.vx){it.x+=it.vx*dt;it.y+=it.vy*dt;it.vx*=.9;it.vy*=.9;if(Math.abs(it.vx)<2)it.vx=0;}
     const dx=p.x-it.x,dy=p.y-it.y,d=Math.hypot(dx,dy)||1;
@@ -2282,7 +2336,8 @@ function drawGame(){
   const g=G,p=g.player;
   for(const q of g.puddles){ctx.fillStyle='rgba(120,190,230,'+Math.min(.35,q.life*.15)+')';ctx.beginPath();ctx.ellipse(q.x,q.y,q.r,q.r*.55,0,0,TAU);ctx.fill();}
   if(g.beadBox){const bb=g.beadBox;ctx.strokeStyle='rgba(138,90,43,.5)';ctx.setLineDash([10,8]);ctx.lineWidth=3;ctx.strokeRect(bb.x0,bb.y0,bb.x1-bb.x0,bb.y1-bb.y0);ctx.setLineDash([]);}
-  if(g.puddles)for(const q of g.puddles){ctx.fillStyle='rgba(111,78,55,'+Math.min(.6,q.t*.35)+')';ctx.beginPath();ctx.ellipse(q.x,q.y,q.r,q.r*.62,0,0,TAU);ctx.fill();ctx.strokeStyle='rgba(60,40,25,'+Math.min(.7,q.t*.4)+')';ctx.lineWidth=2;ctx.stroke();}
+  if(g.boxes)for(const b of g.boxes){ctx.fillStyle='#c68b59';ctx.fillRect(b.x-14,b.y-10,28,20);ctx.fillStyle='#8a5a2b';ctx.fillRect(b.x-2,b.y-10,4,20);ctx.strokeStyle='#0d0f14';ctx.lineWidth=2;ctx.strokeRect(b.x-14,b.y-10,28,20);}
+  if(g.puddles)for(const q of g.puddles){ctx.fillStyle=q.pct?'rgba(157,78,221,'+Math.min(.45,q.t*.3)+')':'rgba(111,78,55,'+Math.min(.6,q.t*.35)+')';ctx.beginPath();ctx.ellipse(q.x,q.y,q.r,q.r*.62,0,0,TAU);ctx.fill();ctx.strokeStyle='rgba(60,40,25,'+Math.min(.7,q.t*.4)+')';ctx.lineWidth=2;ctx.stroke();}
   for(const I of g.inks){ctx.fillStyle='rgba(29,53,87,'+Math.min(.55,I.t*.3)+')';ctx.beginPath();ctx.ellipse(I.x,I.y,I.r,I.r*.6,0,0,TAU);ctx.fill();}
   for(const S of g.smokes){ctx.save();ctx.globalAlpha=Math.min(.55,S.t*.4);ctx.fillStyle='#9aa3b5';for(let i=0;i<5;i++){const a=i*1.3+g.time*.4;ctx.beginPath();ctx.arc(S.x+Math.cos(a)*S.r*.35,S.y+Math.sin(a)*S.r*.3,S.r*.55,0,TAU);ctx.fill();}ctx.restore();}
   for(const L of g.lobs){const k=Math.min(1,L.t/L.fly),x=L.x0+(L.x-L.x0)*k,y=L.y0+(L.y-L.y0)*k-Math.sin(k*Math.PI)*60;const im=gunSprite('microwave').img;ctx.drawImage(im,x-im.width*1.2,y-im.height*1.2,im.width*2.4,im.height*2.4);
@@ -2326,7 +2381,7 @@ function drawGame(){
     const ang=PROJ_DIR[nm]?Math.atan2(b.vy,b.vx)+Math.PI/2:PROJ_FLAT[nm]?Math.sin(G.time*6+b.rot0)*.25:b.rot0+G.time*b.rs,rc=projRot(nm,ang),k=PSC/rc.S;
     ctx.drawImage(rc,b.x-rc.R*k,b.y-rc.R*k,rc.width*k,rc.height*k);}
   for(const q of g.parts){ctx.globalAlpha=Math.max(0,q.life/q.max);ctx.fillStyle=q.color;if(q.plus){ctx.fillRect(q.x-1.5,q.y-5,3,10);ctx.fillRect(q.x-5,q.y-1.5,10,3);}else ctx.fillRect(q.x-q.size/2,q.y-q.size/2,q.size,q.size);}ctx.globalAlpha=1;
-  drawPlayer(g.player);
+  drawPlayer(g.player);{const p=g.player,cap=4+(((p.gunUp.laser||{}).sig||0)>=3?2:0),f=(p.lzHeat||0)/cap;if(p.slots.some(s=>s.id==='laser')&&(p.lzOver>0||f>=.6)){const w=44,x=p.x-w/2,y=p.y-p.r*3.1;ctx.fillStyle='#0d0f14';ctx.fillRect(x-2,y-2,w+4,8);if(p.lzOver>0){ctx.fillStyle='#ffffff';ctx.fillRect(x,y,w*(p.lzOver/1.2),4);wtext(p.x,y-8,'過熱','900 12px "Noto Sans TC",sans-serif','#ff8a80','center',1,true);}else{ctx.fillStyle=f<.8?'#ff8c42':'#e2443b';ctx.fillRect(x,y,w*Math.min(1,f),4);}}}
   for(const f of g.floats)wtext(f.x,f.y,f.text,'700 '+f.size+'px "DotGothic16",monospace',f.color,'center',Math.min(1,f.life*2),true);
 }
 function drawDark(cam,vw,vh){
@@ -2398,7 +2453,9 @@ function drawHUD(){if(G&&G.dev){ctx.save();ctx.fillStyle='#b18cff';ctx.font='900
   p.slots.forEach((s,i)=>{const x=bx0+i*(bw+gap),on=i===p.active;ctx.fillStyle=on?'#ffd23f':'rgba(13,15,20,.75)';ctx.fillRect(x,by,bw,bh);if(!on){ctx.strokeStyle='#4b5366';ctx.lineWidth=2;ctx.strokeRect(x+1,by+1,bw-2,bh-2);}
     ctx.imageSmoothingEnabled=false;const im=gunSprite(s.id).img,k=Math.min(36/im.width,24/im.height);ctx.drawImage(im,x+6+(36-im.width*k)/2,by+bh/2-im.height*k/2,im.width*k,im.height*k);
     ctx.textAlign='left';ctx.fillStyle=on?'#1a1d27':'#eef0e8';ctx.font='900 '+(small?11:13)+'px "Noto Sans TC",sans-serif';ctx.fillText(GUNS[s.id].name,x+46,by+19);ctx.font='12px "DotGothic16",monospace';ctx.fillText((i+1)+'號　強化 '+gunLv(s.id),x+46,by+36);
-    if(on&&p.cd>0&&GUNS[s.id].rate>=1){ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(x,by,bw*Math.min(1,p.cd/(GUNS[s.id].rate/p.st.rate)),bh);}});
+    if(on&&p.cd>0&&GUNS[s.id].rate>=1){ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(x,by,bw*Math.min(1,p.cd/(GUNS[s.id].rate/p.st.rate)),bh);}
+    if(s.id==='laser'){const cap=4+(((p.gunUp.laser||{}).sig||0)>=3?2:0);if(p.lzOver>0){ctx.fillStyle='#c1121f';ctx.fillRect(x,by,bw,bh);ctx.textAlign='center';ctx.fillStyle='#ffffff';ctx.font='900 15px "Noto Sans TC",sans-serif';ctx.fillText('過熱',x+bw/2,by+20);ctx.font='11px "Noto Sans TC",sans-serif';ctx.fillText((i+1)+'號　'+p.lzOver.toFixed(1)+' 秒',x+bw/2,by+35);ctx.fillStyle='rgba(80,10,15,1)';ctx.fillRect(x+3,by+bh-7,bw-6,4);ctx.fillStyle='#ffffff';ctx.fillRect(x+3,by+bh-7,(bw-6)*(p.lzOver/1.2),4);}
+      else{const f=Math.min(1,(p.lzHeat||0)/cap);ctx.fillStyle='rgba(60,60,70,.9)';ctx.fillRect(x+3,by+bh-7,bw-6,4);ctx.fillStyle=f<.5?'#ffd23f':f<.8?'#ff8c42':'#e2443b';ctx.fillRect(x+3,by+bh-7,(bw-6)*f,4);}}});
   if(!isTouch){ctx.textAlign='center';ctx.font='12px "Noto Sans TC",sans-serif';ctx.fillStyle='rgba(238,240,232,.6)';ctx.fillText('Q／滾輪／右鍵 換槍'+(ob.dash?'　空白鍵 衝刺':''),W/2,by-8);}
   if(joy.active){ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(joy.ox,joy.oy,55,0,TAU);ctx.stroke();const dx=joy.x-joy.ox,dy=joy.y-joy.oy,d=Math.hypot(dx,dy),k=d>55?55/d:1;ctx.fillStyle='rgba(255,210,63,.7)';ctx.beginPath();ctx.arc(joy.ox+dx*k,joy.oy+dy*k,24,0,TAU);ctx.fill();}
   if(g.intro){const it=g.intro,k=Math.min(1,(it.max-it.t)*3),fade=Math.min(1,it.t*4);ctx.globalAlpha=fade;ctx.fillStyle='rgba(8,10,16,.82)';ctx.fillRect(0,0,W,H);
@@ -2448,7 +2505,8 @@ function hideScreen(){scr.classList.add('hidden');scr.innerHTML='';}
 const tierTag=t=>'<span class="tier" style="--tc:'+TIERS[t].color+'">'+TIERS[t].name+'</span>';
 const fmtT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
 const coinTag=n=>'<span class="wallet"><i class="coin"></i>'+n+'</span>';
-function gunStats(g){if(g.swing)return'傷害 '+g.dmg+'　近戰'+(g.swing.shape==='spin'?'迴旋':g.swing.shape==='thrust'?'直刺':g.swing.shape==='chair'?'旋轉衝撞':'橫掃')+'　每 '+g.rate+' 秒';if(g.melee)return'傷害 '+g.dmg+'　範圍攻擊　每 '+g.rate+' 秒';if(g.beam)return'傷害 '+g.dmg+'　貫穿全場　每 '+g.rate+' 秒';return'傷害 '+g.dmg+(g.pellets>1?'×'+g.pellets:'')+'　射速 '+(1/g.rate).toFixed(1)+'/秒'+(g.pierce?'　穿透 '+(g.pierce>50?'無限':g.pierce):'')+(g.explode?'　爆炸':'');}
+function gunStats(g){const _id=Object.keys(GUNS).find(k=>GUNS[k]===g);const _st=_id?gunStyle(_id):null;return gunStats0(g)+(_st?'　｜ '+_st.tags+'　上手 '+'★★★'.slice(0,_st.stars)+'☆☆☆'.slice(0,3-_st.stars):'');}
+function gunStats0(g){if(g.swing)return'傷害 '+g.dmg+'　近戰'+(g.swing.shape==='spin'?'迴旋':g.swing.shape==='thrust'?'直刺':g.swing.shape==='chair'?'旋轉衝撞':'橫掃')+'　每 '+g.rate+' 秒';if(g.melee)return'傷害 '+g.dmg+'　範圍攻擊　每 '+g.rate+' 秒';if(g.beam)return'傷害 '+g.dmg+'　貫穿全場　每 '+g.rate+' 秒';return'傷害 '+g.dmg+(g.pellets>1?'×'+g.pellets:'')+'　射速 '+(1/g.rate).toFixed(1)+'/秒'+(g.pierce?'　穿透 '+(g.pierce>50?'無限':g.pierce):'')+(g.explode?'　爆炸':'');}
 function outfitIcon(id,ch){const spr=charSprite(ch||save.char,id,1,true);return toIcon('o'+id+charKey(ch||save.char,id,1,true),spr.img,5);}
 function playerName(){return save.char.name||'社畜';}
 
@@ -2555,7 +2613,7 @@ function eState(i){if(i===19)return 'side';if(!floorOpen(i))return 'lock';if(sav
 function eWide(){return innerWidth>=760&&innerWidth>innerHeight;}
 function eCanGo(){return (ESEL==='climb'&&climbOpen())||(typeof ESEL==='number'&&floorOpen(ESEL));}
 function eInfo(){
-  if(ESEL==='climb')return '<div class="einfo"><h3>安全梯・爬樓</h3><div class="el">從 1F 一路爬到 RF，共 '+cStepsTotal()+' 層，等級、卡片、武器強化全程帶著。<br>途中有事件、分岔路線、樓層獎勵和便利商店，死了就從頭再來。<br>'+(climbOpen()?(save.climbBest?'最佳紀錄：'+save.climbBest.steps+' 層　'+fmtT(save.climbBest.t):'還沒有紀錄')+(save.climb?'<br><b>有一局進行中，可以繼續。</b>':''):'<b>打穿 7F 工程部後開放</b>')+'</div><div></div><div class="ehint">'+(climbOpen()?'按「出發」（關門）開始爬樓':'現在還不能出發')+'</div></div>';
+  if(ESEL==='climb')return '<div class="einfo"><h3>安全梯・爬樓</h3><div class="el">從 1F 一路爬到 RF，共 '+cStepsTotal()+' 層，等級、卡片、武器強化全程帶著。<br>途中有事件、分岔路線、樓層獎勵和便利商店，死了就從頭再來。<br>'+(climbOpen()?(save.climbBest?'最佳紀錄：'+save.climbBest.steps+' 層　'+fmtT(save.climbBest.t):'還沒有紀錄')+(save.climb?'<br><b>有一局進行中，可以繼續。</b>':''):'<b>打穿 5F 財務部後開放</b>')+'</div><div></div><div class="ehint">'+(climbOpen()?'按「出發」（關門）開始爬樓':'現在還不能出發')+'</div></div>';
   const i=ESEL,L=LEVELS[i],open=floorOpen(i),done=save.cleared.includes(i),it=rewardItem(i),img=bossImg(L);
   const lines=[esc(bossLine(L))];
   if(!open)lines.push('<b>'+esc(reqText(i))+'</b>');
@@ -2571,13 +2629,13 @@ function renderLevels(){
   const list=wide?ORDER.filter(i=>i!==11):BANKS[EBANK];const vis=list.filter(i=>i!==19||floorOpen(19));
   const cols=short?5:wide?3:2,rows=[];for(let k=0;k<vis.length;k+=cols)rows.push(vis.slice(k,k+cols));rows.reverse();
   const grid=rows.map(r=>r.map(i=>{const st=eState(i);return '<button class="ebtn '+st+(ESEL===i?' sel':'')+'" data-act="eSel" data-arg="'+i+'" aria-label="'+LEVELS[i].floor+' '+esc(LEVELS[i].name)+'">'+LEVELS[i].floor+'</button>';}).join('')+(r.length<cols?'<span></span>'.repeat(cols-r.length):'')).join('');
-  const L=typeof ESEL==='number'?LEVELS[ESEL]:null,dt=ESEL==='climb'?'安全梯・爬樓':L.endless?'∞ 無限加班':L.floor+' '+L.name,ds=ESEL==='climb'?(climbOpen()?'從 1F 一路爬到 RF':'打穿 7F 後開放'):!floorOpen(ESEL)?reqText(ESEL):bossLine(L);
+  const L=typeof ESEL==='number'?LEVELS[ESEL]:null,dt=ESEL==='climb'?'安全梯・爬樓':L.endless?'∞ 無限加班':L.floor+' '+L.name,ds=ESEL==='climb'?(climbOpen()?'從 1F 一路爬到 RF':'打穿 5F 後開放'):!floorOpen(ESEL)?reqText(ESEL):bossLine(L);
   const eo=floorOpen(11),go=eCanGo();
   const panel='<div class="epanel">'+(wide?'':'<div class="ebanks"><button class="'+(EBANK===0?'on':'')+'" data-act="eBank" data-arg="0">低樓層 B1–10F</button><button class="'+(EBANK===1?'on':'')+'" data-act="eBank" data-arg="1">高樓層 12F–RF</button></div>')+
     '<div class="edisp"><b>'+esc(dt)+'</b><span>'+esc(ds)+'</span></div><div class="egrid">'+grid+'</div>'+
     '<div class="ectrl"><button class="eround" data-act="menu" aria-label="離開電梯"><i>◀▶</i><small>離開</small></button><button class="eround go'+(go?' ready':'')+'" data-act="eGo" aria-label="出發"'+(go?'':' disabled')+'><i>▶◀</i><small>出發</small></button>'+
     '<button class="ewide red'+(eo?'':' off')+(ESEL===11?' sel':'')+'" data-act="eSel" data-arg="11"><b>∞ 加班</b><span>'+(eo?(save.bestEndlessT?'最佳 '+fmtT(save.bestEndlessT):'打穿 RF 後開放'):'打穿 RF 後開放')+'</span></button>'+
-    '<button class="ewide green'+(ESEL==='climb'?' sel':'')+(climbOpen()?'':' off')+'" data-act="eSel" data-arg="climb">'+(save.climb?'<em class="soon">進行中</em>':'')+'<b>安全梯</b><span>'+(climbOpen()?(save.climbBest?'最高 '+save.climbBest.steps+' 層':'爬樓'):'打穿 7F 開放')+'</span></button></div></div>';
+    '<button class="ewide green'+(ESEL==='climb'?' sel':'')+(climbOpen()?'':' off')+'" data-act="eSel" data-arg="climb">'+(save.climb?'<em class="soon">進行中</em>':'')+'<b>安全梯</b><span>'+(climbOpen()?(save.climbBest?'最高 '+save.climbBest.steps+' 層':'爬樓'):'打穿 5F 開放')+'</span></button></div></div>';
   show('<div class="elev3'+(wide?' wide':'')+(short?' short':'')+'" role="dialog" aria-label="選擇樓層">'+panel+eInfo()+'</div>',go?'[data-act=eGo]':'.ebtn.sel');
 }
 function eGoNow(){if(!eCanGo())return;if(ESEL==='climb'){Climb.entry();return;}const i=ESEL,L=LEVELS[i];const d=document.createElement('div');d.className='edoors';d.innerHTML='<i></i><i></i><em>▲ '+(L.endless?'∞':L.floor)+'</em>';document.body.appendChild(d);sfx('ui');requestAnimationFrame(()=>requestAnimationFrame(()=>d.classList.add('shut')));setTimeout(()=>{ACTIONS.pickLevel(String(i));setTimeout(()=>{d.classList.remove('shut');setTimeout(()=>d.remove(),450);},60);},480);}
@@ -2604,6 +2662,15 @@ const roleTags=id=>ROLES[id]?'<span class="rtag" style="background:'+ROLE_COLOR[
 const TIER_NEED={common:-1,rare:1,epic:3,legend:5},TIER_FLOOR={rare:'3F',epic:'7F',legend:'12F'};
 function tierOpen(t){const n=TIER_NEED[t];return n<0||save.cleared.includes(n);}
 function tierLocks(T,owned){const out=[];const tk=T===GUNS?'g':'o';for(const t of ['rare','epic','legend']){if(tierOpen(t))continue;const cnt=Object.keys(T).filter(id=>T[id].tier===t&&!owned.includes(id)&&rewardFloorOf(tk,id)===null).length;if(!cnt)continue;out.push('<div class="item tierlock t-'+t+'" style="grid-template-columns:1fr"><div><h3>'+TIERS[t].name+'等級（'+cnt+' 件）'+tierTag(t)+'</h3><p>打穿 '+TIER_FLOOR[t]+' 後上架</p></div></div>');}return out.join('');}
+function otPay(win,quit,L,lv){const g=G;save.otStreak=save.otStreak||{lv:-1,n:0};
+  if(win){if(save.otStreak.lv===lv)save.otStreak={lv:-1,n:0};return 0;}
+  if(quit||g.daily||g.climbRun||g.dev||L.endless||g.time<OT_PAY.minT)return 0;
+  const clearB=Math.round((L.survival?300:120*((L.diff??lv)+1))*(g.eventBonus||1));
+  let prog;if(L.survival)prog=Math.min(1,g.time/L.survival);else{const bs=g.bosses.filter(b=>!b.dead);if(bs.length||g.phase==='boss'){const f=bs.length?bs.reduce((a,b)=>a+Math.max(0,b.hp)/(b.maxHp||b.max||b.hp||1),0)/bs.length:1;prog=.5+.5*(1-f);}else prog=.5*Math.min(1,g.kills/Math.max(1,g.def.quota||1));}
+  save.otStreak=save.otStreak.lv===lv?{lv,n:save.otStreak.n+1}:{lv,n:1};const mul=1+Math.min(OT_PAY.streakMax,OT_PAY.streak*(save.otStreak.n-1));g.otMul=mul;
+  return Math.round(clearB*OT_PAY.rate*prog*mul*(save.cleared.includes(lv)?OT_PAY.clearedMul:1));}
+function styleWarn(id,back){save.styleSeen=save.styleSeen||{};save.styleSeen[id]=1;persist();const st=gunStyle(id);STYLE_BACK=back;show('<div class="memo" role="dialog" aria-label="武器打法"><h2>'+esc(GUNS[id].name)+'</h2><p class="hint" style="margin:0">'+esc(st.tags)+'　上手難度 '+'★★★'.slice(0,st.stars)+'</p><p>'+esc(st.tip)+'</p><button class="btn" data-act="styleOk">知道了</button></div>','[data-act=styleOk]');}
+let STYLE_BACK=null;
 function renderShop(focusId){
   const items=byTier(Object.keys(GUNS),GUNS).filter(id=>save.guns.includes(id)||rewardFloorOf('g',id)!==null||tierOpen(GUNS[id].tier)).filter(id=>SHOPF==='全部'||(ROLES[id]&&ROLES[id][0]===SHOPF)).map(id=>[id,GUNS[id]]).map(([id,g])=>{const own=save.guns.includes(id);return'<div class="item t-'+g.tier+'"><img src="'+gunIcon(id)+'" alt="" style="width:'+Math.min(76,g.rows[0].length*4)+'px"><div><h3>'+esc(g.name)+tierTag(g.tier)+roleTags(id)+'</h3><p>'+esc(g.desc)+'</p><p class="stats">'+gunStats(g)+'</p></div><div class="btnrow">'+(own?'<span class="tag" style="text-align:center">已擁有</span>':rewardFloorOf('g',id)!==null?'<span class="hrlock"><span class="pxlock"></span>打穿 '+LEVELS[rewardFloorOf('g',id)].floor+' '+LEVELS[rewardFloorOf('g',id)].name+' 取得</span>':'<button class="btn" data-act="buyGun" data-arg="'+id+'"'+(save.coins<g.price?' disabled':'')+'><i class="coin"></i>'+g.price+'</button>')+'<button class="btn ghost" data-act="preview" data-arg="'+id+'" style="font-size:13px;padding:6px 10px">查看</button></div></div>';}).join('');
   show('<div class="sheet" role="dialog" aria-label="武器庫"><header><h2>武器庫</h2>'+coinTag(save.coins)+'</header><p class="lead">買下的武器會永久保存，出發前從這裡挑兩把。近戰武器會自動朝殭屍最多的方向攻擊；拿著近戰武器時受到的傷害 -15%，揮擊瞬間 -30%。</p><div class="filters">'+['全部','清群','單體','控場','生存'].map(r=>'<button class="opt'+(SHOPF===r?' on':'')+'" data-act="shopF" data-arg="'+r+'">'+r+'</button>').join('')+'</div><div class="list">'+items+(SHOPF==='全部'?tierLocks(GUNS,save.guns):'')+'</div><div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>',focusId?'[data-arg="'+focusId+'"]':null);
@@ -2807,11 +2874,13 @@ function cardPool(kind,gunId){
 function pickOffer(kind,gunId){
   const rnd=G.daily?seeded(hashStr('zo-card-'+G.daily.day+'-'+kind+'-'+G.player.lvl+'-'+(G.rerollUsed||0))):Math.random;
   let pool=cardPool(kind,gunId),n=kind==='raise'?4:(perk('four')&&!G.daily?4:3),out=[];
+  const own=ownedTags();pool=pool.map(c=>c.t==='c'&&own[CARD_TAGS[c.id]]?{...c,w:c.w*1.4}:c);
   if(kind==='raise'){const rare=pool.filter(c=>(c.t==='c'?CARDS[c.id].rar:WCARDS[c.id].rar)!=='common');if(rare.length){const c=rare[Math.floor(rnd()*rare.length)];out.push(c);pool=pool.filter(x=>x!==c);}}
   while(out.length<n&&pool.length){let tot=pool.reduce((a,c)=>a+c.w,0),r=rnd()*tot,c=pool[0];for(const x of pool){r-=x.w;if(r<=0){c=x;break;}}out.push(c);pool=pool.filter(x=>x!==c);}
   return out;
 }
-function cardInfo(c){const p=G.player;if(c.t==='c'){const d=CARDS[c.id],l=p.cards[c.id]||0;return {name:d.name,icon:skillIcon(d.icon),rar:d.rar,lv:l,max:d.max,desc:d.desc(l+1),tag:'通用'};}
+function ownedTags(){const p=G.player,t={};for(const [k,n] of Object.entries(p.cards||{}))if(n>0&&CARD_TAGS[k])t[CARD_TAGS[k]]=(t[CARD_TAGS[k]]||0)+1;for(const s of p.slots){const r=ROLE_TAG[(ROLES[s.id]||[''])[0]];if(r)t[r]=(t[r]||0)+1;}return t;}
+function cardInfo(c){const p=G.player;if(c.t==='c'){const d=CARDS[c.id],l=p.cards[c.id]||0,tg=CARD_TAGS[c.id],own=ownedTags();return {name:d.name,icon:skillIcon(d.icon),rar:d.rar,lv:l,max:d.max,desc:d.desc(l+1),tag:'通用'+(tg?'　#'+tg:''),syn:(tg&&own[tg]&&!l)?'搭配：你已有 '+own[tg]+' 項 #'+tg:''};}
   const d=WCARDS[c.id],g=GUNS[c.gun],l=(p.gunUp[c.gun]||{})[c.id]||0;return {name:c.id==='sig'?SIG[c.gun].name:d.name,icon:gunSprite(c.gun).img,rar:d.rar,lv:l,max:d.max,desc:d.desc(g,l+1),tag:g.name+(c.id==='sig'?'　專屬':'')};}
 function openCards(){
   const g=G;if(g.offer)return;const kind=g.raiseNext?'raise':g.gunNext?'gun':'level';const gunId=g.gunNext||null;g.raiseNext=false;g.gunNext=null;
@@ -2824,7 +2893,7 @@ function renderCards(){
   const firstLv=!save.tips.levelup;if(firstLv){save.tips.levelup=true;persist();}
   const sub0=kind==='raise'?'這次是四選一，保證至少一張稀有以上':kind==='gun'?'撿到升級槍箱，選一張這把槍的強化':'選一張考績單，立刻生效';
   const html=o.cards.map((c,i)=>{const I=cardInfo(c);const im=document.createElement('canvas');im.width=im.height=I.icon.width>12?I.icon.width:12;
-    return '<button class="card" data-act="pickCard" data-arg="'+i+'" style="--rc:'+RAR[I.rar].color+'"><div class="hd"><span>考績單　'+RAR[I.rar].name+'</span><span class="k">'+(i+1)+'</span></div><div class="ic"><img src="'+toIcon('cd_'+(c.t==='c'?c.id:c.gun+'_'+c.id),I.icon,4)+'" alt=""><div><h3>'+esc(I.name)+'</h3><div class="lv">'+(I.lv?'Lv '+I.lv+' → <b>'+(I.lv+1)+'</b>':'新卡 → <b>Lv 1</b>')+(I.lv+1>=I.max?'（滿級）':'')+'</div></div></div><p>'+esc(I.desc)+'</p><span class="tag">'+esc(I.tag)+'</span><span class="st">核准</span></button>';}).join('');
+    return '<button class="card" data-act="pickCard" data-arg="'+i+'" style="--rc:'+RAR[I.rar].color+'"><div class="hd"><span>考績單　'+RAR[I.rar].name+'</span><span class="k">'+(i+1)+'</span></div><div class="ic"><img src="'+toIcon('cd_'+(c.t==='c'?c.id:c.gun+'_'+c.id),I.icon,4)+'" alt=""><div><h3>'+esc(I.name)+'</h3><div class="lv">'+(I.lv?'Lv '+I.lv+' → <b>'+(I.lv+1)+'</b>':'新卡 → <b>Lv 1</b>')+(I.lv+1>=I.max?'（滿級）':'')+'</div></div></div><p>'+esc(I.desc)+'</p>'+(I.syn?'<div class="csyn">'+esc(I.syn)+'</div>':'')+'<span class="tag">'+esc(I.tag)+'</span><span class="st">核准</span></button>';}).join('');
   const sub=sub0+(firstLv?'<br><b style="color:#ffd23f">選一張卡立刻變強，這局結束後會重置。</b>':'');lvlEl.innerHTML='<h2>'+title+'</h2><p class="sub">'+sub+'</p><div class="cards'+(o.cards.length===4?' four':'')+'">'+html+'</div><div class="lvbtns"><button class="btn" data-act="reroll"'+(g.rerolls>0?'':' disabled')+'>重抽（剩 '+g.rerolls+' 次）</button><button class="btn" data-act="skipCard">跳過（+30 金幣）</button></div><div class="hint2">'+(isTouch?'點選卡片':'按 1／2／'+(o.cards.length===4?'3／4':'3')+' 選卡，或用 ← → 選擇後按 Enter；也可以直接點選')+'</div>';
   lvlEl.classList.remove('hidden');g.offerT=performance.now();g.csel=-1;g.heldAtOpen=new Set(Object.keys(keys).filter(k=>keys[k]));
   lvlEl.querySelectorAll('.card').forEach((b,i)=>b.addEventListener('pointerenter',ev=>{if(ev.pointerType!=='mouse'||!G||!G.offer)return;G.csel=i;lvlEl.querySelectorAll('.card').forEach((x,j)=>x.classList.toggle('kbsel',j===i));}));if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
@@ -2873,7 +2942,7 @@ function endRun(win,quit){
     show('<div class="memo" role="dialog" aria-label="結算"><h1>'+(G.collapsed?'你撐到公司倒閉了':dl?'今日挑戰結束':'加班結束')+'</h1>'+(G.collapsed?'<p style="margin:0 0 6px;font-weight:900;color:#9d0208">'+(G.newAch?'解鎖成就職稱「看著公司倒閉的人」，可以在人事室的職稱頁使用。':'整棟樓都塌了，你是最後一個離開的人。')+'</p>':'')+dailyLine+'<p>'+esc(playerName())+'　升到 Lv '+G.player.lvl+(G.eliteKills?'　菁英 '+G.eliteKills+' 隻':'')+'　撐了 '+Math.floor(t/60)+' 分 '+(t%60)+' 秒　擊倒 '+G.player.kills+' 隻，主管 '+G.bossKills+' 位</p><p class="pix" style="font-size:22px;margin:0 0 4px">分數 '+score+(best?'　新紀錄！':'')+'</p><p>最佳 '+save.bestEndless+'　本局金幣 +'+earned+(G.bossKills?'（含主管獎金 '+G.bossKills*100+'）':'')+'</p>'+coinTag(save.coins)+'<p id="lbstatus" style="font-size:13px;margin:8px 0 0"></p>'+
       '<button class="btn" data-act="'+(dl?'dailyStart':'retry')+'">'+(dl?'再挑戰一次':'再加班一次')+'</button><div class="subrow"><button class="btn ghost" data-act="share">分享成績</button><button class="btn ghost" data-act="'+(dl?'boardDaily':'board')+'">排行榜</button><button class="btn ghost" data-act="menu">主選單</button></div></div>');lbAfterRun(run);return;}
   MUSIC.duck=1;setMusic('menu');musicGain();
-  const bonus=win?Math.round((L.survival?300:120*((L.diff??lv)+1))*(G.eventBonus||1)):0,earned=Math.floor(G.coins)+bonus;
+  const bonus=win?Math.round((L.survival?300:120*((L.diff??lv)+1))*(G.eventBonus||1)):0,ot=otPay(win,quit,L,lv),earned=Math.floor(G.coins)+bonus+ot;
   const tsec=Math.floor(G.time);let newBest=false;
   save.coins+=earned;if(fun('card'))save.stampCard+=G.player.kills;if(win){if(!save.cleared.includes(lv))save.cleared.push(lv);if(G.heatPts>(save.heatBest[lv]||0))save.heatBest[lv]=G.heatPts;if(fun('plant'))save.plant=Math.min(8,(save.plant||0)+1);{const had4=floorOpen(19);if(G.hits===0&&!G.daily)save.noHit[lv]=true;if(!had4&&floorOpen(19))G.new4F=true;}{const it=grantReward(lv);if(it)G.gotReward=it;}if(lv===19&&!save.achv.fourth){save.achv.fourth=true;G.gotTitle4=true;}if(!save.best[lv]||tsec<save.best[lv]){save.best[lv]=tsec;newBest=true;}}
   if(lv===0&&(win||G.player.kills>=10))save.tut=true;
@@ -2881,7 +2950,7 @@ function endRun(win,quit){
   const nx=win?nextAfter(lv):null,hasNext=nx!==null&&nx!==undefined,final=win&&L.rooftop;
   const title=quit?'提早下班':win?(final?'全公司都下班了':'成功下班！'):(G.killer==='原型機被毀'?'原型機被打壞了':'被加班吞噬了');
   const msg=final?'董事會也被'+esc(playerName())+'打散了。整棟樓終於安靜下來，但加班永遠不會結束：無限加班模式已解鎖。':win?(hasNext?'這層清乾淨了，'+LEVELS[nx].floor+' '+LEVELS[nx].name+' 可以前往了。':'這層清乾淨了。'):quit?'今天的進度重置，賺到的金幣已經收進口袋。':'關卡會重置，但買過的槍和衣服都還在。';
-  show('<div class="memo" role="dialog" aria-label="結算"'+(win&&fun('beach')?' style="background:linear-gradient(#8ecae6 0 45%,#f4e3c1 45% 100%)"':'')+'><h1>'+title+'</h1>'+(win&&fun('beach')?'<p style="margin:0 0 6px">年度旅遊：海灘（你人還在辦公室）</p>':'')+'<p>'+esc(playerName())+(titleName()!==playerName()?'　'+esc(titleName()):'')+'　'+L.floor+' '+esc(L.name)+(G.heatPts?'　強度 '+G.heatPts:'')+'　擊倒 '+G.player.kills+' 隻'+(G.eliteKills?'　菁英 '+G.eliteKills+' 隻':'')+'</p>'+(G.gotReward?'<div class="newfeat"><b>獲得：'+esc(G.gotReward.name)+'</b>'+(G.gotReward.id==='katana'?'你從董事長室拿走了武士刀！':'首次通關獎勵，已放進'+(G.gotReward.t==='g'?'武器庫':'更衣室')+'。')+'<div class="nf"><span></span><button class="btn" data-act="'+(G.gotReward.t==='g'?'shop':'wardrobe')+'">去看看</button></div></div>':'')+(G.gotTitle4?'<p style="margin:0 0 6px;font-weight:900">解鎖成就職稱「去過四樓的人」。</p>':'')+(G.new4F?'<p style="margin:0 0 6px;font-style:italic;color:#6b4fa0">電梯面板上好像多了一個按鈕……</p>':'')+(G.mods.length?'<p style="margin:0 0 6px">事件：'+G.mods.map(m=>EVENTS[m].name).join('、')+(G.eventBonus>1?'（通關獎金 ×'+G.eventBonus+'）':'')+'</p>':'')+resultExtras(win,quit,tsec,newBest)+(G.smashed?'<p>被 '+esc(G.smashBy)+' 拆掉了 '+G.smashed+' 件辦公室家具。</p>':'')+'<p>'+msg+'</p><p class="pix" style="font-size:18px;margin:0">本局金幣 +'+earned+(bonus?'（含通關獎金 '+bonus+'）':'')+'</p>'+coinTag(save.coins)+
+  show('<div class="memo" role="dialog" aria-label="結算"'+(win&&fun('beach')?' style="background:linear-gradient(#8ecae6 0 45%,#f4e3c1 45% 100%)"':'')+'><h1>'+title+'</h1>'+(win&&fun('beach')?'<p style="margin:0 0 6px">年度旅遊：海灘（你人還在辦公室）</p>':'')+'<p>'+esc(playerName())+(titleName()!==playerName()?'　'+esc(titleName()):'')+'　'+L.floor+' '+esc(L.name)+(G.heatPts?'　強度 '+G.heatPts:'')+'　擊倒 '+G.player.kills+' 隻'+(G.eliteKills?'　菁英 '+G.eliteKills+' 隻':'')+'</p>'+(G.gotReward?'<div class="newfeat"><b>獲得：'+esc(G.gotReward.name)+'</b>'+(G.gotReward.id==='katana'?'你從董事長室拿走了武士刀！':'首次通關獎勵，已放進'+(G.gotReward.t==='g'?'武器庫':'更衣室')+'。')+'<div class="nf"><span></span><button class="btn" data-act="'+(G.gotReward.t==='g'?'shop':'wardrobe')+'">去看看</button></div></div>':'')+(G.gotTitle4?'<p style="margin:0 0 6px;font-weight:900">解鎖成就職稱「去過四樓的人」。</p>':'')+(G.new4F?'<p style="margin:0 0 6px;font-style:italic;color:#6b4fa0">電梯面板上好像多了一個按鈕……</p>':'')+(G.mods.length?'<p style="margin:0 0 6px">事件：'+G.mods.map(m=>EVENTS[m].name).join('、')+(G.eventBonus>1?'（通關獎金 ×'+G.eventBonus+'）':'')+'</p>':'')+resultExtras(win,quit,tsec,newBest)+(G.smashed?'<p>被 '+esc(G.smashBy)+' 拆掉了 '+G.smashed+' 件辦公室家具。</p>':'')+'<p>'+msg+'</p><p class="pix" style="font-size:18px;margin:0">本局金幣 +'+earned+(bonus?'（含通關獎金 '+bonus+'）':'')+(ot?'（含加班費 '+ot+(G.otMul>1?'，全勤 ×'+G.otMul.toFixed(1):'')+'）':'')+'</p>'+coinTag(save.coins)+
     '<p id="lbstatus" style="font-size:13px;margin:8px 0 0"></p>'+(hasNext?'<button class="btn" data-act="pickLevel" data-arg="'+nx+'">'+(LEVELS[nx].endless?'進入無限加班':'前往 '+LEVELS[nx].floor+' '+esc(LEVELS[nx].name))+'</button>':'')+
     '<button class="btn'+(hasNext?' ghost':'')+'" data-act="retry">再打一次 '+L.floor+'</button><div class="subrow"><button class="btn ghost" data-act="share">分享成績</button>'+(featOpen('armory')?'<button class="btn ghost" data-act="shop">武器庫</button>':'')+'<button class="btn ghost" data-act="menu">主選單</button></div></div>');
   if(win&&!G.daily){const nf=UNLOCKS.filter(u=>!save.unlockSeen[u.id]&&save.cleared.includes(u.need));if(nf.length){for(const u of nf)save.unlockSeen[u.id]=true;persist();const box=document.createElement('div');box.className='newfeat';box.innerHTML='<b>新功能開放</b>'+nf.map(u=>'<div class="nf"><b>'+u.name+'</b><span>'+u.desc+'</span><button class="btn" data-act="'+({armory:'shop',wardrobe:'wardrobe',hr:'hr',board:'board',daily:'daily'}[u.id])+'">去看看</button></div>').join('');const m=scr.querySelector('.memo');if(m)m.insertBefore(box,m.querySelector('#lbstatus'));}}
@@ -2892,15 +2961,16 @@ const ACTIONS={
   pauseSettings:()=>{SET_FROM='pause';if(!['聲音','畫面'].includes(SETTAB))SETTAB='聲音';renderSettings();},
   setBack:()=>{SET_FROM='menu';if(G&&!G.ended){mode='play';pauseGame();}else renderMenu();},
   pickLevel:a=>{if(!floorOpen(+a))return;G=null;mode='menu';pendingLv=+a;pendingClimb=false;pickSel=save.loadout.filter(id=>save.guns.includes(id)).slice(0,2);for(const id of save.guns){if(pickSel.length>=2)break;if(!pickSel.includes(id))pickSel.push(id);}renderLoadout();},
-  toggleGun:a=>{const k=pickSel.indexOf(a);if(k>=0)pickSel.splice(k,1);else if(pickSel.length<2)pickSel.push(a);else pickSel[1]=a;renderLoadout(a);},
+  toggleGun:a=>{const k=pickSel.indexOf(a);if(k>=0)pickSel.splice(k,1);else if(pickSel.length<2)pickSel.push(a);else pickSel[1]=a;if(k<0&&gunStyle(a).stars>=3&&!(save.styleSeen||{})[a]){styleWarn(a,()=>renderLoadout(a));return;}renderLoadout(a);},
   start:()=>{if(pickSel.length<2)return;save.loadout=pickSel.slice();persist();if(pendingClimb){pendingClimb=false;Climb.newRun(pickSel.slice());return;}const L=LEVELS[pendingLv],heat=(!L.endless&&!L.survival&&save.cleared.includes(pendingLv))?(save.heatSel[pendingLv]||[]).filter(k=>HEAT[k]):[];elevatorTo(pendingLv,()=>startRun(pendingLv,pickSel.slice(),{heat}));},
-  buyGun:a=>{const g=GUNS[a];if(!g||save.guns.includes(a)||save.coins<g.price||rewardFloorOf('g',a)!==null)return;save.coins-=g.price;save.guns.push(a);persist();sfx('power');renderShop(a);},
+  styleOk:()=>{const f=STYLE_BACK;STYLE_BACK=null;if(f)f();else renderMenu();},
+  buyGun:a=>{const g=GUNS[a];if(!g||save.guns.includes(a)||save.coins<g.price||rewardFloorOf('g',a)!==null)return;save.coins-=g.price;save.guns.push(a);persist();sfx('power');if(gunStyle(a).stars>=3&&!(save.styleSeen||{})[a]){styleWarn(a,()=>renderShop(a));return;}renderShop(a);},
   buyOutfit:a=>{const o=OUTFITS[a];if(!o||save.outfits.includes(a)||save.coins<o.price||rewardFloorOf('o',a)!==null)return;save.coins-=o.price;save.outfits.push(a);save.outfit=a;persist();sfx('power');renderWardrobe(a);},
   wear:a=>{if(!save.outfits.includes(a))return;save.outfit=a;persist();renderWardrobe(a);},
   badgeDone:()=>{const nm=(save.char.name||'').trim();if(nm&&!ACTIONS._nameOk){const el=$('#nmmsg');if(el)el.textContent='檢查名字中…';nameCheck(nm).then(ok=>{if(ok){ACTIONS._nameOk=true;ACTIONS.badgeDone();ACTIONS._nameOk=false;}else{const e2=$('#nmmsg');if(e2)e2.textContent='這個名字不能使用，請換一個。';}});return;}save.seenBadge=true;persist();if(LB.pending&&save.lbConsent===null){const r=LB.pending;show('<div class="memo" role="dialog" aria-label="上傳成績"><h2>上傳成績</h2><p>撐了 '+fmtLong(r.t)+'，擊倒 '+r.k+' 隻。</p><p id="lbstatus" style="font-size:13px"></p><button class="btn ghost" data-act="menu">回主選單</button></div>');lbAfterRun(r);return;}renderMenu();},
   charSet:(a,b)=>{const k=b.dataset.key;if(k==='skin')save.char.skin=+a;else save.char[k]=a;persist();renderBadge();},
   charRandom:()=>{save.char.skin=Math.floor(Math.random()*SKINS.length);save.char.hair=pick(Object.keys(HAIRS));save.char.hairColor=pick(Object.keys(HAIR_COLORS));save.char.glasses=Math.random()<.35?pick(Object.keys(GLASSES)):'none';save.char.beard=Math.random()<.3?pick(Object.keys(BEARDS)):'none';save.char.extra=Math.random()<.3?pick(Object.keys(EXTRAS)):'none';persist();renderBadge();},
-  preview:a=>{const g=GUNS[a];if(!g)return;const m=$('#pvm');m.classList.remove('hidden');$('#pvname').textContent=g.name;$('#pvfeel').textContent=(g.feel||'')+'　'+gunStats(g);$('#pvcanvas').dataset.gun=a;drawPreviews();},
+  preview:a=>{const g=GUNS[a];if(!g)return;const m=$('#pvm');m.classList.remove('hidden');$('#pvname').textContent=g.name;$('#pvfeel').textContent=(g.feel||'')+'　'+gunStats(g)+'　打法：'+gunStyle(a).tip;$('#pvcanvas').dataset.gun=a;drawPreviews();},
   closePreview:()=>{$('#pvm').classList.add('hidden');},
   lbRename:()=>renderBadge(false),
   hr:()=>renderHR(),hrTab:a=>renderHR(a),
@@ -3016,7 +3086,7 @@ function cGunPool(z){const tiers=z>=3?['common','rare','epic','legend']:z>=2?['c
 Climb.renderDraft=function(){const st=Climb.st,r=seeded(hashStr('zc-'+st.seed+'-draft'));const pool=save.guns.filter(g=>GUNS[g]&&['common','rare'].includes(GUNS[g].tier));const a=[];const c=pool.slice();while(a.length<3&&c.length){a.push(c.splice(Math.floor(r()*c.length),1)[0]);}for(const g of ['stapler','rubber','postit'])if(a.length<3&&!a.includes(g))a.push(g);st.draft=a;
   show('<div class="cwrap cdraft" role="dialog" aria-label="開局武器"><div class="ctop"><b>B1 停車場</b><span>爬樓開始</span></div><h1 class="ctitle">選一把開局武器</h1><p class="csub">你從停車場的後門溜進公司，只來得及抓一樣東西防身。</p><div class="cdg">'+
     a.map((g,i)=>{const G_=GUNS[g],role=(ROLES[g]||['',''])[0];return '<button class="crcard r-'+G_.tier+'" data-act="cDraft" data-arg="'+i+'"><div class="hd">'+esc(TIERS[G_.tier].name)+'　#'+esc(ROLE_TAG[role]||role)+'<span class="k">'+(i+1)+'</span></div><img src="'+gunIcon(g)+'" alt=""><div><h4>'+esc(G_.name)+'</h4><p>'+esc(G_.feel||'')+'</p></div></button>';}).join('')+
-    '</div><div class="cbuild"><div class="meta">・另一隻手拿著公司配發的'+(a.includes('stapler')?'釘書機手槍或橡皮筋霰彈槍':'釘書機手槍')+'，路上可以換掉<br>・樓層獎勵、便利商店、事件都可能拿到新武器<br>・傳說武器 12F 以後才會出現；解鎖越多武器，開局選擇越多</div></div><p class="cq">「HR 表示：公司不提供任何裝備。」</p><button class="btn ghost" data-act="menu">返回主選單</button></div>','.crcard');};
+    '</div><div class="cbuild"><div class="meta">'+(pool.length<3?'<b>解鎖更多武器，開局選擇會更多</b><br>':'')+'・另一隻手拿著公司配發的'+(a.includes('stapler')?'釘書機手槍或橡皮筋霰彈槍':'釘書機手槍')+'，路上可以換掉<br>・樓層獎勵、便利商店、事件都可能拿到新武器<br>・傳說武器 12F 以後才會出現；解鎖越多武器，開局選擇越多</div></div><p class="cq">「HR 表示：公司不提供任何裝備。」</p><button class="btn ghost" data-act="menu">返回主選單</button></div>','.crcard');};
 Climb.resume=function(){if(!save.climb)return;if(save.climb.rv!==2){cClear();Climb.entry();return;}Climb.st=JSON.parse(JSON.stringify(save.climb));const ph=Climb.st.phase;G=null;mode='menu';if(ph==='draft')Climb.renderDraft();else if(ph==='shop')Climb.renderShop();else if(ph==='elev')Climb.renderElevator();else Climb.goFloor();};
 Climb.goFloor=function(){const st=Climb.st;const z=cZone(st.picked);st.phase='event';cSave();if(z!==st.zone){st.zone=z;Climb.renderZone(z,()=>Climb.renderEvent());}else Climb.renderEvent();};
 Climb.pickEvent=function(){const st=Climb.st,r=cRng('ev'),R=cRoute()[st.step];if(R.zb)return 'boss';if(st.step===0)return null;
@@ -3353,6 +3423,7 @@ Object.assign(ACTIONS,{
 });
 let PRIV_RET='settings';
 
+if(isTouch){const _bp=document.querySelector('#boot .press');if(_bp)_bp.textContent='點一下開始上班';}
 requestAnimationFrame(loop);
 </script>
 </body>
