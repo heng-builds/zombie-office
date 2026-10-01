@@ -463,7 +463,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.25.0';
+const VERSION='0.25.1';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -708,7 +708,7 @@ const OUTFITS={
   ex:     {name:'前任員工的西裝',tier:'legend',price:0,desc:'每 10 秒自動穿透 1 秒，期間不會受到傷害。',bonus:{phase:true},pal:{C:'#4b5366',W:'#dfe6ee',T:'#6b7688',P:'#3d4455',B:'#f4f4f0',L:'#3a86ff'},torso:["..CCWTTWCC..","..CCWTTWBC..","..CCCTTCLC..","...CCTTCC..."],legs:'std',rim:'#9aa3b5'},
   mib:    {name:'黑衣人西裝',tier:'legend',price:6500,desc:'每 15 秒閃光一次，畫面內殭屍發呆 2 秒，魔王改為減速。',bonus:{flash:true},pal:{C:'#0f1015',W:'#f4f4f4',T:'#1a1d27',P:'#0f1015',K:'#0f1015',L:'#111111',G:'#ffffff'},torso:["..CCWTTWCC..","..CCWTTWCC..","..CCCTTCCC..","...CCTTCC..."],legs:'std',
     face:[[5,"...LLGLLL..."]],rim:'#4a5060',aura:'#e0e6ee'},
-  angel:  {name:'天使投資人',tier:'legend',price:0,redeem:true,desc:'兌換限定。閃避落地時展開光環，震開身邊的殭屍（冷卻 8 秒）；金幣 +10%。',bonus:{angel:true},pal:{C:'#f1f1ea',W:'#ffffff',T:'#ffd23f',P:'#e6e6dc',K:'#e6e6dc'},torso:["..CCWTTWCC..","..CCWTTWCC..","..CCCTTCCC..","...CCTTCC..."],pants:"..PPPPPPPP..",legs:'std',rim:'#c9a227',aura:'#fff3b0'},
+  angel:  {name:'天使投資人',tier:'legend',price:0,redeem:true,desc:'兌換限定。閃避落地時展開光環，震開身邊的殭屍（冷卻 8 秒）；金幣 +10%。',bonus:{angel:true},pal:{C:'#f4f4ee',W:'#ffffff',T:'#ffd23f',G:'#e0b43c',P:'#ecece4',K:'#ecece4',Y:'#ffd23f',F:'#ffffff',V:'#cfd6e0'},torso:["..CGWTTWGC..","..CGWTTWGC..","..CCCTTCCC..","...CCTTCC..."],pants:"..PPPPPPPP..",legs:'std',hat:[[0,"...YYYYYY..."],[8,"FV........VF"],[9,"FF........FF"],[10,".F........F."]],rim:'#4a5060'},
   reaper: {name:'死線死神',tier:'legend',price:7000,desc:'每局一次，死亡時原地復活並回 50% 血，同時震開周圍殭屍。',bonus:{revive:true},pal:{C:'#111218',D:'#1e2029',R:'#ff2e2e',Y:'#ffd23f',P:'#111218',K:'#111218'},torso:["..CCCCCCCC..","..CCCCCCCC..","..CCCCYCCC..","..CCCCCCCC.."],pants:"..CCCCCCCC..",legs:'robe',
     hat:[[1,".....CC....."],[2,"....CCCC...."],[3,"...CCCCCC..."],[4,"..CC....CC.."],[5,"..C......C.."],[6,"..C......C.."],[7,"..C......C.."],[8,"..CC....CC.."]],hideHair:true,face:[[4,"...DDDDDD..."],[5,"...DRDDRD..."],[6,"...DDDDDD..."],[7,"...DDDDDD..."],[8,"....DDDD...."]],rim:'#4a5060',aura:'#ff2e2e'},
   mech:   {name:'加班機甲',tier:'legend',price:8000,desc:'體型變大、最大血量 +100，殭屍碰到你也會受傷。',bonus:{hp:100,mech:true},pal:{M:'#3d4452',l:'#6b7688',D:'#1f232b',O:'#f77f00',o:'#b35900',V:'#4cc9f0',W:'#e6f7ff',Y:'#ffd23f',K:'#12151b',G:'#f77f00'},scale:3.6,legs:'mechA',
@@ -3454,9 +3454,9 @@ Object.assign(ACTIONS,{
       .then(res=>{REDEEM.busy=false;if(res&&res.ok){grantReward(res.reward);renderRedeemOk();return;}if(res&&res.err==='owned'){grantReward(res.reward||'angel');}REDEEM.msg=REDEEM_MSG[(res&&res.err)||'invalid']||REDEEM_MSG.invalid;renderRedeem();})
       .catch(()=>{REDEEM.busy=false;REDEEM.msg=REDEEM_MSG.net;renderRedeem();});},
 });
-function drawAngelBack(p){if(save.outfit!=='angel'||!G||G.ob==null||!G.ob.angel)return;const sc=p.scale||3,fl=Math.sin(G.time*(p.moving?12:4))*.5+.5,y=p.y-sc*4.5,w=sc*(5+fl*1.5);
+function drawAngelBack(p){if(save.outfit!=='angel'||!G||G.ob==null||!G.ob.angel)return;const sc=p.scale||3,fl=Math.sin(G.time*(p.moving?12:4))*.5+.5,y=p.y-sc*4.5,w=sc*(3.5+fl*1.5);
   ctx.save();ctx.fillStyle='#f4f4f0';ctx.strokeStyle='#0d0f14';ctx.lineWidth=2;for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(p.x+s*sc*2,y);ctx.lineTo(p.x+s*(sc*2+w),y-sc*(3+fl*2));ctx.lineTo(p.x+s*(sc*2+w*.9),y+sc*1.5);ctx.lineTo(p.x+s*(sc*2+w*.5),y+sc*3);ctx.closePath();ctx.fill();ctx.stroke();}ctx.restore();}
-function drawAngelFront(p){if(save.outfit!=='angel'||!G||!G.ob||!G.ob.angel)return;const sc=p.scale||3,y=p.y-sc*14.6;ctx.save();ctx.strokeStyle='#0d0f14';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(p.x,y,sc*3.2,sc*1.1,0,0,TAU);ctx.stroke();ctx.strokeStyle='#ffd23f';ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
+function drawAngelFront(p){if(save.outfit!=='angel'||!G||!G.ob||!G.ob.angel)return;
   if(p.angelFx>0){const a=p.angelFx/.45,r=95*(1-a)+20;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#ffd23f';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(p.x,p.y+p.r*.6,r,r*.45,0,0,TAU);ctx.stroke();ctx.restore();}}
 
 requestAnimationFrame(loop);
