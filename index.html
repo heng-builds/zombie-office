@@ -383,9 +383,12 @@ button.item{cursor:pointer}
 .memo.priv{max-width:560px;text-align:left}.priv h4{margin:12px 0 4px;color:#6b4f2a}.priv p,.priv li{font-size:13px;line-height:1.6;margin:2px 0}.priv ul{margin:0;padding-left:18px}.priv code{background:#efe9d2;padding:1px 6px;font-size:12px;word-break:break-all}
 .nmmsg{color:#c1121f;font-size:12px;font-weight:900;min-height:1em;margin:2px 0 0}
 .ttag.angel{display:inline-block;margin-left:6px;padding:1px 8px;font-size:11px;font-weight:900;color:#5a4300;background:linear-gradient(90deg,#fffaf0,#ffe58a);border:2px solid #b8860b;border-radius:3px}
-td.angelav{position:relative}td.angelav::before{content:'';position:absolute;left:50%;top:1px;width:22px;height:7px;transform:translateX(-50%);border:3px solid #ffd23f;border-radius:50%;box-shadow:0 0 0 1px #0d0f14}
 .rokbox{background:#2c3a55;border:3px solid #0d0f14;box-shadow:0 0 0 4px #ffd23f inset;padding:14px;margin:10px 0}
 @media (max-height:520px) and (orientation:landscape){.rokbox{padding:4px;margin:4px 0}.rokbox img{width:64px!important}.memo[aria-label="兌換成功"] p{margin:3px 0}.memo[aria-label="兌換成功"] h2{margin:0 0 4px}}
+.item.angelcard{background:linear-gradient(135deg,#d9efff,#fff6dc)!important}.item.angelcard{grid-template-columns:132px 1fr auto!important}.item.angelcard>img{justify-self:center}.item.angelcard img{filter:drop-shadow(0 0 6px rgba(255,229,138,.9))}
+.photo.angelglow{background:radial-gradient(circle at 50% 40%,#fff6cf 0,#dcefff 55%,#9fc6ea 100%)!important}
+.rokbox{position:relative;overflow:hidden;background:linear-gradient(180deg,#9fc6ea,#2c3a55)!important}.rokimg{animation:angelUnfold .6s cubic-bezier(.2,1.4,.4,1) both}.rokflash{position:absolute;inset:0;background:#fff;animation:angelFlash .7s ease-out both;pointer-events:none}
+@keyframes angelUnfold{0%{transform:scaleX(.25) scaleY(.9);opacity:.3}100%{transform:none;opacity:1}}@keyframes angelFlash{0%{opacity:.9}100%{opacity:0}}
 .setsec{margin:14px 0 4px;font-weight:900;font-size:14px;border-bottom:2px solid var(--ink);padding-bottom:2px;grid-column:1/-1}
 .newfeat{margin:10px 0 0;padding:10px;border:3px solid var(--ink);background:#fff6c9}
 .newfeat b{display:block;font-size:16px}
@@ -463,7 +466,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 const TAU=Math.PI*2;
 function seeded(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const VERSION='0.25.1';
+const VERSION='0.25.3';
 const WORLD={w:1800,h:1300};
 const TIERS={common:{name:'普通',color:'#8e98a8'},rare:{name:'稀有',color:'#3a86ff'},epic:{name:'史詩',color:'#9d4edd'},legend:{name:'傳說',color:'#ffb703'}};
 
@@ -708,7 +711,7 @@ const OUTFITS={
   ex:     {name:'前任員工的西裝',tier:'legend',price:0,desc:'每 10 秒自動穿透 1 秒，期間不會受到傷害。',bonus:{phase:true},pal:{C:'#4b5366',W:'#dfe6ee',T:'#6b7688',P:'#3d4455',B:'#f4f4f0',L:'#3a86ff'},torso:["..CCWTTWCC..","..CCWTTWBC..","..CCCTTCLC..","...CCTTCC..."],legs:'std',rim:'#9aa3b5'},
   mib:    {name:'黑衣人西裝',tier:'legend',price:6500,desc:'每 15 秒閃光一次，畫面內殭屍發呆 2 秒，魔王改為減速。',bonus:{flash:true},pal:{C:'#0f1015',W:'#f4f4f4',T:'#1a1d27',P:'#0f1015',K:'#0f1015',L:'#111111',G:'#ffffff'},torso:["..CCWTTWCC..","..CCWTTWCC..","..CCCTTCCC..","...CCTTCC..."],legs:'std',
     face:[[5,"...LLGLLL..."]],rim:'#4a5060',aura:'#e0e6ee'},
-  angel:  {name:'天使投資人',tier:'legend',price:0,redeem:true,desc:'兌換限定。閃避落地時展開光環，震開身邊的殭屍（冷卻 8 秒）；金幣 +10%。',bonus:{angel:true},pal:{C:'#f4f4ee',W:'#ffffff',T:'#ffd23f',G:'#e0b43c',P:'#ecece4',K:'#ecece4',Y:'#ffd23f',F:'#ffffff',V:'#cfd6e0'},torso:["..CGWTTWGC..","..CGWTTWGC..","..CCCTTCCC..","...CCTTCC..."],pants:"..PPPPPPPP..",legs:'std',hat:[[0,"...YYYYYY..."],[8,"FV........VF"],[9,"FF........FF"],[10,".F........F."]],rim:'#4a5060'},
+  angel:  {name:'天使投資人',tier:'legend',price:0,redeem:true,desc:'兌換限定。閃避落地時展開光環，震開身邊的殭屍（冷卻 8 秒）；金幣 +10%。',bonus:{angel:true},pal:{C:'#f4f4ee',W:'#ffffff',T:'#ffd23f',G:'#e0b43c',P:'#ecece4',K:'#ecece4',Y:'#ffd23f',F:'#ffffff',V:'#cfd6e0'},torso:["..CGWTTWGC..","..CGWTTWGC..","..CCCTTCCC..","...CCTTCC..."],pants:"..PPPPPPPP..",legs:'std',hat:[],rim:'#4a5060'},
   reaper: {name:'死線死神',tier:'legend',price:7000,desc:'每局一次，死亡時原地復活並回 50% 血，同時震開周圍殭屍。',bonus:{revive:true},pal:{C:'#111218',D:'#1e2029',R:'#ff2e2e',Y:'#ffd23f',P:'#111218',K:'#111218'},torso:["..CCCCCCCC..","..CCCCCCCC..","..CCCCYCCC..","..CCCCCCCC.."],pants:"..CCCCCCCC..",legs:'robe',
     hat:[[1,".....CC....."],[2,"....CCCC...."],[3,"...CCCCCC..."],[4,"..CC....CC.."],[5,"..C......C.."],[6,"..C......C.."],[7,"..C......C.."],[8,"..CC....CC.."]],hideHair:true,face:[[4,"...DDDDDD..."],[5,"...DRDDRD..."],[6,"...DDDDDD..."],[7,"...DDDDDD..."],[8,"....DDDD...."]],rim:'#4a5060',aura:'#ff2e2e'},
   mech:   {name:'加班機甲',tier:'legend',price:8000,desc:'體型變大、最大血量 +100，殭屍碰到你也會受傷。',bonus:{hp:100,mech:true},pal:{M:'#3d4452',l:'#6b7688',D:'#1f232b',O:'#f77f00',o:'#b35900',V:'#4cc9f0',W:'#e6f7ff',Y:'#ffd23f',K:'#12151b',G:'#f77f00'},scale:3.6,legs:'mechA',
@@ -1814,7 +1817,7 @@ function update(dt){
     if(p.st.stipend&&!g.dead){g.stipT=(g.stipT||0)+dt;if(g.stipT>=60){g.stipT-=60;g.coins+=p.st.stipend;floatText(p.x,p.y-42,'職務加給 +'+p.st.stipend,'#ffd23f',12);}}
     if(p.kbT>0){p.kbT-=dt;p.x=clamp(p.x+p.kbVx*dt,20,WORLD.w-20);p.y=clamp(p.y+p.kbVy*dt,20,WORLD.h-20);}
     let sp=210*p.st.spd*(p.charge>0?.5:1)*(p.spinT>0?(p.spinSp||1.2):1)*(p.boostT>0?1.3:1)*(p.slowT>0?.6:1)*(p.bslowT>0?.7:1)*(p.stunT>0?0:1)*(p.tbuff&&p.tbuff.k==='spd'?1.3:1);if(g.mods.includes('sprinkler'))for(const q of g.puddles){if((q.x-p.x)**2+(q.y-p.y)**2<(q.r+4)**2){sp*=.7;break;}}
-    if(p.angelCd>0)p.angelCd-=dt;if(p.angelFx>0)p.angelFx-=dt;if(p.wasDash&&p.dashT<=0&&g.ob&&g.ob.angel&&!(p.angelCd>0)){p.angelCd=8;p.angelFx=.45;for(const e of g.enemies){if(e.dead||e.boss)continue;if((e.x-p.x)**2+(e.y-p.y)**2<90*90)knock(e,p.x,p.y,90);}sfx('ui');}p.wasDash=p.dashT>0;
+    if(p.angelCd>0)p.angelCd-=dt;if(p.angelFx>0)p.angelFx-=dt;if(p.wasDash&&p.dashT<=0&&g.ob&&g.ob.angel&&!(p.angelCd>0)){p.angelCd=8;p.angelFx=.45;for(let q=0;q<14;q++){const a=q/14*TAU;g.parts.push({x:p.x,y:p.y-8,vx:Math.cos(a)*rand(80,160),vy:Math.sin(a)*rand(60,120)-30,life:.6,max:.6,color:q%3?'#fafaf6':'#ffe58a',size:4});}for(const e of g.enemies){if(e.dead||e.boss)continue;if((e.x-p.x)**2+(e.y-p.y)**2<90*90)knock(e,p.x,p.y,90);}sfx('ui');}p.wasDash=p.dashT>0;
     if(p.dashT>0){p.dashT-=dt;p.x+=p.dashVx*dt;p.y+=p.dashVy*dt;if(Math.random()<.6)g.parts.push({x:p.x,y:p.y+10,vx:0,vy:0,life:.3,max:.3,color:'#bde0fe',size:4});if(Math.random()<.5)p.ghosts.push({x:p.x,y:p.y,life:.22,face:p.face,frame:p.frame||1});}
     const px0=p.x,py0=p.y;
     if(p.dashT<=0){p.x+=mx*sp*dt;p.y+=my*sp*dt;}
@@ -2515,7 +2518,7 @@ const fmtT=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
 const coinTag=n=>'<span class="wallet"><i class="coin"></i>'+n+'</span>';
 function gunStats(g){const _id=Object.keys(GUNS).find(k=>GUNS[k]===g);const _st=_id?gunStyle(_id):null;return gunStats0(g)+(_st?'　｜ '+_st.tags+'　上手 '+'★★★'.slice(0,_st.stars)+'☆☆☆'.slice(0,3-_st.stars):'');}
 function gunStats0(g){if(g.swing)return'傷害 '+g.dmg+'　近戰'+(g.swing.shape==='spin'?'迴旋':g.swing.shape==='thrust'?'直刺':g.swing.shape==='chair'?'旋轉衝撞':'橫掃')+'　每 '+g.rate+' 秒';if(g.melee)return'傷害 '+g.dmg+'　範圍攻擊　每 '+g.rate+' 秒';if(g.beam)return'傷害 '+g.dmg+'　貫穿全場　每 '+g.rate+' 秒';return'傷害 '+g.dmg+(g.pellets>1?'×'+g.pellets:'')+'　射速 '+(1/g.rate).toFixed(1)+'/秒'+(g.pierce?'　穿透 '+(g.pierce>50?'無限':g.pierce):'')+(g.explode?'　爆炸':'');}
-function outfitIcon(id,ch){const spr=charSprite(ch||save.char,id,1,true);return toIcon('o'+id+charKey(ch||save.char,id,1,true),spr.img,5);}
+function outfitIcon(id,ch){if(id==='angel'&&typeof angelIcon==='function')return angelIcon(ch);const spr=charSprite(ch||save.char,id,1,true);return toIcon('o'+id+charKey(ch||save.char,id,1,true),spr.img,5);}
 function playerName(){return save.char.name||'社畜';}
 
 /* ================= 排行榜 ================= */
@@ -2561,7 +2564,7 @@ function renderBoard(tab){
     const cell=r=>m==='climb'?[(r.floor>=cStepsTotal()?'RF 通關':r.floor+' 層'),fmtT(r.seconds)]:m==='floor'?[fmtT(r.seconds),r.heat||0,(r.created_at||'').slice(5,10).replace('-','/')]:m==='survival'?[r.kills,r.hits||0]:met==='kills'?[r.kills,fmtT(r.seconds)]:[fmtT(r.seconds),r.kills];
     const subOf=r=>m==='climb'?fmtT(r.seconds):m==='floor'?'強度 '+(r.heat||0)+'・'+(r.created_at||'').slice(5,10).replace('-','/'):m==='survival'?'受傷 '+(r.hits||0):met==='kills'?'撐了 '+fmtT(r.seconds):r.kills+' 隻';
     $('#lbbody').innerHTML='<table class="lbt"><thead><tr><th class="rk">名次</th><th class="av"></th><th class="nm">名字</th>'+cols.map((c,i)=>'<th class="n c'+(i+1)+'">'+c+'</th>').join('')+'</tr></thead><tbody>'+
-      rows.map(r=>'<tr'+(r.mine?' class="mine"':'')+'><td class="rk">'+medal(r.rank)+'</td><td class="av'+(r.angel?' angelav':'')+'"><img src="'+lbAvatar(r.look)+'" alt=""></td><td class="nm"><span class="nn">'+esc(r.name)+(r.mine?'（你）':'')+'</span>'+(r.angel&&r.title==='天使投資人'?'<span class="ttag angel">✦ 天使投資人</span>':titleTag(r.title))+'</td>'+cell(r).map((v,i)=>'<td class="n c'+(i+1)+'">'+(i===0?'<b>'+v+'</b><span class="sub">'+subOf(r)+'</span>':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';})
+      rows.map(r=>'<tr'+(r.mine?' class="mine"':'')+'><td class="rk">'+medal(r.rank)+'</td><td class="av"><img src="'+lbAvatar(r.look)+'" alt=""></td><td class="nm"><span class="nn">'+esc(r.name)+(r.mine?'（你）':'')+'</span>'+(r.angel&&r.title==='天使投資人'?'<span class="ttag angel">✦ 天使投資人</span>':titleTag(r.title))+'</td>'+cell(r).map((v,i)=>'<td class="n c'+(i+1)+'">'+(i===0?'<b>'+v+'</b><span class="sub">'+subOf(r)+'</span>':v)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';})
   .catch(()=>{if(!$('#lbbody'))return;$('#lbbody').innerHTML='<p class="lbnote">目前連不上排行榜，請確認網路後再試一次。</p>';});
 }
 function lbAfterRun(run){
@@ -2702,7 +2705,7 @@ function drawPreviews(){if($('#pvm').classList.contains('hidden'))return;const c
   }}
 setInterval(drawPreviews,100);
 function renderWardrobe(focusId){
-  const items=Object.keys(OUTFITS).sort((a,b)=>TIER_ORDER[OUTFITS[a].tier]-TIER_ORDER[OUTFITS[b].tier]).filter(id=>save.outfits.includes(id)||OUTFITS[id].redeem||rewardFloorOf('o',id)!==null||tierOpen(OUTFITS[id].tier)).map(id=>[id,OUTFITS[id]]).map(([id,o])=>{const own=save.outfits.includes(id),on=save.outfit===id;return'<div class="item t-'+o.tier+(on?' sel':'')+'"><img src="'+outfitIcon(id)+'" alt="" style="width:60px"><div><h3>'+esc(o.name)+tierTag(o.tier)+'</h3><p>'+esc(o.desc)+'</p></div>'+
+  const items=Object.keys(OUTFITS).sort((a,b)=>TIER_ORDER[OUTFITS[a].tier]-TIER_ORDER[OUTFITS[b].tier]).filter(id=>save.outfits.includes(id)||OUTFITS[id].redeem||rewardFloorOf('o',id)!==null||tierOpen(OUTFITS[id].tier)).map(id=>[id,OUTFITS[id]]).map(([id,o])=>{const own=save.outfits.includes(id),on=save.outfit===id;return'<div class="item t-'+o.tier+(on?' sel':'')+(id==='angel'?' angelcard':'')+'"><img src="'+outfitIcon(id)+'" alt="" style="'+(id==='angel'?'width:124px;max-width:none':'width:60px')+'"><div><h3>'+esc(o.name)+tierTag(o.tier)+'</h3><p>'+esc(o.desc)+'</p></div>'+
     (on?'<span class="tag">穿著中</span>':own?'<button class="btn" data-act="wear" data-arg="'+id+'">換上</button>':o.redeem?'<span class="hrlock"><span class="pxlock"></span>輸入兌換碼取得</span>':rewardFloorOf('o',id)!==null?'<span class="hrlock"><span class="pxlock"></span>打穿 '+LEVELS[rewardFloorOf('o',id)].floor+' '+LEVELS[rewardFloorOf('o',id)].name+' 取得</span>':'<button class="btn" data-act="buyOutfit" data-arg="'+id+'"'+(save.coins<o.price?' disabled':'')+'><i class="coin"></i>'+o.price+'</button>')+'</div>';}).join('');
   show('<div class="sheet" role="dialog" aria-label="更衣室"><header><h2>更衣室</h2>'+coinTag(save.coins)+'</header><p class="lead">服裝會改變外觀，也帶有能力。一次只能穿一套。</p><div class="list">'+items+tierLocks(OUTFITS,save.outfits)+'</div><div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>',focusId?'[data-arg="'+focusId+'"]':null);
 }
@@ -2710,7 +2713,7 @@ function renderBadge(first){
   const c=save.char;mode='menu';G=null;controlsUI(false);
   const sw=(list,key,cur)=>list.map(([k,col])=>'<button class="sw'+(String(k)===String(cur)?' on':'')+'" style="--c:'+col+'" data-act="charSet" data-key="'+key+'" data-arg="'+k+'" aria-label="'+key+' '+k+'"></button>').join('');
   const opts=(obj,key,cur)=>Object.entries(obj).map(([k,v])=>'<button class="opt'+(k===cur?' on':'')+'" data-act="charSet" data-key="'+key+'" data-arg="'+k+'">'+esc(v.name)+'</button>').join('');
-  show('<div class="badge" role="dialog" aria-label="員工證"><div class="strap">'+(first?'歡迎報到，請製作員工證':'EMPLOYEE ID')+'</div><div class="body"><div><div class="photo"><canvas id="pv" width="120" height="170"></canvas><div class="cap" id="pvcap">'+esc(playerName())+'　'+esc(titleName())+'</div></div></div><div>'+
+  show('<div class="badge" role="dialog" aria-label="員工證"><div class="strap">'+(first?'歡迎報到，請製作員工證':'EMPLOYEE ID')+'</div><div class="body"><div><div class="photo'+(save.outfit==='angel'?' angelglow':'')+'"><canvas id="pv" width="120" height="170"></canvas><div class="cap" id="pvcap">'+esc(playerName())+'　'+esc(titleName())+'</div></div></div><div>'+
     '<label for="nm">姓名</label><input id="nm" maxlength="12" value="'+esc(c.name)+'" placeholder="社畜" autocomplete="off"><p class="nmmsg" id="nmmsg"></p>'+
     '<label>膚色</label><div class="sws">'+sw(SKIN_ORDER.map(i=>[i,SKINS[i]]),'skin',c.skin)+'</div>'+
     '<label>髮型</label><div class="sws">'+opts(HAIRS,'hair',c.hair)+'</div>'+
@@ -2725,7 +2728,11 @@ function renderBadge(first){
 }
 function drawPreview(){
   const cvs=$('#pv');if(!cvs)return;const x=cvs.getContext('2d');x.imageSmoothingEnabled=false;x.clearRect(0,0,cvs.width,cvs.height);
-  const fr=Math.floor(previewT*6)%4,spr=charSprite(save.char,save.outfit,fr,true),s=8;x.drawImage(spr.img,(cvs.width-12*s)/2,cvs.height-17*s-10+SINK[fr]*s,12*s,17*s);
+  const fr=Math.floor(previewT*6)%4,spr=charSprite(save.char,save.outfit,fr,true);
+  if(save.outfit==='angel'&&typeof angelWing==='function'){const u=6,bx=(cvs.width-12*u)/2,by=cvs.height-17*u-6+SINK[fr]*u,up=Math.floor(previewT/.6)%2===0;
+    angelWing(x,bx-8*u,by+5*u,u,false,up);angelWing(x,bx+10*u,by+5*u,u,true,up);x.drawImage(spr.img,bx,by,12*u,17*u);angelHalo(x,cvs.width/2,by-2*u+Math.round(Math.sin(previewT*3)*u*.5),u);
+    angelSpark(x,8,18,3,.9);angelSpark(x,cvs.width-14,40,3,.8);return;}
+  const s=8;x.drawImage(spr.img,(cvs.width-12*s)/2,cvs.height-17*s-10+SINK[fr]*s,12*s,17*s);
 }
 function renderDaily(){
   G=null;mode='menu';Math.random=MATH_RANDOM;const d=dailyInfo(),L=LEVELS[d.floor],rec=save.daily[d.day]||{best:0,done:false};
@@ -2743,7 +2750,7 @@ function renderHR(tab){
   if(HRTAB==='perks')body=Object.entries(PERKS).map(([id,pk])=>{const l=perk(id),full=l>=pk.max,pr=perkPrice(id);return '<div class="hrrow"><div><h4>'+esc(pk.name)+pips(l,pk.max)+'</h4><p>'+esc(pk.per)+'　目前 <b>'+esc(pk.val(l))+'</b>'+(full?'':'　升級後 <b>'+esc(pk.val(l+1))+'</b>')+'</p></div>'+(full?'<span class="stamp">已滿級</span>':'<button class="btn" data-act="buyPerk" data-arg="'+id+'"'+(save.coins<pr?' disabled':'')+'><i class="coin"></i>'+pr+'</button>')+'</div>';}).join('');
   else if(HRTAB==='fun')body='<p class="lead">這一區的效果都很無腦，請自行斟酌。</p>'+Object.entries(FUN).map(([id,f])=>'<div class="hrrow"><div><h4>'+esc(f.name)+'</h4><p>'+esc(f.desc)+'</p></div>'+(fun(id)?'<span class="stamp">核准</span>':'<button class="btn" data-act="buyFun" data-arg="'+id+'"'+(save.coins<f.price?' disabled':'')+'><i class="coin"></i>'+f.price+'</button>')+'</div>').join('');
   else{const t=save.title,u=clamp(save.titleUse??t,0,t);body='<p class="lead">買過的職稱都可以隨時換回來用，只有你自己和排行榜看得到，沒有任何效果。目前使用：<b>'+esc(titleName())+'</b></p>'+TITLES.map((x,i)=>'<div class="hrrow"><div><h4>'+(i<=t?'✓ ':'')+esc(x.n)+'</h4><p>'+(i===0?'預設':i<=t?'第 '+i+' 級　已擁有':i===t+1?'第 '+i+' 級　下一個可以升的職稱':'第 '+i+' 級　先升到「'+esc(TITLES[i-1].n)+'」才能購買')+'</p></div>'+(i<=t?(i===u&&!(save.titleAch&&save.achv[save.titleAch])?'<span class="stamp">使用中</span>':'<button class="btn ghost" data-act="useTitle" data-arg="'+i+'">使用</button>'):i===t+1?'<button class="btn" data-act="buyTitle"'+(save.coins<x.p?' disabled':'')+'><i class="coin"></i>'+x.p+'</button>':'<span class="hrlock"><span class="pxlock"></span><i class="coin"></i>'+x.p+'</span>')+'</div>').join('');}
-  if(HRTAB==='title'){const ach=Object.entries(ACH_TITLES);body+='<div class="setsec">成就職稱</div>'+ach.map(([k,n])=>{const got=save.achv&&save.achv[k],use=save.titleAch===k&&got;return '<div class="hrrow"><div><h4>'+(got?'✓ ':'')+esc(n)+'</h4><p>'+(k==='collapse'?'無限加班撐到公司倒閉（30 分鐘）':'')+'</p></div>'+(got?(use?'<span class="stamp">使用中</span>':'<button class="btn ghost" data-act="useAch" data-arg="'+k+'">使用</button>'):'<span class="hrlock"><span class="pxlock"></span>未解鎖</span>')+'</div>';}).join('');}
+  if(HRTAB==='title'){const ach=Object.entries(ACH_TITLES);body+='<div class="setsec">成就職稱</div>'+ach.map(([k,n])=>{const got=save.achv&&save.achv[k],use=save.titleAch===k&&got;return '<div class="hrrow"><div><h4>'+(got?'✓ ':'')+esc(n)+'</h4><p>'+(k==='collapse'?'無限加班撐到公司倒閉（30 分鐘）':k==='angel'?'兌換碼限定，用兌換碼取得天使投資人後解鎖':'')+'</p></div>'+(got?(use?'<span class="stamp">使用中</span>':'<button class="btn ghost" data-act="useAch" data-arg="'+k+'">使用</button>'):'<span class="hrlock"><span class="pxlock"></span>未解鎖</span>')+'</div>';}).join('');}
   const tabs='<div class="lbtab"><button class="opt'+(HRTAB==='perks'?' on':'')+'" data-act="hrTab" data-arg="perks">年資加成</button><button class="opt'+(HRTAB==='fun'?' on':'')+'" data-act="hrTab" data-arg="fun">其他福利</button><button class="opt'+(HRTAB==='title'?' on':'')+'" data-act="hrTab" data-arg="title">職稱</button></div>';
   show('<div class="sheet" role="dialog" aria-label="人事室"><header><h2>人事室　考核表</h2>'+coinTag(save.coins)+'</header>'+tabs+body+'<div class="row"><button class="btn ghost" data-act="menu">返回</button></div></div>','[data-act="hrTab"][data-arg="'+HRTAB+'"]');
 }
@@ -3442,7 +3449,7 @@ function grantReward(reward){if(reward!=='angel')return;if(!save.outfits.include
 function syncRewards(showOk){fetch(LB.url+'/rest/v1/rpc/my_rewards',{method:'POST',headers:{'Content-Type':'application/json',apikey:LB.key,Authorization:'Bearer '+LB.key},body:JSON.stringify({dev:save.device})}).then(r=>r.ok?r.json():[]).then(arr=>{if(!Array.isArray(arr))return;const had=save.outfits.includes('angel');for(const rw of arr)grantReward(rw);if(showOk&&!had&&save.outfits.includes('angel')&&$('#rcode'))renderRedeemOk();}).catch(()=>{});}
 function renderRedeem(){show('<div class="memo fb" role="dialog" aria-label="兌換碼"><h2>兌換碼</h2><p class="hint" style="margin:0">輸入兌換碼，領取限定獎勵</p><label class="fbl">兌換碼<input id="rcode" maxlength="40" autocomplete="off" autocapitalize="characters" spellcheck="false" value="'+esc(REDEEM.code)+'" placeholder="ANGEL-XXXX-XXXX-XXXX" style="font-size:20px;letter-spacing:2px;text-align:center"></label><p class="fbmsg" id="rmsg">'+esc(REDEEM.msg)+'</p><div class="row"><button class="btn" data-act="redeemGo"'+(REDEEM.busy?' disabled':'')+'>'+(REDEEM.busy?'兌換中…':'兌換')+'</button><button class="btn ghost" data-act="redeemBack">返回</button></div><p class="hint" style="margin-top:10px">兌換需要網路連線。獎勵會存在這台裝置，換手機前請先使用「存檔轉移」。</p></div>','#rcode');
   const i=$('#rcode');i.addEventListener('input',()=>{i.value=i.value.toUpperCase();REDEEM.code=i.value;});i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACTIONS.redeemGo();}});}
-function renderRedeemOk(){const ic=outfitIcon('angel');show('<div class="memo" role="dialog" aria-label="兌換成功" style="text-align:center"><h2 style="color:#b8860b">恭喜成為天使投資人！</h2><div class="rokbox"><img src="'+ic+'" alt="" style="width:120px;image-rendering:pixelated"></div><p><b>天使投資人</b>（兌換限定服裝）</p><p style="font-size:13px">技能「天使輪」：閃避落地時展開光環，震開身邊的殭屍；金幣 +10%</p><p style="font-size:13px">獲得職稱 <span class="ttag angel">天使投資人</span></p><div class="row"><button class="btn" data-act="redeemWear">立刻換上</button><button class="btn ghost" data-act="redeemBack">之後再說</button></div></div>','[data-act=redeemWear]');sfx('clear');}
+function renderRedeemOk(){const ic=outfitIcon('angel');show('<div class="memo" role="dialog" aria-label="兌換成功" style="text-align:center"><h2 style="color:#b8860b">恭喜成為天使投資人！</h2><div class="rokbox"><div class="rokflash"></div><img class="rokimg" src="'+ic+'" alt="" style="width:240px;max-width:90%;image-rendering:pixelated"></div><p><b>天使投資人</b>（兌換限定服裝）</p><p style="font-size:13px">技能「天使輪」：閃避落地時展開光環，震開身邊的殭屍；金幣 +10%</p><p style="font-size:13px">獲得職稱 <span class="ttag angel">天使投資人</span></p><div class="row"><button class="btn" data-act="redeemWear">立刻換上</button><button class="btn ghost" data-act="redeemBack">之後再說</button></div></div>','[data-act=redeemWear]');sfx('clear');}
 Object.assign(ACTIONS,{
   redeem:()=>{REDEEM={code:'',busy:false,msg:''};renderRedeem();syncRewards(true);},
   redeemBack:()=>{renderSettings();},
@@ -3454,9 +3461,25 @@ Object.assign(ACTIONS,{
       .then(res=>{REDEEM.busy=false;if(res&&res.ok){grantReward(res.reward);renderRedeemOk();return;}if(res&&res.err==='owned'){grantReward(res.reward||'angel');}REDEEM.msg=REDEEM_MSG[(res&&res.err)||'invalid']||REDEEM_MSG.invalid;renderRedeem();})
       .catch(()=>{REDEEM.busy=false;REDEEM.msg=REDEEM_MSG.net;renderRedeem();});},
 });
-function drawAngelBack(p){if(save.outfit!=='angel'||!G||G.ob==null||!G.ob.angel)return;const sc=p.scale||3,fl=Math.sin(G.time*(p.moving?12:4))*.5+.5,y=p.y-sc*4.5,w=sc*(3.5+fl*1.5);
-  ctx.save();ctx.fillStyle='#f4f4f0';ctx.strokeStyle='#0d0f14';ctx.lineWidth=2;for(const s of [-1,1]){ctx.beginPath();ctx.moveTo(p.x+s*sc*2,y);ctx.lineTo(p.x+s*(sc*2+w),y-sc*(3+fl*2));ctx.lineTo(p.x+s*(sc*2+w*.9),y+sc*1.5);ctx.lineTo(p.x+s*(sc*2+w*.5),y+sc*3);ctx.closePath();ctx.fill();ctx.stroke();}ctx.restore();}
-function drawAngelFront(p){if(save.outfit!=='angel'||!G||!G.ob||!G.ob.angel)return;
+
+
+/* ===== 天使投資人：超出角色格子的翅膀與光環（v0.25.3） ===== */
+const ANGEL_WING=[".......###",".....##WWW","....#WWWWW","...#WWWgWW","..#WWWgWWW","..#WWgWWWg",".#WWgWWWg.",".#WgWWWg..","#WgWWg#...","#gWg##....",".##......."];
+const ANGEL_COL={'#':'#0d0f14','W':'#fafaf6','g':'#c6ceda'};
+function angelWing(c,ox,oy,u,mirror,up){for(let r=0;r<ANGEL_WING.length;r++){const row=ANGEL_WING[r];for(let k=0;k<row.length;k++){const ch=row[k];if(ch==='.')continue;const cc=mirror?row.length-1-k:k;const dy=(up&&k<5)?-u:0;c.fillStyle=ANGEL_COL[ch];c.fillRect(ox+cc*u,oy+r*u+dy,u,u);}}}
+const ANGEL_HALO=[".LLLLLL.","Y......Y",".DDDDDD."];const ANGEL_HALO_COL={L:'#fff1a8',Y:'#ffd23f',D:'#d9a520'};
+function angelHalo(c,cx,y,u){const x0=cx-4*u,y0=y-2*u;for(let r=0;r<3;r++)for(let k=0;k<8;k++){const ch=ANGEL_HALO[r][k];if(ch==='.')continue;c.fillStyle=ANGEL_HALO_COL[ch];c.fillRect(x0+k*u,y0+r*u,u,u);}}
+function angelSpark(c,x,y,u,a){c.globalAlpha=a;c.fillStyle='#ffe58a';c.fillRect(x,y,u,u);c.fillRect(x-u,y+u,3*u,u);c.fillRect(x,y+2*u,u,u);c.globalAlpha=1;}
+const ANGEL_ICON_CACHE={};
+function angelIcon(ch){ch=ch||save.char;const key=charKey(ch,'angel',1,true);if(ANGEL_ICON_CACHE[key])return ANGEL_ICON_CACHE[key];
+  const body=charSprite(ch,'angel',1,true).img,U=5,Wu=body.width+16,Hu=body.height+3,cv=document.createElement('canvas');cv.width=Wu*U;cv.height=Hu*U;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;
+  const bx=8*U,by=3*U;angelWing(c,bx-8*U,by+5*U,U,false,false);angelWing(c,bx+(body.width-2)*U,by+5*U,U,true,false);c.drawImage(body,bx,by,body.width*U,body.height*U);angelHalo(c,bx+body.width*U/2,by-U,U);
+  angelSpark(c,1*U,3*U,U,1);angelSpark(c,(Wu-3)*U,6*U,U,.9);angelSpark(c,3*U,(Hu-5)*U,U,.8);
+  return ANGEL_ICON_CACHE[key]=cv.toDataURL();}
+function angelBox(p){const sc=p.scale||3;return {u:sc,bx:p.x-6*sc,by:p.y+14*sc*.38-17*sc};}
+function drawAngelBack(p){if(save.outfit!=='angel'||!G||!G.ob||!G.ob.angel||G.dead)return;const {u,bx,by}=angelBox(p),mv=!!(p.mx||p.my),up=mv?Math.floor(G.time/.12)%2===0:Math.floor(G.time/.6)%2===0;ctx.save();angelWing(ctx,Math.round(bx-8*u),Math.round(by+5*u),u,false,up);angelWing(ctx,Math.round(bx+10*u),Math.round(by+5*u),u,true,up);ctx.restore();}
+function drawAngelFront(p){if(save.outfit!=='angel'||!G||!G.ob||!G.ob.angel||G.dead)return;const {u,bx,by}=angelBox(p);const bob=Math.round(Math.sin(G.time*3)*u*.6);ctx.save();angelHalo(ctx,Math.round(p.x),Math.round(by-u*1.5+bob),u);ctx.restore();
+  if((p.mx||p.my)&&Math.random()<.06&&G.parts&&G.parts.length<400)G.parts.push({x:p.x+rand(-14,14)*u/3,y:by+rand(4,12)*u,vx:rand(-20,20),vy:-30,life:.5,max:.5,color:'#ffe58a',size:3});
   if(p.angelFx>0){const a=p.angelFx/.45,r=95*(1-a)+20;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#ffd23f';ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(p.x,p.y+p.r*.6,r,r*.45,0,0,TAU);ctx.stroke();ctx.restore();}}
 
 requestAnimationFrame(loop);
